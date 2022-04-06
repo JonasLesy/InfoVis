@@ -3,17 +3,20 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PieChartComponent } from './pie-chart/pie-chart.component';
+import { MedalChartComponent } from './medal-chart/medal-chart.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PieChartComponent
+    MedalChartComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    PieChartComponent
+    NgxChartsModule,
+    BrowserAnimationsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

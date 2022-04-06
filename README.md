@@ -14,7 +14,8 @@ chart.js v3.7.1
 https://codeinhouse.com/d3js-with-angular-tutorial/
 
 
-
+## Ngx charts documentation
+https://swimlane.gitbook.io/ngx-charts
 
 
 ## Development server
