@@ -25,7 +25,6 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
-    "@swimlane/ngx-charts": "^20.1.0",
     "chart.js": "^3.7.1",
     "crypto": "^1.0.1",
     "csv-parser": "^3.0.0",
