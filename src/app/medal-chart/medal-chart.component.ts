@@ -12,6 +12,10 @@ export class MedalChartComponent implements OnInit {
     domain: ['#D4AF37', '#AAA9AD', '#B08D57']
   };
 
+
+
+ 
+
   constructor() {
     var single = [{"name": "Gold", "value": 3}, {"name": "Silver", "value": 2}, {"name": "Bronze", "value": 4}]
     //var medals = [4, 3, 2] // TODO: fill in real data
