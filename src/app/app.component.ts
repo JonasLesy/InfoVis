@@ -1,6 +1,5 @@
 import { CsvDataService } from "./csv-data.service";
 import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { NOCRegion } from "./models/NOCRegion";
 import { AthleteEntry } from "./models/AhtleteEntry";
 
@@ -19,6 +18,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.userArray = this.csvDataService.getRegionData();
-    this.athleteEntries = this.csvDataService.getAhtleteData();
+    this.athleteEntries = this.csvDataService.getAthleteData();
   }
 }

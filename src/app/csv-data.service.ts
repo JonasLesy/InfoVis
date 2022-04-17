@@ -28,7 +28,7 @@ export class CsvDataService {
     return userArray;
   }
 
-  public getAhtleteData(): AthleteEntry[] {
+  public getAthleteData(): AthleteEntry[] {
     let athletesArray: AthleteEntry[] = [];
     this.http
       .get("data/athlete_events.csv", { responseType: "text" })
