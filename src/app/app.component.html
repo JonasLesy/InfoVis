@@ -1,9 +1,15 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to the {{ title }}!
-  </h1>
+<div class="container">
+  <div class="top-side-selectors">
+    <h1>Top side filters come here</h1>
+    <!--Place top side filter components here (summer/winter toggle, gender toggle, year range slider,...)-->
+  </div>
+  <div class="left-side-filters">
+    <h1>Left side filters come here</h1>      <!--Place list filter components here (filter by discipline, filter by country,...)-->
+  </div>
+  <div class="center-component">
+    <h1>Hier komen de grafieken en informatie over spelers enz...</h1>
+    <!--Here comes the information about the filtered data-->
+    <div style="width: 100%;" class="app-medal-chart"><app-medal-chart></app-medal-chart></div>
+    <router-outlet></router-outlet>
+  </div>
 </div>
-<div class="test-container"></div>
-<div style="width:50%"><app-medal-chart></app-medal-chart></div>
-<router-outlet></router-outlet>

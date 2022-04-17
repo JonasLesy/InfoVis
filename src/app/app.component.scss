@@ -1,0 +1,37 @@
+// Info about CSS Grid
+// https://learncssgrid.com/
+// https://coryrylan.com/blog/how-to-center-in-css-with-css-grid#:~:text=To%20align%20the%20item%20horizontally,%2C%20end%20%2C%20stretch%20or%20center%20.
+
+.container {
+  display: grid;
+  grid-template-rows: 2fr 8fr;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100vw;
+  height: 100vh;
+}
+
+.top-side-selectors {
+  background-color: red;
+  grid-row: 1;
+  grid-column: span 5;
+  text-align: center;
+}
+
+.left-side-filters {
+  background: yellow;
+  grid-row: 2;
+  grid-column: 1 / 2;
+  grid-column-end: 2;
+  text-align: center;
+}
+
+.center-component {
+  background-color: green;
+  grid-row: 2;
+  grid-column: 2 / 6;
+  text-align: center;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  display: grid;
+  justify-content: center; // For centering the app-medal-chart inside
+}
