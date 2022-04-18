@@ -1,9 +1,9 @@
 export class NOCRegion {
-    noc: String;
-    region: String;
-    notes: String;
+    noc: string;
+    region: string;
+    notes: string;
 
-    constructor(noc: String, region: String, notes: String) {
+    constructor(noc: string, region: string, notes: string) {
         this.noc = noc;
         this.region = region;
         this.notes = notes;

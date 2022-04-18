@@ -9,21 +9,21 @@ import { MedalChartComponent } from './medal-chart/medal-chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule } from 'primeng/chart';
 import { LeftPanelComponent } from './left-panel/left-panel.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MedalChartComponent,
-    LeftPanelComponent
-  ],
+  declarations: [AppComponent, MedalChartComponent, LeftPanelComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ChartModule
+    ChartModule,
+    FormsModule,
+    MultiSelectModule,
   ],
-  providers: [CsvDataService],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

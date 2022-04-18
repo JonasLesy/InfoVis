@@ -5,28 +5,33 @@
 .container {
   display: grid;
   grid-template-rows: 200px 8fr;
-  grid-template-columns: 400px repeat(4, 1fr);
+  grid-template-columns: 600px repeat(4, 1fr);
   width: 100vw;
   height: 100vh;
 }
 
 .top-side-selectors {
-  background-color: red;
+  // background-color: red;
   grid-row: 1;
   grid-column: span 5;
   text-align: center;
+  border-bottom: 5px solid grey;
 }
 
 .left-side-filters {
-  background: yellow;
+  // background: yellow;
   grid-row: 2;
   grid-column: 1 / 2;
   grid-column-end: 2;
   text-align: center;
+  position: relative;
+  display: grid;
+  border-right: 5px solid grey;
+  // grid-template-rows: 2fr 2fr 2fr 2fr;
 }
 
 .center-component {
-  background-color: green;
+  // background-color: green;
   grid-row: 2;
   grid-column: 2 / 6;
   text-align: center;
@@ -34,4 +39,12 @@
   overflow: hidden;
   display: grid;
   justify-content: center; // For centering the app-medal-chart inside
+}
+
+
+.app-left-panel {
+  // background-color: blue;
+  grid-row: 1;
+  display: grid;
+  grid-template-rows: 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
 }

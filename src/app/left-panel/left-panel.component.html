@@ -1,1 +1,25 @@
-<p>left-panel works!</p>
+<div class="filter-1">
+  <h5>Filter 1</h5>
+  <p-multiSelect
+    class="filter-1"
+    [style]="{ width: '100%' }"
+    autowidth="false"
+    class="country-filter"
+    [options]="countriesToSelectFrom"
+    [(ngModel)]="selectedCountries"
+    optionLabel="region"
+  ></p-multiSelect>
+</div>
+
+<div class="filter-2">
+  <h5>Filter 2</h5>
+  <p-multiSelect
+    class="filter-2"
+    [style]="{ width: '100%' }"
+    autowidth="false"
+    class="country-filter"
+    [options]="countriesToSelectFrom"
+    [(ngModel)]="selectedCountries"
+    optionLabel="region"
+  ></p-multiSelect>
+</div>
