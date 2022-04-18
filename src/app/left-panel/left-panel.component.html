@@ -6,20 +6,9 @@
     autowidth="false"
     class="country-filter"
     [options]="countriesToSelectFrom"
-    [(ngModel)]="selectedCountries"
+    [ngModel]="selectedCountries"
+    (ngModelChange)="newCountrySelected($event)"
     optionLabel="region"
-  ></p-multiSelect>
-</div>
-
-<div class="filter-2">
-  <h5>Filter 2</h5>
-  <p-multiSelect
-    class="filter-2"
-    [style]="{ width: '100%' }"
-    autowidth="false"
-    class="country-filter"
-    [options]="countriesToSelectFrom"
-    [(ngModel)]="selectedCountries"
-    optionLabel="region"
+    optionValue="region"
   ></p-multiSelect>
 </div>
