@@ -8,11 +8,13 @@ import { AppComponent } from './app.component';
 import { MedalChartComponent } from './medal-chart/medal-chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule } from 'primeng/chart';
+import { LeftPanelComponent } from './left-panel/left-panel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MedalChartComponent
+    MedalChartComponent,
+    LeftPanelComponent
   ],
   imports: [
     BrowserModule,
