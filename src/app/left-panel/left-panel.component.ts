@@ -8,16 +8,23 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./left-panel.component.scss"],
 })
 export class LeftPanelComponent implements OnInit {
-  countriesToSelectFrom: NOCRegion[];
+  countriesToSelectFrom: string[];
+  disciplinesToSelectFrom: string[];
   selectedCountries: string[] = [];
+  selectedDisciplines: string[] = [];
 
   constructor(public filterService: FilterService) {}
 
   ngOnInit(): void {
     this.countriesToSelectFrom = this.filterService.countriesToSelectFrom;
+    this.disciplinesToSelectFrom = this.filterService.disciplinesToSelectFrom;
   }
 
   newCountrySelected(event) {
     this.filterService.newCountrySelected(event);
+  }
+
+  newDisciplineSelected(event) {
+    this.filterService.newDisciplineSelected(event);
   }
 }

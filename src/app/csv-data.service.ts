@@ -11,7 +11,7 @@ export class CsvDataService {
 
   public getRegionData(): NOCRegion[] {
     let userArray: NOCRegion[] = [];
-    this.http.get("data/noc_regions.csv", { responseType: "text" }).subscribe(
+    let subscription = this.http.get("data/noc_regions.csv", { responseType: "text" }).subscribe(
       (data) => {
         let csvToRowArray = data.split("\r");
         console.log("Parsing noc csv");

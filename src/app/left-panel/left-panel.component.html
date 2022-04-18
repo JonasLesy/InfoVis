@@ -1,14 +1,23 @@
 <div class="filter-1">
-  <h5>Filter 1</h5>
+  <h5>Country Filter</h5>
   <p-multiSelect
     class="filter-1"
     [style]="{ width: '100%' }"
     autowidth="false"
-    class="country-filter"
     [options]="countriesToSelectFrom"
     [ngModel]="selectedCountries"
     (ngModelChange)="newCountrySelected($event)"
-    optionLabel="region"
-    optionValue="region"
+  ></p-multiSelect>
+</div>
+
+<div class="filter-2">
+  <h5>Discipline Filter</h5>
+  <p-multiSelect
+    class="filter-1"
+    [style]="{ width: '100%' }"
+    autowidth="false"
+    [options]="disciplinesToSelectFrom"
+    [ngModel]="selectedDisciplines"
+    (ngModelChange)="newDisciplineSelected($event)"
   ></p-multiSelect>
 </div>

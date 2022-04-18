@@ -1,21 +1,21 @@
 export class AthleteEntry {
     id: number;
-    name: String;
-    sex: String;
+    name: string;
+    sex: string;
     age: number;
     height: number;
     weight: number;
-    team: String;
-    noc: String;
-    games: String;
+    team: string;
+    noc: string;
+    games: string;
     year: number;
-    season: String;
-    city: String;
-    sport: String;
-    event: String;
-    medal: String;
+    season: string;
+    city: string;
+    sport: string;
+    event: string;
+    medal: string;
 
-    constructor(id: number, name: String, sex: String, age: number, height: number, weight: number, team: String, noc: String, games: String, year: number, season: String, city: String, sport: String, event: String, medal: String) {
+    constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string) {
         this.id = id;
         this.name = name;
         this.sex = sex;

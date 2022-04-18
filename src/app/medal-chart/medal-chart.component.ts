@@ -1,5 +1,5 @@
 import { FilterService } from "./../filter.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { replaceArrayContentWithContentOfOtherArray } from "../helper-classes/array-functions";
 
 @Component({
@@ -7,16 +7,16 @@ import { replaceArrayContentWithContentOfOtherArray } from "../helper-classes/ar
   templateUrl: "./medal-chart.component.html",
   styleUrls: ["./medal-chart.component.scss"],
 })
-export class MedalChartComponent implements OnInit {
+export class MedalChartComponent implements OnInit, OnDestroy {
   medalData: any; //Array [3, 2, 4] means: 3 gold medals, 2 silver medals and 4 bronze medals
   colorScheme = {
     domain: ["#D4AF37", "#AAA9AD", "#B08D57"],
   };
+  selectedCountries: string[] = [];
+  selectedDisciplines: string[] = [];
+  subscriptions = [];
 
   constructor(private filterService: FilterService) {}
-
-  selectedCountriesSubscription;
-  selectedCountries: string[] = [];
 
   ngOnInit(): void {
     this.medalData = {
@@ -29,10 +29,20 @@ export class MedalChartComponent implements OnInit {
       ],
     };
 
-    this.selectedCountriesSubscription = this.filterService.selectedCountriesSubject$.subscribe(
-      (v) => {
+    this.subscriptions.push(
+      this.filterService.selectedCountriesSubject$.subscribe((v) => {
         replaceArrayContentWithContentOfOtherArray(this.selectedCountries, v);
-      }
+      })
     );
+
+    this.subscriptions.push(
+      this.filterService.selectedDisciplinessSubject$.subscribe((v) => {
+        replaceArrayContentWithContentOfOtherArray(this.selectedDisciplines, v);
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 }

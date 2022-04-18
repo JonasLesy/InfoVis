@@ -3,4 +3,9 @@
 <p>
     <span *ngFor="let sc of selectedCountries">{{sc}} </span>
 </p>
+
+<p>
+    <span *ngFor="let d of selectedDisciplines">{{d}} </span>
+</p>
+
 <p-chart type="doughnut" [data]="medalData" [style]="{'width': '40%'}"></p-chart>
