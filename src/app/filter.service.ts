@@ -1,7 +1,7 @@
 import { NOCRegion } from './models/NOCRegion';
 import { CsvDataService } from './csv-data.service';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from "rxjs";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -12,19 +12,21 @@ export class FilterService {
 
   constructor(private csvDataService: CsvDataService) {}
 
-  public get countriesToSelectFrom(): string[] {
-    let regionData = this.csvDataService.getRegionData();
-    let result = regionData.map((rd) => rd.region);
-    return result;
+  public get countriesToSelectFrom(): Observable<string[]> {
+    let regionData = this.csvDataService.getRegionData(false)
+      .map(rd => {
+        return regionData.map((rd) => rd.region);
+      })
   }
 
-  public get disciplinesToSelectFrom(): string[] {
-    let disciplines = new Set<string>();
-    this.csvDataService.getAthleteData().forEach((ad) => {
-      disciplines.add(ad.sport);
+  public get disciplinesToSelectFrom(): Observable<string[]> {
+    this.csvDataService.getAthleteData(false).map(ads => {
+      let disciplines = new Set<string>();
+      ads.forEach(ad => {
+              disciplines.add(ad.sport);
+      });
+      return Array.from(disciplines);
     });
-    let result = Array.from(disciplines);
-    return result;
   }
 
   public newCountrySelected(v: string[]) {

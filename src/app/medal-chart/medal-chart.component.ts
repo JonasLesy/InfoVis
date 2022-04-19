@@ -14,7 +14,7 @@ export class MedalChartComponent implements OnInit, OnDestroy {
   };
   selectedCountries: string[] = [];
   selectedDisciplines: string[] = [];
-  subscriptions = [];
+  subscriptions: Subscription[] = [];
 
   constructor(private filterService: FilterService) {}
 
