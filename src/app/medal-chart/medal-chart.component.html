@@ -1,11 +1,11 @@
 
 <h1>Filter test</h1>
 <p>
-    <span *ngFor="let sc of selectedCountries">{{sc}} </span>
+    <span *ngFor="let sc of filterService.selectedCountriesSubject$ | async">{{sc}} </span>
 </p>
 
 <p>
-    <span *ngFor="let d of selectedDisciplines">{{d}} </span>
+    <span *ngFor="let d of filterService.selectedDisciplinessSubject$ | async">{{d}} </span>
 </p>
 
 <p-chart type="doughnut" [data]="medalData" [style]="{'width': '40%'}"></p-chart>

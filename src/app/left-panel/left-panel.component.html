@@ -4,8 +4,7 @@
     class="filter-1"
     [style]="{ width: '100%' }"
     autowidth="false"
-    [options]="countriesToSelectFrom"
-    [ngModel]="selectedCountries"
+    [options]="filterService.countriesToSelectFrom | async"
     (ngModelChange)="newCountrySelected($event)"
   ></p-multiSelect>
 </div>
@@ -16,8 +15,7 @@
     class="filter-1"
     [style]="{ width: '100%' }"
     autowidth="false"
-    [options]="disciplinesToSelectFrom"
-    [ngModel]="selectedDisciplines"
+    [options]="filterService.disciplinesToSelectFrom | async"
     (ngModelChange)="newDisciplineSelected($event)"
   ></p-multiSelect>
 </div>

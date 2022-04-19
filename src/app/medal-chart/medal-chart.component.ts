@@ -12,11 +12,11 @@ export class MedalChartComponent implements OnInit, OnDestroy {
   colorScheme = {
     domain: ["#D4AF37", "#AAA9AD", "#B08D57"],
   };
-  selectedCountries: string[] = [];
-  selectedDisciplines: string[] = [];
-  subscriptions: Subscription[] = [];
+  // selectedCountries: string[] = [];
+  // selectedDisciplines: string[] = [];
+  // subscriptions: Subscription[] = [];
 
-  constructor(private filterService: FilterService) {}
+  constructor(private filterService: FilterService) { }
 
   ngOnInit(): void {
     this.medalData = {
@@ -29,20 +29,22 @@ export class MedalChartComponent implements OnInit, OnDestroy {
       ],
     };
 
-    this.subscriptions.push(
-      this.filterService.selectedCountriesSubject$.subscribe((v) => {
-        replaceArrayContentWithContentOfOtherArray(this.selectedCountries, v);
-      })
-    );
+    // // ngFor in html veranderen zodat deze een async pipe gebruikt en geen gebruik meer moet maken van de property die hier in de subscribe wordt ingevuld (ook geen subscription meer om te unsubscriben)
+    // this.subscriptions.push(
+    //   this.filterService.selectedCountriesSubject$.subscribe((v) => {
+    //     replaceArrayContentWithContentOfOtherArray(this.selectedCountries, v);
+    //   })
+    // );
 
-    this.subscriptions.push(
-      this.filterService.selectedDisciplinessSubject$.subscribe((v) => {
-        replaceArrayContentWithContentOfOtherArray(this.selectedDisciplines, v);
-      })
-    );
+    // // ngFor in html veranderen zodat deze een async pipe gebruikt en geen gebruik meer moet maken van de property die hier in de subscribe wordt ingevuld (ook geen subscription meer om te unsubscriben)
+    // this.subscriptions.push(
+    //   this.filterService.selectedDisciplinessSubject$.subscribe((v) => {
+    //     replaceArrayContentWithContentOfOtherArray(this.selectedDisciplines, v);
+    //   })
+    // );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((s) => s.unsubscribe());
-  }
+  // ngOnDestroy(): void {
+  //   this.subscriptions.forEach((s) => s.unsubscribe());
+  // }
 }
