@@ -5,5 +5,14 @@
   </h1>
 </div>
 <div class="test-container"></div>
-<div style="width:50%"><app-medal-chart></app-medal-chart></div>
+<input type="text" [(ngModel)]="searchText" (input)="search()" placeholder="Search" /> 
+<ul>
+<li *ngFor="let item of athleteFiltered | slice:0:10; let i=index" class="dropdown-item">{{item.name}}</li>
+</ul>
+<p-autoComplete [(ngModel)]="countriesSelected" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" [multiple]="true"></p-autoComplete>
+
+<ul>
+<li *ngFor="let country of countries" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
+</ul>
+<!--div style="width:50%"><app-medal-chart></app-medal-chart></div-->
 <router-outlet></router-outlet>
