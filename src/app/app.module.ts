@@ -1,4 +1,3 @@
-import { CsvDataService } from './csv-data.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,7 +20,7 @@ import { ChartModule } from 'primeng/chart';
     HttpClientModule,
     ChartModule
   ],
-  providers: [CsvDataService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
