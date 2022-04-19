@@ -5,11 +5,13 @@
   </h1>
 </div>
 <div class="test-container"></div>
-<input type="text" [(ngModel)]="searchText" (input)="search()" placeholder="Search" /> 
+
+<p-autoComplete [(ngModel)]="peopleToFilterOn" [suggestions]="peopleSuggestions" (completeMethod)="searchPerson($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
+
 <ul>
-<li *ngFor="let item of athleteFiltered | slice:0:10; let i=index" class="dropdown-item">{{item.name}}</li>
+<li *ngFor="let person of persons | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
 </ul>
-<p-autoComplete [(ngModel)]="countriesSelected" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" [multiple]="true"></p-autoComplete>
+<p-autoComplete [(ngModel)]="countriesToFilterOn" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
 
 <ul>
 <li *ngFor="let country of countries" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
