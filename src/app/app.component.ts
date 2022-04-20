@@ -31,6 +31,7 @@ export class AppComponent {
   // Variables for visual filtering (autocomplete / suggestions)
   countrySuggestions: string[];
   peopleSuggestions: string[];
+  medalData: number[] = [];
 
 
   constructor(private http: HttpClient){
@@ -72,6 +73,7 @@ export class AppComponent {
             console.log('done');
             console.log(this.persons);
             this.filteredAthleteEntriesList = this.athleteEntries;
+            this.setMedalsData();
         },
         error => {
             console.log(error);
@@ -126,6 +128,7 @@ export class AppComponent {
     });
     this.countries = [...countrySet];
     this.persons = [...personSet];
+    this.setMedalsData();
   }
 
   // This method returns false if the given athleteEntry does not belong to the list of countries given
@@ -136,6 +139,18 @@ export class AppComponent {
   getRegionForNoc(nocToLookFor) {
     let nocEntry = this.nocEntries.find(item => item.noc === nocToLookFor);
     return nocEntry !== undefined ? nocEntry.region : "";
+  }
+
+  setMedalsData() {
+    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
+    let goldCount = countOccurrences(this.filteredAthleteEntriesList, "Gold");
+    //console.log('gold count is ' + goldCount);
+    let silverCount = countOccurrences(this.filteredAthleteEntriesList, "Silver");
+    //console.log('silver count is ' + silverCount);
+    let bronzeCount = countOccurrences(this.filteredAthleteEntriesList, "Bronze");
+    //console.log('bronze count is ' + bronzeCount);
+    this.medalData = [goldCount, silverCount, bronzeCount];
+    //console.log('done medals');
   }
   
 }
