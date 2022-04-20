@@ -4,21 +4,57 @@
     Welcome to the {{ title }}!
   </h1>
 </div>
-<div class="row">
-  <div class="col-md-4">
-    <p-autoComplete [(ngModel)]="peopleToFilterOn" [suggestions]="peopleSuggestions" (completeMethod)="searchPerson($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
-    <ul>
-      <li *ngFor="let person of persons | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
-    </ul>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-10 shadow">
+  <h1 class="navbar-brand" style="margin-left: 10px;">Olympics Data</h1>
+  <div class="col-sm-2 col-md-2 mr-0" style="text-align: center">
+    <h5 style="color: white;">Choose edition</h5>
+    <p-selectButton [options]="editionOptions" [(ngModel)]="chosenEdition" optionLabel="label" optionValue="value" (onChange)="filterOnAllAttributes()"></p-selectButton>
   </div>
-  <div class="col-md-4">
-    <p-autoComplete [(ngModel)]="countriesToFilterOn" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
-    <ul>
-    <li *ngFor="let country of countries" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
-    </ul>
+  <div class="col-sm-2 col-md-2 mr-0" style="text-align: center">
+    <h5 style="color: white;">Choose sex</h5>
+    <p-selectButton [options]="sexOptions" [(ngModel)]="chosenSex" optionLabel="label" optionValue="value" (onChange)="filterOnAllAttributes()"></p-selectButton>
   </div>
-  <div class="col-md-4">
-    <div><app-medal-chart [medalData]="medalData"></app-medal-chart></div>
+  <div class="col-sm-3 col-md-2 mr-30" style="text-align: center">
+    <h5 style="color: white;">Range: {{yearRange[0] + ' - ' + yearRange[1]}}</h5>
+    <p-slider [(ngModel)]="yearRange" [min]="1896" [max]="2016" [step]="2" [range]="true" (onSlideEnd)="filterOnAllAttributes()"></p-slider>
+  </div>
+  <div class="col-sm-2 col-md-2 mr-0">
+    <p style="color: white; display:inline; margin-right:10px">Filter on country:</p>
+    <p-autoComplete class="col-sm-3 col-md-2 mr-0" [(ngModel)]="countriesToFilterOn" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
+  </div>
+  <div class="col-sm-2 col-md-2 mr-0">
+    <p style="color: white; display:inline; margin-right:10px">Filter on person:</p>
+    <p-autoComplete [(ngModel)]="peopleToFilterOn" [suggestions]="peopleSuggestions" (completeMethod)="searchPerson($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true" delay="1000"></p-autoComplete>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+    </nav>
+
+    <div class="col-md-2 d-none d-md-block">
+    </div>
+    <main role="main" class="col-md-10 ml-sm-auto col-lg-10 px-4 mt-5">
+      <div class="row">
+        <div class="col-md-4">
+          <ul>
+            <li *ngFor="let person of persons | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <ul>
+          <li *ngFor="let country of countries | slice:0:20; let i=index" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <div><app-medal-chart [medalData]="medalData"></app-medal-chart></div>
+        </div>
+      </div>
+   </main>
   </div>
 </div>
+
+
+
 <router-outlet></router-outlet>

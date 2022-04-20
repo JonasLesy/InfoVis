@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { SelectItem } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,11 @@ export class AppComponent {
   filteredAthleteEntriesList: AthleteEntry[];
   countries: string[] = [];
   persons: string[] = [];
+  yearRange: number[] = [1896, 2016];
+  editionOptions: any[];
+  chosenEdition: string = 'all';
+  sexOptions: any[];
+  chosenSex: string = 'all';
 
   // Variables for visual filtering (autocomplete / suggestions)
   countrySuggestions: string[];
@@ -35,6 +41,17 @@ export class AppComponent {
 
 
   constructor(private http: HttpClient){
+    this.editionOptions = [
+      { label: 'Summer', value: 'Summer' },
+      { label: 'All', value: 'all' },
+      { label: 'Winter', value: 'Winter' }
+    ];
+    this.sexOptions = [
+      { label: 'Male', value: 'M' },
+      { label: 'All', value: 'all' },
+      { label: 'Female', value: 'F' }
+    ];
+
     this.http.get('data/noc_regions.csv', {responseType: 'text'})
     .subscribe(
         data => {
@@ -105,12 +122,22 @@ export class AppComponent {
 
   filterOnAllAttributes() {
     console.log('Filtering on attributes..');
+    console.log('Year range was' + this.yearRange);
     this.filteredAthleteEntriesList = this.athleteEntries.filter(athleteEntry => {
       // Only add the entry if the selected countries match the athlete
       if (this.countriesToFilterOn.length != 0 && !this.athleteBelongsToListOfCountries(athleteEntry, this.countriesToFilterOn)) {
         return false;
       }
       if (this.peopleToFilterOn.length != 0 && !this.peopleToFilterOn.includes(athleteEntry.name)) {
+        return false;
+      }
+      if(!(athleteEntry.year >= this.yearRange[0] && athleteEntry.year <= this.yearRange[1])) {
+        return false;
+      }
+      if(this.chosenEdition !== 'all' && athleteEntry.season !== this.chosenEdition) {
+        return false;
+      }
+      if(this.chosenSex !== 'all' && athleteEntry.sex !== this.chosenSex) {
         return false;
       }
       return true;
@@ -128,7 +155,7 @@ export class AppComponent {
     });
     this.countries = [...countrySet];
     this.persons = [...personSet];
-    this.setMedalsData();
+    //this.setMedalsData();
   }
 
   // This method returns false if the given athleteEntry does not belong to the list of countries given
