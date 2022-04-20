@@ -71,7 +71,7 @@ export class AppComponent {
             this.countries = [...countrySet];
             this.persons = [...personSet];
             console.log('done');
-            console.log(this.persons);
+            //console.log(this.persons);
             this.filteredAthleteEntriesList = this.athleteEntries;
             this.setMedalsData();
         },
