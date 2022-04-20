@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -7,6 +8,7 @@ import { AppComponent } from './app.component';
 import { MedalChartComponent } from './medal-chart/medal-chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule } from 'primeng/chart';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [
@@ -15,10 +17,12 @@ import { ChartModule } from 'primeng/chart';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ChartModule
+    ChartModule,
+    AutoCompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]
