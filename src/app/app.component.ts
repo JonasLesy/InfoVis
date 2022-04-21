@@ -155,7 +155,7 @@ export class AppComponent {
     });
     this.countries = [...countrySet];
     this.persons = [...personSet];
-    //this.setMedalsData();
+    this.setMedalsData();
   }
 
   // This method returns false if the given athleteEntry does not belong to the list of countries given
