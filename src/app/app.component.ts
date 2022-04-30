@@ -1,3 +1,4 @@
+import { DataFilterService } from './data-filter.service';
 import { CsvService } from './csv.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
   medalData: number[] = [];
 
 
-  constructor(public csvService: CsvService){
+  constructor(public csvService: CsvService, private dataFilterService: DataFilterService){
    
   }
   
