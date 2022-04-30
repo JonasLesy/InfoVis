@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { CsvService } from './csv.service';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { AthleteEntry } from './models/athlete-entry';
 import { NOCRegion } from './models/noc-region';
@@ -8,7 +9,7 @@ import { NOCRegion } from './models/noc-region';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   /*
   BASIC STRUCTURE OF THE CODE:
     - load datasets & keep them in original variable, not to be altered
@@ -20,15 +21,10 @@ export class AppComponent {
   searchText: string = '';
 
   // Original data lists
-  nocEntries: NOCRegion[] = [];
-  athleteEntries: AthleteEntry[] = [];
   
   // Filters / filtered values
   countriesToFilterOn: string[] = [];
   peopleToFilterOn: string[] = [];
-  filteredAthleteEntriesList: AthleteEntry[];
-  countries: string[] = [];
-  persons: string[] = [];
 
   // Variables for visual filtering (autocomplete / suggestions)
   countrySuggestions: string[];
@@ -36,52 +32,13 @@ export class AppComponent {
   medalData: number[] = [];
 
 
-  constructor(private http: HttpClient){
-    this.http.get('data/noc_regions.csv', {responseType: 'text'})
-    .subscribe(
-        data => {
-            let csvToRowArray = data.split("\r");
-            console.log('Parsing noc csv');
-            for (let index = 1; index < csvToRowArray.length -1; index++) {
-              let row = csvToRowArray[index].split(",");
-              this.nocEntries.push(new NOCRegion( row[0], row[1], row[2]));
-            }
-            console.log('done');
-        },
-        error => {
-            console.log(error);
-        }
-    );
-
-    this.http.get('data/athlete_events.csv', {responseType: 'text'})
-    .subscribe(
-        data => {
-            let csvToRowArray = data.split("\r");
-            console.log('Parsing athletes csv');
-            let countrySet = new Set<string>();
-            let personSet = new Set<string>();
-            for (let index = 1; index < csvToRowArray.length -1; index++) {
-              let row = csvToRowArray[index].split(",");
-              let newEntry = new AthleteEntry(parseInt( row[0], 10), row[1], row[2], parseInt( row[3], 10), parseInt( row[4], 10), parseInt( row[5], 10), row[6], row[7], row[8], parseInt( row[9], 10), row[10], row[11], row[12], row[13], row[14]);
-              var specificNOC = this.nocEntries.find(item => item.noc === newEntry.noc);
-              if (specificNOC !== undefined) {
-                countrySet.add(specificNOC.region);
-              }
-              personSet.add(newEntry.name);
-              this.athleteEntries.push(newEntry);
-            }
-            this.countries = [...countrySet];
-            this.persons = [...personSet];
-            console.log('done');
-            //console.log(this.persons);
-            this.filteredAthleteEntriesList = this.athleteEntries;
-            this.setMedalsData();
-        },
-        error => {
-            console.log(error);
-        }
-    );
-
+  constructor(public csvService: CsvService){
+   
+  }
+  
+  ngOnInit(): void {
+    this.csvService.loadCsvData();
+    this.setMedalsData();
   }
 
   search(){
@@ -124,7 +81,7 @@ export class AppComponent {
   buildDisplayedItems() {
     let countrySet = new Set<string>();
     let personSet = new Set<string>();
-    this.filteredAthleteEntriesList.forEach(athleteEntry => {
+    this.csvService.filteredAthleteEntriesList.forEach(athleteEntry => {
       countrySet.add(this.getRegionForNoc(athleteEntry.noc));
       personSet.add(athleteEntry.name);
     });
@@ -139,17 +96,17 @@ export class AppComponent {
   }
 
   getRegionForNoc(nocToLookFor) {
-    let nocEntry = this.nocEntries.find(item => item.noc === nocToLookFor);
+    let nocEntry = this.csvService.nocEntries.find(item => item.noc === nocToLookFor);
     return nocEntry !== undefined ? nocEntry.region : "";
   }
 
   setMedalsData() {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
-    let goldCount = countOccurrences(this.filteredAthleteEntriesList, "Gold");
+    let goldCount = countOccurrences(this.csvService.filteredAthleteEntriesList, "Gold");
     //console.log('gold count is ' + goldCount);
-    let silverCount = countOccurrences(this.filteredAthleteEntriesList, "Silver");
+    let silverCount = countOccurrences(this.csvService.filteredAthleteEntriesList, "Silver");
     //console.log('silver count is ' + silverCount);
-    let bronzeCount = countOccurrences(this.filteredAthleteEntriesList, "Bronze");
+    let bronzeCount = countOccurrences(this.csvService.filteredAthleteEntriesList, "Bronze");
     //console.log('bronze count is ' + bronzeCount);
     this.medalData = [goldCount, silverCount, bronzeCount];
     //console.log('done medals');
