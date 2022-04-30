@@ -7,6 +7,15 @@ import { AthleteEntry } from './models/athlete-entry';
 })
 export class DataFilterService {
   private _filteredAthleteEntriesList: AthleteEntry[];
+  private _countrySuggestions: string[];
+
+  public get filteredAthleteEntriesList(): AthleteEntry[] {
+    return this._filteredAthleteEntriesList;
+  }
+
+  public get countrySuggestions(): string[] {
+    return this._countrySuggestions;
+  }
 
   constructor(private csvService: CsvService) {
     this._filteredAthleteEntriesList = csvService.filteredAthleteEntriesList;
@@ -21,5 +30,12 @@ export class DataFilterService {
     } else {
       this._filteredAthleteEntriesList = this.csvService.athleteEntries;
     }
+  }
+
+  searchCountry(searchText: string) {
+    let nocsFiltered = this.csvService.nocEntries.filter(nocEntry => {
+      return nocEntry.region.toLowerCase().includes(searchText.toLowerCase());
+    });
+    this._countrySuggestions = nocsFiltered.map(nocEntry => nocEntry.region);
   }
 }

@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   peopleToFilterOn: string[] = [];
 
   // Variables for visual filtering (autocomplete / suggestions)
-  countrySuggestions: string[];
+  // countrySuggestions: string[];
   peopleSuggestions: string[];
   medalData: number[] = [];
 
@@ -43,20 +43,11 @@ export class AppComponent implements OnInit {
   }
 
   search(){
-    if(this.searchText!== ""){
-      this.filteredAthleteEntriesList = this.athleteEntries.filter(contact =>{
-        return contact.name.toLowerCase().includes(this.searchText.toLowerCase());
-      });
-    } else {
-      this.filteredAthleteEntriesList = this.athleteEntries;
-    }
+    this.dataFilterService.search(this.searchText);
   }
 
   searchCountry(event) {
-    let nocsFiltered = this.nocEntries.filter(nocEntry =>{
-      return nocEntry.region.toLowerCase().includes(event.query.toLowerCase());
-    });
-    this.countrySuggestions = nocsFiltered.map(nocEntry => nocEntry.region);
+    this.dataFilterService.searchCountry(event.query);
   }
 
   searchPerson(event) {
