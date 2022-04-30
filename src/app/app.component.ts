@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
   }
 
   searchPerson(event) {
-    this.peopleSuggestions = this.persons.filter(person => { return person.toLowerCase().includes(event.query.toLowerCase())});
+    this.dataFilterService.searchPerson(event.query);
   }
 
   filterOnAllAttributes() {
