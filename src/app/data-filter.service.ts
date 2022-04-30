@@ -31,7 +31,8 @@ export class DataFilterService {
   constructor(private csvService: CsvService) {
     csvService.loadCsvData().subscribe(
       (csvData) => {
-        this._csvData = csvData; this._filteredAthleteEntriesList = this._csvData.athleteEntries
+        this._csvData = csvData; 
+        this._filteredAthleteEntriesList = this._csvData.athleteEntries;
       });
   }
 
@@ -72,11 +73,11 @@ export class DataFilterService {
     console.log('done');
   }
 
-  private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn) {
+  private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {
     return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
   }
 
-  private getRegionForNoc(nocToLookFor) {
+  private getRegionForNoc(nocToLookFor): string {
     let nocEntry = this._csvData.nocRegionEntries.find(item => item.noc === nocToLookFor);
     return nocEntry !== undefined ? nocEntry.region : "";
   }
