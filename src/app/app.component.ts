@@ -3,7 +3,7 @@ import { CsvService } from './csv.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { AthleteEntry } from './models/athlete-entry';
-import { NOCRegion } from './models/noc-region';
+import { NOCRegionEntry } from './models/noc-region-entry';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   searchText: string = '';
 
   // Original data lists
-  
+
   // Filters / filtered values
   countriesToFilterOn: string[] = [];
   peopleToFilterOn: string[] = [];
@@ -33,16 +33,16 @@ export class AppComponent implements OnInit {
   medalData: number[] = [];
 
 
-  constructor(public csvService: CsvService, private dataFilterService: DataFilterService){
-   
+  constructor(public csvService: CsvService, private dataFilterService: DataFilterService) {
+
   }
-  
+
   ngOnInit(): void {
     this.csvService.loadCsvData();
     this.setMedalsData();
   }
 
-  search(){
+  search() {
     this.dataFilterService.search(this.searchText);
   }
 
@@ -55,17 +55,7 @@ export class AppComponent implements OnInit {
   }
 
   filterOnAllAttributes() {
-    console.log('Filtering on attributes..');
-    this.filteredAthleteEntriesList = this.athleteEntries.filter(athleteEntry => {
-      // Only add the entry if the selected countries match the athlete
-      if (this.countriesToFilterOn.length != 0 && !this.athleteBelongsToListOfCountries(athleteEntry, this.countriesToFilterOn)) {
-        return false;
-      }
-      if (this.peopleToFilterOn.length != 0 && !this.peopleToFilterOn.includes(athleteEntry.name)) {
-        return false;
-      }
-      return true;
-    });
+    this.dataFilterService.filterOnAllAttributes();
     this.buildDisplayedItems();
     console.log('done');
   }
@@ -83,14 +73,14 @@ export class AppComponent implements OnInit {
   }
 
   // This method returns false if the given athleteEntry does not belong to the list of countries given
-  athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn) {
-    return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
-  }
+  // athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn) {
+  //   return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
+  // }
 
-  getRegionForNoc(nocToLookFor) {
-    let nocEntry = this.csvService.nocEntries.find(item => item.noc === nocToLookFor);
-    return nocEntry !== undefined ? nocEntry.region : "";
-  }
+  // getRegionForNoc(nocToLookFor) {
+  //   let nocEntry = this.csvService.nocEntries.find(item => item.noc === nocToLookFor);
+  //   return nocEntry !== undefined ? nocEntry.region : "";
+  // }
 
   setMedalsData() {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
@@ -103,6 +93,6 @@ export class AppComponent implements OnInit {
     this.medalData = [goldCount, silverCount, bronzeCount];
     //console.log('done medals');
   }
-  
+
 }
 

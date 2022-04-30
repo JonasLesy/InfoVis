@@ -1,4 +1,4 @@
-export class NOCRegion {
+export class NOCRegionEntry {
     noc: string;
     region: string;
     notes: string;
