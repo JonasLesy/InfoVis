@@ -4,6 +4,8 @@ import { AthleteEntry } from './models/athlete-entry';
 import { CsvData } from './models/csv-data';
 import { NOCRegionEntry } from './models/noc-region-entry';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +15,17 @@ export class CsvService {
   constructor(private http: HttpClient) { }
 
   public loadCsvData(): Observable<CsvData> {
-    this.loadNOCRegions()
-      .map(nocRegions => {
-        return this.loadAtheleteEntriesAndCreateCsvData(nocRegions)
-      })
+    return this.loadNOCRegions().subscribe(nr => {
+      return this.loadAtheleteEntriesAndCreateCsvData(nr as NOCRegionEntry[]);
+    })
+      // .pipe(map(nocRegions => {
+      //   return this.loadAtheleteEntriesAndCreateCsvData(nocRegions as NOCRegionEntry[]);
+      // }));
   }
 
   private loadNOCRegions(): Observable<NOCRegionEntry[]> {
     return this.http.get('data/noc_regions.csv', { responseType: 'text' })
-      .map(
+      .pipe(map(
         data => {
           let nocRegionEntries: NOCRegionEntry[] = [];
           let csvToRowArray = data.split("\r");
@@ -35,12 +39,12 @@ export class CsvService {
         error => {
           console.log(error);
         }
-      );
+      ));
   }
 
   private loadAtheleteEntriesAndCreateCsvData(nocRegionEntries: NOCRegionEntry[]): Observable<CsvData> {
     return this.http.get('data/athlete_events.csv', { responseType: 'text' })
-      .map(
+      .pipe(map(
         data => {
           let csvToRowArray = data.split("\r");
           console.log('Parsing athletes csv');
@@ -65,6 +69,6 @@ export class CsvService {
         error => {
           console.log(error);
         }
-      );
+      ));
   }
 }

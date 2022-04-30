@@ -20,25 +20,17 @@ export class AppComponent implements OnInit {
   */
   title = 'InfoVis project';
   searchText: string = '';
-
-  // Original data lists
-
-  // Filters / filtered values
+  
   countriesToFilterOn: string[] = [];
   peopleToFilterOn: string[] = [];
-
-  // Variables for visual filtering (autocomplete / suggestions)
-  // countrySuggestions: string[];
-  peopleSuggestions: string[];
   medalData: number[] = [];
 
 
-  constructor(public csvService: CsvService, private dataFilterService: DataFilterService) {
+  constructor(public dataFilterService: DataFilterService) {
 
   }
 
   ngOnInit(): void {
-    this.csvService.loadCsvData();
     this.setMedalsData();
   }
 
@@ -60,35 +52,18 @@ export class AppComponent implements OnInit {
     console.log('done');
   }
 
-  buildDisplayedItems() {
-    let countrySet = new Set<string>();
-    let personSet = new Set<string>();
-    this.csvService.filteredAthleteEntriesList.forEach(athleteEntry => {
-      countrySet.add(this.getRegionForNoc(athleteEntry.noc));
-      personSet.add(athleteEntry.name);
-    });
-    this.countries = [...countrySet];
-    this.persons = [...personSet];
+  private buildDisplayedItems() {
+    this.dataFilterService.buildDisplayedItems();
     this.setMedalsData();
   }
 
-  // This method returns false if the given athleteEntry does not belong to the list of countries given
-  // athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn) {
-  //   return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
-  // }
-
-  // getRegionForNoc(nocToLookFor) {
-  //   let nocEntry = this.csvService.nocEntries.find(item => item.noc === nocToLookFor);
-  //   return nocEntry !== undefined ? nocEntry.region : "";
-  // }
-
-  setMedalsData() {
+  private setMedalsData() {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
-    let goldCount = countOccurrences(this.csvService.filteredAthleteEntriesList, "Gold");
+    let goldCount = countOccurrences(this.dataFilterService.filteredAthleteEntriesList, "Gold");
     //console.log('gold count is ' + goldCount);
-    let silverCount = countOccurrences(this.csvService.filteredAthleteEntriesList, "Silver");
+    let silverCount = countOccurrences(this.dataFilterService.filteredAthleteEntriesList, "Silver");
     //console.log('silver count is ' + silverCount);
-    let bronzeCount = countOccurrences(this.csvService.filteredAthleteEntriesList, "Bronze");
+    let bronzeCount = countOccurrences(this.dataFilterService.filteredAthleteEntriesList, "Bronze");
     //console.log('bronze count is ' + bronzeCount);
     this.medalData = [goldCount, silverCount, bronzeCount];
     //console.log('done medals');

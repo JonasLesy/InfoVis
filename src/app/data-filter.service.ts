@@ -8,10 +8,22 @@ import { CsvData } from './models/csv-data';
 })
 export class DataFilterService {
   private _csvData: CsvData;
-  private _countriesToFilterOn: string[] = [];
-  private _peopleToFilterOn: string[] = [];
-
-
+  
+  private _countriesToFilterOn : string[];
+  public get countriesToFilterOn() : string[] {
+    return this._countriesToFilterOn;
+  }
+  public set countriesToFilterOn(v : string[]) {
+    this._countriesToFilterOn = v;
+  }
+  
+  private _peopleToFilterOn : string[];
+  public get peopleToFilterOn() : string[] {
+    return this._peopleToFilterOn;
+  }
+  public set peopleToFilterOn(v : string[]) {
+    this._peopleToFilterOn = v;
+  }
 
   private _filteredAthleteEntriesList: AthleteEntry[];
   public get filteredAthleteEntriesList(): AthleteEntry[] {
@@ -26,6 +38,16 @@ export class DataFilterService {
   private _peopleSuggestions: string[];
   public get peopleSuggestions(): string[] {
     return this._peopleSuggestions;
+  }
+
+  private _displayedCountries: string[];
+  public get displayedCountries(): string[] {
+    return this._displayedCountries;
+  }
+
+  private _displayedPersons: string[];
+  public get displayedPersons(): string[] {
+    return this._displayedPersons;
   }
 
   constructor(private csvService: CsvService) {
@@ -71,6 +93,17 @@ export class DataFilterService {
       return true;
     });
     console.log('done');
+  }
+
+  buildDisplayedItems() {
+    let countrySet = new Set<string>();
+    let personSet = new Set<string>();
+    this.filteredAthleteEntriesList.forEach(athleteEntry => {
+      countrySet.add(this.getRegionForNoc(athleteEntry.noc));
+      personSet.add(athleteEntry.name);
+    });
+    this._displayedCountries = [...countrySet];
+    this._displayedPersons = [...personSet];
   }
 
   private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {
