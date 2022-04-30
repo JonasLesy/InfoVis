@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { AthleteEntry } from './models/athlete-entry';
+import { NOCRegion } from './models/noc-region';
 
 @Component({
   selector: 'app-root',
@@ -155,50 +157,3 @@ export class AppComponent {
   
 }
 
-export class NOCRegion {
-  noc: string;
-  region: string;
-  notes: string;
-
-  constructor(noc: string, region: string, notes: string){
-    this.noc = noc;
-    this.region = region;
-    this.notes = notes;
-  }
-}
-
-export class AthleteEntry {
-  id: number;
-  name: string;
-  sex: string;
-  age: number;
-  height: number;
-  weight: number;
-  team: string;
-  noc: string;
-  games: string;
-  year: number;
-  season: string;
-  city: string;
-  sport: string;
-  event: string;
-  medal: string;
-
-  constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string){
-    this.id = id;
-    this.name = name;
-    this.sex = sex;
-    this.age = age;
-    this.height = height;
-    this.weight = weight;
-    this.team = team;
-    this.noc = noc;
-    this.games = games;
-    this.year = year;
-    this.season = season;
-    this.city = city;
-    this.sport = sport;
-    this.event = event;
-    this.medal = medal;
-  }
-}
