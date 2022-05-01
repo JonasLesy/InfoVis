@@ -6,15 +6,15 @@
 </div>
 <div class="row">
   <div class="col-md-4">
-    <p-autoComplete [(ngModel)]="dataFilterService.peopleToFilterOn" [suggestions]="dataFilterService.peopleSuggestions" (completeMethod)="dataFilterService.searchPerson($event.query)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
+    <p-autoComplete [(ngModel)]="filterService.peopleToFilterOn" [suggestions]="filterService.peopleSuggestions" (completeMethod)="filterService.searchPerson($event.query)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
     <ul>
-      <li *ngFor="let person of dataFilterService.displayedPersons | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
+      <li *ngFor="let person of filteredDataService.displayedPersons | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
     </ul>
   </div>
   <div class="col-md-4">
-    <p-autoComplete [(ngModel)]="dataFilterService.countriesToFilterOn" [suggestions]="dataFilterService.countrySuggestions" (completeMethod)="dataFilterService.searchCountry($event.query)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
+    <p-autoComplete [(ngModel)]="filterService.countriesToFilterOn" [suggestions]="filterService.countrySuggestions" (completeMethod)="filterService.searchCountry($event.query)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
     <ul>
-    <li *ngFor="let country of dataFilterService.displayedCountries" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
+    <li *ngFor="let country of filteredDataService.displayedCountries" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
     </ul>
   </div>
   <div class="col-md-4">

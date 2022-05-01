@@ -1,4 +1,5 @@
-import { DataFilterService } from './data-filter.service';
+import { FilteredDataService } from './filtered-data.service';
+import { FilterService } from './filter.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
   medalData: number[] = [];
 
 
-  constructor(public dataFilterService: DataFilterService) {
+  constructor(public filterService: FilterService, public filteredDataService: FilteredDataService) {
   }
 
   ngOnInit(): void {
@@ -28,23 +29,23 @@ export class AppComponent implements OnInit {
   }
 
   filterOnAllAttributes() {
-    this.dataFilterService.filterOnAllAttributes();
+    this.filterService.filterOnAllAttributes();
     this.buildDisplayedItems();
     console.log('done');
   }
 
   private buildDisplayedItems() {
-    this.dataFilterService.buildDisplayedItems();
+    this.filterService.buildDisplayedItems();
     this.setMedalsData();
   }
 
   private setMedalsData() {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
-    let goldCount = countOccurrences(this.dataFilterService.filteredAthleteEntriesList, "Gold");
+    let goldCount = countOccurrences(this.filteredDataService.filteredAthleteEntriesList, "Gold");
     //console.log('gold count is ' + goldCount);
-    let silverCount = countOccurrences(this.dataFilterService.filteredAthleteEntriesList, "Silver");
+    let silverCount = countOccurrences(this.filteredDataService.filteredAthleteEntriesList, "Silver");
     //console.log('silver count is ' + silverCount);
-    let bronzeCount = countOccurrences(this.dataFilterService.filteredAthleteEntriesList, "Bronze");
+    let bronzeCount = countOccurrences(this.filteredDataService.filteredAthleteEntriesList, "Bronze");
     //console.log('bronze count is ' + bronzeCount);
     this.medalData = [goldCount, silverCount, bronzeCount];
     //console.log('done medals');
