@@ -27,11 +27,10 @@ export class AppComponent implements OnInit {
 
 
   constructor(public dataFilterService: DataFilterService) {
-
+    this.buildDisplayedItems();
   }
 
   ngOnInit(): void {
-    this.setMedalsData();
   }
 
   search() {

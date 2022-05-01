@@ -9,7 +9,7 @@ import { CsvData } from './models/csv-data';
 export class DataFilterService {
   private _csvData: CsvData;
   
-  private _countriesToFilterOn : string[];
+  private _countriesToFilterOn : string[] = [];
   public get countriesToFilterOn() : string[] {
     return this._countriesToFilterOn;
   }
@@ -17,7 +17,7 @@ export class DataFilterService {
     this._countriesToFilterOn = v;
   }
   
-  private _peopleToFilterOn : string[];
+  private _peopleToFilterOn : string[] = [];
   public get peopleToFilterOn() : string[] {
     return this._peopleToFilterOn;
   }
@@ -25,27 +25,27 @@ export class DataFilterService {
     this._peopleToFilterOn = v;
   }
 
-  private _filteredAthleteEntriesList: AthleteEntry[];
+  private _filteredAthleteEntriesList: AthleteEntry[] = [];
   public get filteredAthleteEntriesList(): AthleteEntry[] {
     return this._filteredAthleteEntriesList;
   }
 
-  private _countrySuggestions: string[];
+  private _countrySuggestions: string[] = [];
   public get countrySuggestions(): string[] {
     return this._countrySuggestions;
   }
 
-  private _peopleSuggestions: string[];
+  private _peopleSuggestions: string[] = [];
   public get peopleSuggestions(): string[] {
     return this._peopleSuggestions;
   }
 
-  private _displayedCountries: string[];
+  private _displayedCountries: string[] = [];
   public get displayedCountries(): string[] {
     return this._displayedCountries;
   }
 
-  private _displayedPersons: string[];
+  private _displayedPersons: string[] = [];
   public get displayedPersons(): string[] {
     return this._displayedPersons;
   }
@@ -77,7 +77,19 @@ export class DataFilterService {
   }
 
   searchPerson(searchText: string): void {
-    this._peopleSuggestions = this._csvData.persons.filter(person => { return person.toLowerCase().includes(searchText.toLowerCase()) });
+    this._peopleSuggestions = this._csvData.persons.filter(person => 
+      { 
+        let nameParts = person.toLowerCase().split(' ');
+        let result = false;
+        for(let i = 0; i < nameParts.length; i++) {
+          let namePart = nameParts[i];
+          if (namePart.startsWith(searchText)) {
+            result = true;
+            break;
+          }
+        }
+        return result;
+      });
   }
 
   filterOnAllAttributes() {

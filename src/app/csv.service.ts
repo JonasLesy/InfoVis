@@ -4,7 +4,7 @@ import { AthleteEntry } from './models/athlete-entry';
 import { CsvData } from './models/csv-data';
 import { NOCRegionEntry } from './models/noc-region-entry';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { concatMap, map, mergeMap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -15,15 +15,13 @@ export class CsvService {
   constructor(private http: HttpClient) { }
 
   public loadCsvData(): Observable<CsvData> {
-    return this.loadNOCRegions().pipe(map (nr => {
-      return this.loadAtheleteEntriesAndCreateCsvData(nr as NOCRegionEntry[])
-      .pipe(map(csvData => {
-        return csvData;
-      }))
-    }));
-      // .pipe(map(nocRegions => {
-      //   return this.loadAtheleteEntriesAndCreateCsvData(nocRegions as NOCRegionEntry[]);
-      // }));
+    var result$ = 
+      this.loadNOCRegions().pipe(
+        concatMap(
+          nocRegion => this.loadAtheleteEntriesAndCreateCsvData(nocRegion as NOCRegionEntry[])
+        )
+      );
+      return result$;
   }
 
   private loadNOCRegions(): Observable<NOCRegionEntry[]> {
