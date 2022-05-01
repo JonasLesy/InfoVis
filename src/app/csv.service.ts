@@ -4,7 +4,7 @@ import { AthleteEntry } from './models/athlete-entry';
 import { CsvData } from './models/csv-data';
 import { NOCRegionEntry } from './models/noc-region-entry';
 import { Observable } from 'rxjs';
-import { concatMap, map, mergeMap } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 
 
 @Injectable({

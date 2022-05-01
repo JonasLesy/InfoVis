@@ -15,10 +15,14 @@ export class AppComponent implements OnInit, OnDestroy{
     - on change of filter (addition or deletion of filter-value): run filterOnAllAttributes
   
   */
-  title = 'InfoVis project';
 
+  //velden waarop view gebind is
+  title = 'InfoVis project';
   searchText: string = '';
   medalData: number[] = [];
+
+
+  //private velden voor deze class
   private _subscription;
 
 
@@ -33,10 +37,6 @@ export class AppComponent implements OnInit, OnDestroy{
     if (this._subscription) {
       this._subscription.unsubscribe();
     }
-  }
-
-  filterOnAllAttributes() {
-    this.filterService.filterOnAllAttributes();
   }
 
   private setMedalsData() {

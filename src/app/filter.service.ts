@@ -10,7 +10,7 @@ export class FilterService {
   private _originalCsvData: CsvData;
   private _filteredAthletesSubsription$;
 
-  //Blijft in filter.service.ts------------------------------------------
+  //Dit zijn velden specifiek voor de filter. Hierop kunnen de properties in de view zich binden
   private _countrySuggestions: string[] = [];
   public get countrySuggestions(): string[] {
     return this._countrySuggestions;
@@ -20,29 +20,32 @@ export class FilterService {
   public get peopleSuggestions(): string[] {
     return this._peopleSuggestions;
   }
- 
-  private _countriesToFilterOn : string[] = [];
-  public get countriesToFilterOn() : string[] {
+
+  private _countriesToFilterOn: string[] = [];
+  public get countriesToFilterOn(): string[] {
     return this._countriesToFilterOn;
   }
-  public set countriesToFilterOn(v : string[]) {
+  public set countriesToFilterOn(v: string[]) {
     this._countriesToFilterOn = v;
   }
-  
-  private _peopleToFilterOn : string[] = [];
-  public get peopleToFilterOn() : string[] {
+
+  private _peopleToFilterOn: string[] = [];
+  public get peopleToFilterOn(): string[] {
     return this._peopleToFilterOn;
   }
-  public set peopleToFilterOn(v : string[]) {
+  public set peopleToFilterOn(v: string[]) {
     this._peopleToFilterOn = v;
   }
+  //---------------------------------------------------------------------------------------------
+
+
 
   constructor(private csvService: CsvService, private filteredDataService: FilteredDataService) {
     csvService.loadCsvData().subscribe(
       (csvData) => {
-        this._originalCsvData = csvData; 
+        this._originalCsvData = csvData;
         this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
-        this.buildDisplayedItems();
+        this.buildFilteredItems();
       });
   }
 
@@ -65,19 +68,14 @@ export class FilterService {
   }
 
   searchPerson(searchText: string): void {
-    this._peopleSuggestions = this._originalCsvData.persons.filter(person => 
-      { 
-        let nameParts = person.toLowerCase().split(' ');
-        let result = false;
-        for(let i = 0; i < nameParts.length; i++) {
-          let namePart = nameParts[i];
-          if (namePart.startsWith(searchText)) {
-            result = true;
-            break;
-          }
-        }
-        return result;
-      });
+    this._peopleSuggestions = this._originalCsvData.persons.filter(person => {
+      if (person.startsWith(searchText)) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    });
   }
 
   filterOnAllAttributes() {
@@ -92,11 +90,11 @@ export class FilterService {
       }
       return true;
     }));
-    this.buildDisplayedItems();
+    this.buildFilteredItems();
     console.log('done');
   }
 
-  private buildDisplayedItems() {
+  private buildFilteredItems() {
     let countrySet = new Set<string>();
     let personSet = new Set<string>();
     if (this._filteredAthletesSubsription$) {
@@ -123,5 +121,5 @@ export class FilterService {
     return nocEntry !== undefined ? nocEntry.region : "";
   }
 
-  
+
 }
