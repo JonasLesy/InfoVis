@@ -1,7 +1,6 @@
 import { FilteredDataService } from './filtered-data.service';
 import { CsvService } from './csv.service';
 import { Injectable } from '@angular/core';
-import { AthleteEntry } from './models/athlete-entry';
 import { CsvData } from './models/csv-data';
 
 @Injectable({
@@ -9,6 +8,7 @@ import { CsvData } from './models/csv-data';
 })
 export class FilterService {
   private _originalCsvData: CsvData;
+  private _filteredAthletesSubsription$;
 
   //Blijft in filter.service.ts------------------------------------------
   private _countrySuggestions: string[] = [];
@@ -41,18 +41,19 @@ export class FilterService {
     csvService.loadCsvData().subscribe(
       (csvData) => {
         this._originalCsvData = csvData; 
-        this.filteredDataService.filteredAthleteEntriesList = this._originalCsvData.athleteEntries;
+        this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
+        this.buildDisplayedItems();
       });
   }
 
   //Gaat nog niet werken, want data in csvService kan misschien nog niet ingeladen zijn op moment dat gefilterd wordt.
   search(searchText: string): void {
     if (searchText !== "") {
-      this.filteredDataService.filteredAthleteEntriesList = this._originalCsvData.athleteEntries.filter(contact => {
+      this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries.filter(contact => {
         return contact.name.toLowerCase().includes(searchText.toLowerCase());
-      });
+      }));
     } else {
-      this.filteredDataService.filteredAthleteEntriesList = this._originalCsvData.athleteEntries;
+      this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
     }
   }
 
@@ -81,7 +82,7 @@ export class FilterService {
 
   filterOnAllAttributes() {
     console.log('Filtering on attributes..');
-    this.filteredDataService.filteredAthleteEntriesList = this._originalCsvData.athleteEntries.filter(athleteEntry => {
+    this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries.filter(athleteEntry => {
       // Only add the entry if the selected countries match the athlete
       if (this._countriesToFilterOn.length != 0 && !this.athleteBelongsToListOfCountries(athleteEntry, this._countriesToFilterOn)) {
         return false;
@@ -90,19 +91,27 @@ export class FilterService {
         return false;
       }
       return true;
-    });
+    }));
+    this.buildDisplayedItems();
     console.log('done');
   }
 
-  buildDisplayedItems() {
+  private buildDisplayedItems() {
     let countrySet = new Set<string>();
     let personSet = new Set<string>();
-    this.filteredDataService.filteredAthleteEntriesList.forEach(athleteEntry => {
-      countrySet.add(this.getRegionForNoc(athleteEntry.noc));
-      personSet.add(athleteEntry.name);
-    });
-    this.filteredDataService.displayedCountries = [...countrySet];
-    this.filteredDataService.displayedPersons = [...personSet];
+    if (this._filteredAthletesSubsription$) {
+      this._filteredAthletesSubsription$.unsubscribe();
+    }
+    this._filteredAthletesSubsription$ = this.filteredDataService.filteredAthletesSubject.subscribe(
+      fa => {
+        fa.forEach(athleteEntry => {
+          countrySet.add(this.getRegionForNoc(athleteEntry.noc));
+          personSet.add(athleteEntry.name);
+        });
+        this.filteredDataService.publishFilteredCountries([...countrySet]);
+        this.filteredDataService.publishFilteredPersons([...personSet]);
+      }
+    )
   }
 
   private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {

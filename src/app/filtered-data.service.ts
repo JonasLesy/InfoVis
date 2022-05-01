@@ -1,33 +1,41 @@
 import { Injectable } from '@angular/core';
 import { AthleteEntry } from './models/athlete-entry';
+import { ReplaySubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilteredDataService {
 
-  private _filteredAthleteEntriesList: AthleteEntry[] = [];
-  public get filteredAthleteEntriesList(): AthleteEntry[] {
-    return this._filteredAthleteEntriesList;
-  }
-  public set filteredAthleteEntriesList(v: AthleteEntry[]) {
-    this._filteredAthleteEntriesList = v;
+  //Subscriptions waarop components zich kunnen subscriben om op de hoogte gebracht te worden van dataveranderingen.
+  private _filteredAthletesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
+  public get filteredAthletesSubject(): ReplaySubject<AthleteEntry[]> {
+    return this._filteredAthletesSubject;
   }
 
-  private _filteredCountriesList: string[] = [];
-  public get displayedCountries(): string[] {
-    return this._filteredCountriesList;
-  }
-  public set displayedCountries(v: string[]) {
-    this._filteredCountriesList = v;
+  private _filteredCountriesSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  public get filteredCountriesSubject(): ReplaySubject<string[]>  {
+    return this._filteredCountriesSubject;
   }
 
-  private _filteredPersonsList: string[] = [];
-  public get displayedPersons(): string[] {
-    return this._filteredPersonsList;
+  private _filteredPersonsSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  public get filteredPersonsSubject(): ReplaySubject<string[]> {
+    return this._filteredPersonsSubject;
   }
-  public set displayedPersons(v: string[]) {
-    this._filteredPersonsList = v;
+
+
+  //Methodes om nieuwe DataWaarden te publishen zodat de components die op de subscriptions gesubscribed zijn geupdatet worden.
+  public publishFilteredAthletes(athletes: AthleteEntry[]) {
+    this._filteredAthletesSubject.next(athletes);
+  }
+
+  public publishFilteredCountries(countries: string[]) {
+    this._filteredCountriesSubject.next(countries);
+  }
+
+  public publishFilteredPersons(persons: string[]) {
+    this.filteredPersonsSubject.next(persons);
   }
 
   constructor() { }
