@@ -15,9 +15,12 @@ export class CsvService {
   constructor(private http: HttpClient) { }
 
   public loadCsvData(): Observable<CsvData> {
-    return this.loadNOCRegions().subscribe(nr => {
-      return this.loadAtheleteEntriesAndCreateCsvData(nr as NOCRegionEntry[]);
-    })
+    return this.loadNOCRegions().pipe(map (nr => {
+      return this.loadAtheleteEntriesAndCreateCsvData(nr as NOCRegionEntry[])
+      .pipe(map(csvData => {
+        return csvData;
+      }))
+    }));
       // .pipe(map(nocRegions => {
       //   return this.loadAtheleteEntriesAndCreateCsvData(nocRegions as NOCRegionEntry[]);
       // }));
