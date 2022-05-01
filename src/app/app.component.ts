@@ -1,9 +1,5 @@
 import { DataFilterService } from './data-filter.service';
-import { CsvService } from './csv.service';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { AthleteEntry } from './models/athlete-entry';
-import { NOCRegionEntry } from './models/noc-region-entry';
 
 @Component({
   selector: 'app-root',
@@ -19,30 +15,16 @@ export class AppComponent implements OnInit {
   
   */
   title = 'InfoVis project';
+
   searchText: string = '';
-  
-  countriesToFilterOn: string[] = [];
-  peopleToFilterOn: string[] = [];
   medalData: number[] = [];
 
 
   constructor(public dataFilterService: DataFilterService) {
-    this.buildDisplayedItems();
   }
 
   ngOnInit(): void {
-  }
-
-  search() {
-    this.dataFilterService.search(this.searchText);
-  }
-
-  searchCountry(event) {
-    this.dataFilterService.searchCountry(event.query);
-  }
-
-  searchPerson(event) {
-    this.dataFilterService.searchPerson(event.query);
+    this.buildDisplayedItems();
   }
 
   filterOnAllAttributes() {
