@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-4">
+    <h2>Athletes</h2>
+    <ul>
+      <li *ngFor="let person of filteredDataService.filteredPersonsSubject | async | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <h2>Countries</h2>
+    <ul>
+      <li *ngFor="let country of filteredDataService.filteredCountriesSubject | async" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
+    </ul>
+  </div>
+</div>

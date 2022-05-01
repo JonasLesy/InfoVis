@@ -1,0 +1,26 @@
+<nav class="navbar navbar-light" style="background-color: #62beff">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <p-autoComplete
+          [(ngModel)]="filterService.peopleToFilterOn"
+          [suggestions]="filterService.peopleSuggestions"
+          (completeMethod)="filterService.searchPerson($event.query)"
+          (onSelect)="filterService.filterOnAllAttributes()"
+          (onUnselect)="filterService.filterOnAllAttributes()"
+          [multiple]="true"
+        ></p-autoComplete>
+      </div>
+      <div class="col-md-5">
+        <p-autoComplete
+          [(ngModel)]="filterService.countriesToFilterOn"
+          [suggestions]="filterService.countrySuggestions"
+          (completeMethod)="filterService.searchCountry($event.query)"
+          (onSelect)="filterService.filterOnAllAttributes()"
+          (onUnselect)="filterService.filterOnAllAttributes()"
+          [multiple]="true"
+        ></p-autoComplete>
+      </div>
+    </div>
+  </div>
+</nav>

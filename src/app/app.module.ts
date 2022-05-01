@@ -9,11 +9,15 @@ import { MedalChartComponent } from './medal-chart/medal-chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule } from 'primeng/chart';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { TopBarComponent } from './top-bar/top-bar.component';
+import { SelectionComponent } from './selection/selection.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MedalChartComponent
+    MedalChartComponent,
+    TopBarComponent,
+    SelectionComponent
   ],
   imports: [
     BrowserModule,

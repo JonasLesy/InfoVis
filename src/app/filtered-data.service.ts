@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AthleteEntry } from './models/athlete-entry';
 import { ReplaySubject } from 'rxjs';
+import { AthleteEntry } from 'src/models/athlete-entry';
 
 
 @Injectable({

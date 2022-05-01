@@ -1,7 +1,7 @@
 import { FilteredDataService } from './filtered-data.service';
 import { CsvService } from './csv.service';
 import { Injectable } from '@angular/core';
-import { CsvData } from './models/csv-data';
+import { CsvData } from 'src/models/csv-data';
 
 @Injectable({
   providedIn: 'root'
@@ -69,7 +69,7 @@ export class FilterService {
 
   searchPerson(searchText: string): void {
     this._peopleSuggestions = this._originalCsvData.persons.filter(person => {
-      if (person.startsWith(searchText)) {
+      if (person.toLowerCase().startsWith(searchText.toLowerCase())) {
         return true;
       }
       else {

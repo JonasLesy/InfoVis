@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AthleteEntry } from './models/athlete-entry';
-import { CsvData } from './models/csv-data';
-import { NOCRegionEntry } from './models/noc-region-entry';
 import { Observable } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
+import { AthleteEntry } from 'src/models/athlete-entry';
+import { CsvData } from 'src/models/csv-data';
+import { NOCRegionEntry } from 'src/models/noc-region-entry';
 
 
 @Injectable({
