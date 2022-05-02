@@ -12,11 +12,19 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { SliderModule } from 'primeng/slider';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ListboxModule } from 'primeng/listbox';
+import { SidebarSelectComponent } from './sidebar-select/sidebar-select.component';
+import { PersonDetailComponent } from './person-detail/person-detail.component';
+
+import { AthleteService } from './services/athlete.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MedalChartComponent
+    MedalChartComponent,
+    SidebarSelectComponent,
+    PersonDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +36,13 @@ import { ButtonModule } from 'primeng/button';
     AutoCompleteModule,
     SliderModule,
     SelectButtonModule,
-    ButtonModule
+    ButtonModule,
+    MultiSelectModule,
+    ListboxModule
   ],
-  providers: [],
+  providers: [
+    AthleteService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

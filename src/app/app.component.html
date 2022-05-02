@@ -1,10 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to the {{ title }}!
-  </h1>
-</div>
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-10 shadow">
+<nav class="navbar navbar-dark bg-dark flex-md-nowrap p-10 shadow" style="z-index:9999;">
   <h1 class="navbar-brand" style="margin-left: 10px;">Olympics Data</h1>
   <div class="col-sm-2 col-md-2 mr-0" style="text-align: center">
     <h5 style="color: white;">Choose edition</h5>
@@ -14,13 +9,15 @@
     <h5 style="color: white;">Choose sex</h5>
     <p-selectButton [options]="sexOptions" [(ngModel)]="chosenSex" optionLabel="label" optionValue="value" (onChange)="filterOnAllAttributes()"></p-selectButton>
   </div>
-  <div class="col-sm-3 col-md-2 mr-30" style="text-align: center">
+  <!--div class="col-sm-3 col-md-2 mr-30" style="text-align: center">
     <h5 style="color: white;">Range: {{yearRange[0] + ' - ' + yearRange[1]}}</h5>
     <p-slider [(ngModel)]="yearRange" [min]="1896" [max]="2016" [step]="2" [range]="true" (onSlideEnd)="filterOnAllAttributes()"></p-slider>
-  </div>
-  <div class="col-sm-2 col-md-2 mr-0">
+  </div-->
+  <div class="col-sm-3 col-md-3 mr-0">
     <p style="color: white; display:inline; margin-right:10px">Filter on country:</p>
-    <p-autoComplete class="col-sm-3 col-md-2 mr-0" [(ngModel)]="countriesToFilterOn" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
+    <p-multiSelect [options]="nocEntries" [(ngModel)]="nocsToFilterOn" display="chip" (onChange)="filterOnAllAttributes()" optionLabel="region"></p-multiSelect>
+    <!--p-multiSelect [options]="countries" optionLabel="region" optionValue="noc" [(ngModel)]="countriesToFilterOn" display="chip" (onChange)="filterOnAllAttributes()"></p-multiSelect-->
+    <!--p-autoComplete class="col-sm-3 col-md-2 mr-0" [(ngModel)]="countriesToFilterOn" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete-->
   </div>
   <div class="col-sm-2 col-md-2 mr-0">
     <p style="color: white; display:inline; margin-right:10px">Filter on person:</p>
@@ -31,12 +28,19 @@
 <div class="container-fluid">
   <div class="row">
     <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+      <h5 style="color:white;">Athletes</h5>
+      <!--p-listbox [options]="persons" [(ngModel)]="selectedPerson" [filter]="true"></p-listbox-->
     </nav>
 
     <div class="col-md-2 d-none d-md-block">
     </div>
-    <main role="main" class="col-md-10 ml-sm-auto col-lg-10 px-4 mt-5">
-      <div class="row">
+    <main role="main" class="col-md-10 ml-sm-auto col-lg-10 px-4 mt-5" style="margin-top: 50px !important;">
+      <div class="row h-25">
+        <div class="col-md-12">
+          <app-person-detail [personData]="personData"></app-person-detail>
+        </div>
+      </div>
+      <div class="row h-75">
         <div class="col-md-4">
           <ul>
             <li *ngFor="let person of persons | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
@@ -44,7 +48,7 @@
         </div>
         <div class="col-md-4">
           <ul>
-          <li *ngFor="let country of countries | slice:0:20; let i=index" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
+          <li *ngFor="let noc of nocsToFilterOn | slice:0:20; let i=index" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{noc.region}}</li>
           </ul>
         </div>
         <div class="col-md-4">

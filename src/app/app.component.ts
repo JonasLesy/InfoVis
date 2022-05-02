@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { SelectItem } from 'primeng/api';
+import { AthleteEntry } from './models/athlete-entry.model';
+import { Noc } from './models/noc.model';
+import { AthleteService } from './services/athlete.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [ AthleteService ]
 })
 export class AppComponent {
   /*
@@ -19,11 +23,11 @@ export class AppComponent {
   searchText: string = '';
 
   // Original data lists
-  nocEntries: NOCRegion[] = [];
+  nocEntries: Noc[] = [];
   athleteEntries: AthleteEntry[] = [];
   
   // Filters / filtered values
-  countriesToFilterOn: string[] = [];
+  nocsToFilterOn: Noc[] = [];
   peopleToFilterOn: string[] = [];
   filteredAthleteEntriesList: AthleteEntry[];
   countries: string[] = [];
@@ -33,14 +37,16 @@ export class AppComponent {
   chosenEdition: string = 'all';
   sexOptions: any[];
   chosenSex: string = 'all';
+  selectedPerson: string;
 
   // Variables for visual filtering (autocomplete / suggestions)
   countrySuggestions: string[];
   peopleSuggestions: string[];
   medalData: number[] = [];
+  personData: any;
 
 
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient, private athleteService: AthleteService){
     this.editionOptions = [
       { label: 'Summer', value: 'Summer' },
       { label: 'All', value: 'all' },
@@ -57,10 +63,13 @@ export class AppComponent {
         data => {
             let csvToRowArray = data.split("\r");
             console.log('Parsing noc csv');
+            //let countrySet = new Set<string>();
             for (let index = 1; index < csvToRowArray.length -1; index++) {
               let row = csvToRowArray[index].split(",");
-              this.nocEntries.push(new NOCRegion( row[0], row[1], row[2]));
+              this.nocEntries.push(new Noc( row[0], row[1], row[2]));
+             // countrySet.add(row[1]);
             }
+            //this.countries = [...countrySet];
             console.log('done');
         },
         error => {
@@ -68,24 +77,21 @@ export class AppComponent {
         }
     );
 
+    this.athleteEntries = this.athleteService.getAthleteEntries();
+    console.log(this.athleteEntries.length);
+/*
     this.http.get('data/athlete_events.csv', {responseType: 'text'})
     .subscribe(
         data => {
             let csvToRowArray = data.split("\r");
             console.log('Parsing athletes csv');
-            let countrySet = new Set<string>();
             let personSet = new Set<string>();
             for (let index = 1; index < csvToRowArray.length -1; index++) {
               let row = csvToRowArray[index].split(",");
               let newEntry = new AthleteEntry(parseInt( row[0], 10), row[1], row[2], parseInt( row[3], 10), parseInt( row[4], 10), parseInt( row[5], 10), row[6], row[7], row[8], parseInt( row[9], 10), row[10], row[11], row[12], row[13], row[14]);
-              var specificNOC = this.nocEntries.find(item => item.noc === newEntry.noc);
-              if (specificNOC !== undefined) {
-                countrySet.add(specificNOC.region);
-              }
               personSet.add(newEntry.name);
               this.athleteEntries.push(newEntry);
             }
-            this.countries = [...countrySet];
             this.persons = [...personSet];
             console.log('done');
             //console.log(this.persons);
@@ -96,7 +102,12 @@ export class AppComponent {
             console.log(error);
         }
     );
+*/
 
+  }
+
+  ngAfterInit() {
+    this.athleteEntries = this.athleteService.getAthleteEntries();
   }
 
   search(){
@@ -123,9 +134,11 @@ export class AppComponent {
   filterOnAllAttributes() {
     console.log('Filtering on attributes..');
     console.log('Year range was' + this.yearRange);
+    console.log('Nocs to filter on:');
+    console.log(this.nocsToFilterOn);
     this.filteredAthleteEntriesList = this.athleteEntries.filter(athleteEntry => {
       // Only add the entry if the selected countries match the athlete
-      if (this.countriesToFilterOn.length != 0 && !this.athleteBelongsToListOfCountries(athleteEntry, this.countriesToFilterOn)) {
+      if (this.nocsToFilterOn.length != 0 && !this.athleteBelongsToListOfCountries(athleteEntry, this.nocsToFilterOn)) {
         return false;
       }
       if (this.peopleToFilterOn.length != 0 && !this.peopleToFilterOn.includes(athleteEntry.name)) {
@@ -147,20 +160,26 @@ export class AppComponent {
   }
 
   buildDisplayedItems() {
-    let countrySet = new Set<string>();
+    //let countrySet = new Set<string>();
     let personSet = new Set<string>();
+    //this.nocsToFilterOn = [];
     this.filteredAthleteEntriesList.forEach(athleteEntry => {
-      countrySet.add(this.getRegionForNoc(athleteEntry.noc));
+      //this.nocsToFilterOn.push(getNocObjectForNoc(athleteEntry.noc));
+      //countrySet.add(this.getRegionForNoc(athleteEntry.noc));
       personSet.add(athleteEntry.name);
     });
-    this.countries = [...countrySet];
+    //this.countries = [...countrySet];
     this.persons = [...personSet];
     this.setMedalsData();
   }
 
   // This method returns false if the given athleteEntry does not belong to the list of countries given
   athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn) {
-    return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
+    return countriesToFilterOn.filter(e => e.noc === athleteEntry.noc).length > 0;
+  }
+
+  getNocObjectForNoc(nocToLookFor) {
+    return this.nocEntries.find(item => item.noc === nocToLookFor);
   }
 
   getRegionForNoc(nocToLookFor) {
@@ -180,52 +199,4 @@ export class AppComponent {
     //console.log('done medals');
   }
   
-}
-
-export class NOCRegion {
-  noc: string;
-  region: string;
-  notes: string;
-
-  constructor(noc: string, region: string, notes: string){
-    this.noc = noc;
-    this.region = region;
-    this.notes = notes;
-  }
-}
-
-export class AthleteEntry {
-  id: number;
-  name: string;
-  sex: string;
-  age: number;
-  height: number;
-  weight: number;
-  team: string;
-  noc: string;
-  games: string;
-  year: number;
-  season: string;
-  city: string;
-  sport: string;
-  event: string;
-  medal: string;
-
-  constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string){
-    this.id = id;
-    this.name = name;
-    this.sex = sex;
-    this.age = age;
-    this.height = height;
-    this.weight = weight;
-    this.team = team;
-    this.noc = noc;
-    this.games = games;
-    this.year = year;
-    this.season = season;
-    this.city = city;
-    this.sport = sport;
-    this.event = event;
-    this.medal = medal;
-  }
 }
