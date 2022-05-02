@@ -118,7 +118,47 @@ export class FilterService {
         return true;
       }
       else {
-        return false;
+        // Goal: Van Den matches with Van Den Eynde, also: Van de matches with Van Den Eynde
+        // Search: "Van De" -> split = ["Van", "De"]
+        // SourceVal: "Pieter Van Den Eynde" -> split = ["Pieter", "Van", "Den", "Eynde"]
+        let nameParts: string[] = person.toLowerCase().split(' ');
+        let searchParts: string[] = searchText.toLowerCase().split(' ');
+
+
+        // If the searchParts only contains one entry, just check if any part of the nameParts starts with this one
+        if (searchParts.length == 1) {
+          return nameParts.some(function(part) {
+            return part.startsWith(searchParts[0]);
+          });
+        }
+
+        // Loop through nameParts "Pieter", "Van", "Den", "Eynde"
+        //                            ^
+        //                            |
+        // Loop through searchParts "Van" = no match => next nameParts index
+        //                                    ^
+        //                                    |
+        //                                  "Van"
+
+        // Loop through name parts & through search parts
+        // For each search part: if it matches namepart & set searchPart++
+
+        let i = 0;
+        let j = 0;
+        while (i < nameParts.length) {
+          searchPartsLoop:
+            while (j < searchParts.length) {
+              if (j == searchParts.length-1) {
+                return nameParts[i].startsWith(searchParts[j]);
+              } else if (nameParts[i] !== searchParts[j]) {
+                break searchPartsLoop; // break out of current loop and move to next namePart
+              } else {
+                i++; // Compare next searchPart[j] with next nameParts[i]
+              }
+              j++;
+            }
+          i++;
+        }
       }
     });
   }
