@@ -1,24 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<app-top-bar></app-top-bar>
 <div style="text-align:center">
   <h1>
     Welcome to the {{ title }}!
   </h1>
 </div>
-<div class="row">
-  <div class="col-md-4">
-    <p-autoComplete [(ngModel)]="peopleToFilterOn" [suggestions]="peopleSuggestions" (completeMethod)="searchPerson($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
-    <ul>
-      <li *ngFor="let person of persons | slice:0:10; let i=index" class="dropdown-item">{{person}}</li>
-    </ul>
-  </div>
-  <div class="col-md-4">
-    <p-autoComplete [(ngModel)]="countriesToFilterOn" [suggestions]="countrySuggestions" (completeMethod)="searchCountry($event)" (onSelect)="filterOnAllAttributes()" (onUnselect)="filterOnAllAttributes()" [multiple]="true"></p-autoComplete>
-    <ul>
-    <li *ngFor="let country of countries" class="dropdown-item" ng-class="{color-red: item in countriesSelected}">{{country}}</li>
-    </ul>
-  </div>
-  <div class="col-md-4">
-    <div><app-medal-chart [medalData]="medalData"></app-medal-chart></div>
-  </div>
-</div>
-<router-outlet></router-outlet>
+<app-selection></app-selection>
+<app-medal-chart [medalData]="medalData"></app-medal-chart>
+<router-outlet>
+  <!--Hmmm, wat doen we hier-->
+</router-outlet>

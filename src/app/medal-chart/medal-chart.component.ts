@@ -1,3 +1,4 @@
+import { FilteredDataService } from './../filtered-data.service';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
@@ -12,6 +13,10 @@ export class MedalChartComponent implements OnInit, OnChanges {
   colorScheme = {
     domain: ['#D4AF37', '#AAA9AD', '#B08D57']
   };
+
+  constructor(public filteredDataService: FilteredDataService) {
+
+  }
 
   ngOnInit(): void {
     this.medalConfig = {
