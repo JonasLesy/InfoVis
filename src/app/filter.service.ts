@@ -2,6 +2,7 @@ import { FilteredDataService } from './filtered-data.service';
 import { CsvService } from './csv.service';
 import { Injectable } from '@angular/core';
 import { CsvData } from 'src/models/csv-data';
+import { registry } from 'chart.js';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,40 @@ export class FilterService {
   public set peopleToFilterOn(v: string[]) {
     this._peopleToFilterOn = v;
   }
+
+  private _yearRange: number[] = [1896, 2016];
+  public get yearRange(): number[] {
+    return this._yearRange;
+  }
+  public set yearRange(v: number[]) {
+    this._yearRange = v;
+  }
+
+  private _editionOptions: any[];
+  public get editionOptions(): any[] {
+    return this._editionOptions;
+  }
+
+  private _chosenEdition: string = 'all';
+  public get chosenEdition(): string {
+    return this._chosenEdition;
+  }
+  public set chosenEdition(v: string) {
+    this._chosenEdition = v;
+  }
+
+  private _sexOptions: any[];
+  public get sexOptions(): any[] {
+    return this._sexOptions;
+  }
+
+  private _chosenSex: string = 'all';
+  public get chosenSex(): string {
+    return this._chosenSex;
+  }
+  public set chosenSex(v: string) {
+    this._chosenSex = v;
+  }
   //---------------------------------------------------------------------------------------------
 
 
@@ -47,6 +82,17 @@ export class FilterService {
         this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
         this.buildFilteredItems();
       });
+
+      this._editionOptions = [
+        { label: 'Summer', value: 'Summer' },
+        { label: 'All', value: 'all' },
+        { label: 'Winter', value: 'Winter' }
+      ];
+      this._sexOptions = [
+        { label: 'Male', value: 'M' },
+        { label: 'All', value: 'all' },
+        { label: 'Female', value: 'F' }
+      ];
   }
 
   //Gaat nog niet werken, want data in csvService kan misschien nog niet ingeladen zijn op moment dat gefilterd wordt.
@@ -86,6 +132,15 @@ export class FilterService {
         return false;
       }
       if (this._peopleToFilterOn.length != 0 && !this._peopleToFilterOn.includes(athleteEntry.name)) {
+        return false;
+      }
+      if(!(athleteEntry.year >= this._yearRange[0] && athleteEntry.year <= this._yearRange[1])) {
+        return false;
+      }
+      if(this._chosenEdition !== 'all' && athleteEntry.season !== this._chosenEdition) {
+        return false;
+      }
+      if(this._chosenSex !== 'all' && athleteEntry.sex !== this._chosenSex) {
         return false;
       }
       return true;

@@ -7,8 +7,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MedalChartComponent } from './medal-chart/medal-chart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ChartModule } from 'primeng/chart';
+import { SliderModule } from 'primeng/slider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { SelectButtonModule } from 'primeng/selectbutton';
+
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { SelectionComponent } from './selection/selection.component';
 
@@ -26,6 +30,8 @@ import { SelectionComponent } from './selection/selection.component';
     BrowserAnimationsModule,
     HttpClientModule,
     ChartModule,
+    SliderModule,
+    SelectButtonModule,
     AutoCompleteModule
   ],
   providers: [],

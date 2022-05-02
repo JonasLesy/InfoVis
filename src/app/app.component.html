@@ -5,8 +5,14 @@
     Welcome to the {{ title }}!
   </h1>
 </div>
-<app-selection></app-selection>
-<app-medal-chart [medalData]="medalData"></app-medal-chart>
+<div class="row">
+  <div class="col-md-4">
+    <app-selection></app-selection>
+  </div>
+  <div class="col-md-8">
+    <app-medal-chart [medalData]="medalData"></app-medal-chart>
+  </div>
+</div>
 <router-outlet>
   <!--Hmmm, wat doen we hier-->
 </router-outlet>

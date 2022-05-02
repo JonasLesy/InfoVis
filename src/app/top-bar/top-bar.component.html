@@ -1,7 +1,20 @@
 <nav class="navbar navbar-light" style="background-color: #62beff">
   <div class="container">
     <div class="row">
-      <div class="col-md-5">
+      <h1 class="navbar-brand" style="margin-left: 10px;">Olympics Data</h1>
+      <div class="col-md-3 mr-0" style="text-align: center">
+        <h5 style="color: white;">Choose edition</h5>
+        <p-selectButton [options]="filterService.editionOptions" [(ngModel)]="filterService.chosenEdition" optionLabel="label" optionValue="value" (onChange)="filterService.filterOnAllAttributes()"></p-selectButton>
+      </div>
+      <div class="col-md-3 mr-0" style="text-align: center">
+        <h5 style="color: white;">Choose sex</h5>
+        <p-selectButton [options]="filterService.sexOptions" [(ngModel)]="filterService.chosenSex" optionLabel="label" optionValue="value" (onChange)="filterService.filterOnAllAttributes()"></p-selectButton>
+      </div>
+      <div class="col-md-2 mr-30" style="text-align: center">
+        <h5 style="color: white;">Range: {{filterService.yearRange[0] + ' - ' + filterService.yearRange[1]}}</h5>
+        <p-slider [(ngModel)]="filterService.yearRange" [min]="1896" [max]="2016" [step]="2" [range]="true" (onSlideEnd)="filterService.filterOnAllAttributes()"></p-slider>
+      </div>
+      <div class="col-md-2">
         <p-autoComplete
           [(ngModel)]="filterService.peopleToFilterOn"
           [suggestions]="filterService.peopleSuggestions"
@@ -11,7 +24,7 @@
           [multiple]="true"
         ></p-autoComplete>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-2">
         <p-autoComplete
           [(ngModel)]="filterService.countriesToFilterOn"
           [suggestions]="filterService.countrySuggestions"
