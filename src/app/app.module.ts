@@ -12,6 +12,7 @@ import { ChartModule } from 'primeng/chart';
 import { SliderModule } from 'primeng/slider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import {VirtualScrollerModule} from 'primeng/virtualscroller';
 
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { SelectionComponent } from './selection/selection.component';
@@ -32,6 +33,7 @@ import { SelectionComponent } from './selection/selection.component';
     ChartModule,
     SliderModule,
     SelectButtonModule,
+    VirtualScrollerModule,
     AutoCompleteModule
   ],
   providers: [],

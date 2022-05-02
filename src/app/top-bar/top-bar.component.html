@@ -21,6 +21,7 @@
           (completeMethod)="filterService.searchPerson($event.query)"
           (onSelect)="filterService.filterOnAllAttributes()"
           (onUnselect)="filterService.filterOnAllAttributes()"
+          [minLength]="2"
           [multiple]="true"
         ></p-autoComplete>
       </div>
