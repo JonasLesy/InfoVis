@@ -2,7 +2,6 @@ import { FilteredDataService } from './filtered-data.service';
 import { CsvService } from './csv.service';
 import { Injectable } from '@angular/core';
 import { CsvData } from 'src/models/csv-data';
-import { registry } from 'chart.js';
 
 @Injectable({
   providedIn: 'root'
