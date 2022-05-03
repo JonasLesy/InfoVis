@@ -2,6 +2,8 @@ import { FilteredDataService } from './filtered-data.service';
 import { CsvService } from './csv.service';
 import { Injectable } from '@angular/core';
 import { CsvData } from 'src/models/csv-data';
+import { Athlete } from 'src/models/athlete';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -186,6 +188,13 @@ export class FilterService {
     }));
     this.buildFilteredItems();
     console.log('done');
+  }
+
+  searchAndSelectFirstAthleteEntryByName(athleteName: string): void {
+    let selectedAthlete = this._originalCsvData.athletes.find(athlete => athlete.name === athleteName);
+    let athleteEntries = this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
+    this.filteredDataService.publishSelectedAthlete(selectedAthlete);
+    this.filteredDataService.publishFilteredAthletes(athleteEntries);
   }
 
   private buildFilteredItems() {

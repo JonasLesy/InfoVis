@@ -2,13 +2,13 @@
     <p-virtualScroller [value]="filteredDataService.filteredPersonsSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
       <ng-template pTemplate="header">Athletes</ng-template>
       <ng-template pTemplate="item" let-person>
-          <div class="person-entry">
+          <div class="person-entry" (click)="this.filterService.searchAndSelectFirstAthleteEntryByName(person)">
             {{person}}
           </div>
       </ng-template>
       <ng-template let-person pTemplate="loadingItem">
         Loading...
-    </ng-template>
+      </ng-template>
     </p-virtualScroller>
 </div>
 <div class="row">

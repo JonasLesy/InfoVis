@@ -5,7 +5,10 @@
     <app-selection></app-selection>
   </div>
   <div class="col-md-8">
-    <app-medal-chart [medalData]="medalData"></app-medal-chart>
+    <app-person-detail></app-person-detail>
+    <div class="medal-chart">
+      <app-medal-chart [medalData]="medalData"></app-medal-chart>
+    </div>
   </div>
 </div>
 <router-outlet>

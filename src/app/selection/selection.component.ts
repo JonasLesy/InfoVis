@@ -1,4 +1,5 @@
 import { FilteredDataService } from './../filtered-data.service';
+import { FilterService } from './../filter.service';
 import { Component, OnInit } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api'; 
 
@@ -9,7 +10,7 @@ import { LazyLoadEvent } from 'primeng/api';
 })
 export class SelectionComponent implements OnInit {
 
-  constructor(public filteredDataService: FilteredDataService) { }
+  constructor(public filteredDataService: FilteredDataService, public filterService: FilterService) { }
 
   //private velden voor deze class
   private _subscription;
@@ -38,7 +39,7 @@ export class SelectionComponent implements OnInit {
       //load data of required page
       let loadedPeople = this.people.slice(event.first, (event.first + event.rows));
 
-      //populate page of virtual cars
+      //populate page of virtual people
       Array.prototype.splice.apply(this.virtualPeople, [...[event.first, event.rows], ...loadedPeople]);
       
       //trigger change detection

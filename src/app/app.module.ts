@@ -16,13 +16,15 @@ import {VirtualScrollerModule} from 'primeng/virtualscroller';
 
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { SelectionComponent } from './selection/selection.component';
+import { PersonDetailComponent } from './person-detail/person-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MedalChartComponent,
     TopBarComponent,
-    SelectionComponent
+    SelectionComponent,
+    PersonDetailComponent
   ],
   imports: [
     BrowserModule,

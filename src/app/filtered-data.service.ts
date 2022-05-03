@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { AthleteEntry } from 'src/models/athlete-entry';
+import { Athlete } from 'src/models/athlete';
 
 
 @Injectable({
@@ -24,6 +25,11 @@ export class FilteredDataService {
     return this._filteredPersonsSubject;
   }
 
+  private _selectedAthleteSubject: ReplaySubject<Athlete> = new ReplaySubject<Athlete>(1);
+  public get selectedAthleteSubject(): ReplaySubject<Athlete> {
+    return this._selectedAthleteSubject;
+  }
+
 
   //Methodes om nieuwe DataWaarden te publishen zodat de components die op de subscriptions gesubscribed zijn geupdatet worden.
   public publishFilteredAthletes(athletes: AthleteEntry[]) {
@@ -36,6 +42,10 @@ export class FilteredDataService {
 
   public publishFilteredPersons(persons: string[]) {
     this.filteredPersonsSubject.next(persons);
+  }
+
+  public publishSelectedAthlete(selectedAthlete: Athlete) {
+    this.selectedAthleteSubject.next(selectedAthlete);
   }
 
   constructor() { }
