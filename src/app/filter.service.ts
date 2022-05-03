@@ -36,6 +36,40 @@ export class FilterService {
   public set peopleToFilterOn(v: string[]) {
     this._peopleToFilterOn = v;
   }
+
+  private _yearRange: number[] = [1896, 2016];
+  public get yearRange(): number[] {
+    return this._yearRange;
+  }
+  public set yearRange(v: number[]) {
+    this._yearRange = v;
+  }
+
+  private _editionOptions: any[];
+  public get editionOptions(): any[] {
+    return this._editionOptions;
+  }
+
+  private _chosenEdition: string = 'all';
+  public get chosenEdition(): string {
+    return this._chosenEdition;
+  }
+  public set chosenEdition(v: string) {
+    this._chosenEdition = v;
+  }
+
+  private _sexOptions: any[];
+  public get sexOptions(): any[] {
+    return this._sexOptions;
+  }
+
+  private _chosenSex: string = 'all';
+  public get chosenSex(): string {
+    return this._chosenSex;
+  }
+  public set chosenSex(v: string) {
+    this._chosenSex = v;
+  }
   //---------------------------------------------------------------------------------------------
 
 
@@ -47,6 +81,17 @@ export class FilterService {
         this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
         this.buildFilteredItems();
       });
+
+      this._editionOptions = [
+        { label: 'Summer', value: 'Summer' },
+        { label: 'All', value: 'all' },
+        { label: 'Winter', value: 'Winter' }
+      ];
+      this._sexOptions = [
+        { label: 'Male', value: 'M' },
+        { label: 'All', value: 'all' },
+        { label: 'Female', value: 'F' }
+      ];
   }
 
   //Gaat nog niet werken, want data in csvService kan misschien nog niet ingeladen zijn op moment dat gefilterd wordt.
@@ -73,7 +118,47 @@ export class FilterService {
         return true;
       }
       else {
-        return false;
+        // Goal: Van Den matches with Van Den Eynde, also: Van de matches with Van Den Eynde
+        // Search: "Van De" -> split = ["Van", "De"]
+        // SourceVal: "Pieter Van Den Eynde" -> split = ["Pieter", "Van", "Den", "Eynde"]
+        let nameParts: string[] = person.toLowerCase().split(' ');
+        let searchParts: string[] = searchText.toLowerCase().split(' ');
+
+
+        // If the searchParts only contains one entry, just check if any part of the nameParts starts with this one
+        if (searchParts.length == 1) {
+          return nameParts.some(function(part) {
+            return part.startsWith(searchParts[0]);
+          });
+        }
+
+        // Loop through nameParts "Pieter", "Van", "Den", "Eynde"
+        //                            ^
+        //                            |
+        // Loop through searchParts "Van" = no match => next nameParts index
+        //                                    ^
+        //                                    |
+        //                                  "Van"
+
+        // Loop through name parts & through search parts
+        // For each search part: if it matches namepart & set searchPart++
+
+        let i = 0;
+        let j = 0;
+        while (i < nameParts.length) {
+          searchPartsLoop:
+            while (j < searchParts.length) {
+              if (j == searchParts.length-1) {
+                return nameParts[i].startsWith(searchParts[j]);
+              } else if (nameParts[i] !== searchParts[j]) {
+                break searchPartsLoop; // break out of current loop and move to next namePart
+              } else {
+                i++; // Compare next searchPart[j] with next nameParts[i]
+              }
+              j++;
+            }
+          i++;
+        }
       }
     });
   }
@@ -86,6 +171,15 @@ export class FilterService {
         return false;
       }
       if (this._peopleToFilterOn.length != 0 && !this._peopleToFilterOn.includes(athleteEntry.name)) {
+        return false;
+      }
+      if(!(athleteEntry.year >= this._yearRange[0] && athleteEntry.year <= this._yearRange[1])) {
+        return false;
+      }
+      if(this._chosenEdition !== 'all' && athleteEntry.season !== this._chosenEdition) {
+        return false;
+      }
+      if(this._chosenSex !== 'all' && athleteEntry.sex !== this._chosenSex) {
         return false;
       }
       return true;

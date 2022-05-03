@@ -1,12 +1,12 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-top-bar></app-top-bar>
-<div style="text-align:center">
-  <h1>
-    Welcome to the {{ title }}!
-  </h1>
+<div class="row">
+  <div class="col-md-4">
+    <app-selection></app-selection>
+  </div>
+  <div class="col-md-8">
+    <app-medal-chart [medalData]="medalData"></app-medal-chart>
+  </div>
 </div>
-<app-selection></app-selection>
-<app-medal-chart [medalData]="medalData"></app-medal-chart>
 <router-outlet>
-  <!--Hmmm, wat doen we hier-->
 </router-outlet>
