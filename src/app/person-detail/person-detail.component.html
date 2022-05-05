@@ -3,7 +3,7 @@
 <ng-template #athleteBlock>
     <h2>{{ selectedAthlete.name }}</h2>
     <p>Sex: {{ selectedAthlete.sex }}</p>
-    <p>Year of birth: {{ selectedAthlete.birthYear }}</p>
+    <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">Year of birth: {{ selectedAthlete.birthYear }}</p>
     <p *ngIf="selectedAthlete.weight.toString() != 'NaN'">Weight: {{ selectedAthlete.weight }}</p>
     <p *ngIf="selectedAthlete.height.toString() != 'NaN'">Height: {{ selectedAthlete.height }}</p>
 

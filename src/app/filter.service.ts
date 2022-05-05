@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { CsvData } from 'src/models/csv-data';
 import { Athlete } from 'src/models/athlete';
 import { ReplaySubject } from 'rxjs';
+import { AthleteEntry } from 'src/models/athlete-entry';
 
 @Injectable({
   providedIn: 'root'
@@ -167,7 +168,9 @@ export class FilterService {
 
   filterOnAllAttributes() {
     console.log('Filtering on attributes..');
-    this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries.filter(athleteEntry => {
+    // Reset the selected athlete before filter
+    this.filteredDataService.publishSelectedAthlete(null);
+    let athleteEntries = this._originalCsvData.athleteEntries.filter(athleteEntry => {
       // Only add the entry if the selected countries match the athlete
       if (this._countriesToFilterOn.length != 0 && !this.athleteBelongsToListOfCountries(athleteEntry, this._countriesToFilterOn)) {
         return false;
@@ -185,9 +188,14 @@ export class FilterService {
         return false;
       }
       return true;
-    }));
+    });
+    this.filteredDataService.publishFilteredAthletes(athleteEntries);
+    
     this.buildFilteredItems();
-    console.log('done');
+    if (athleteEntries.length > 0) {
+      let firstEntry: AthleteEntry = athleteEntries[0];
+      this.searchAndSelectFirstAthleteEntryByName(firstEntry.name);
+    }
   }
 
   searchAndSelectFirstAthleteEntryByName(athleteName: string): void {
