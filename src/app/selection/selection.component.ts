@@ -2,6 +2,7 @@ import { FilteredDataService } from './../filtered-data.service';
 import { FilterService } from './../filter.service';
 import { Component, OnInit } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api'; 
+import { Athlete } from 'src/models/athlete';
 
 @Component({
   selector: 'app-selection',
@@ -14,8 +15,10 @@ export class SelectionComponent implements OnInit {
 
   //private velden voor deze class
   private _subscription;
+  private _subscriptionSelectedAthlete;
   people: string[] = [];
   virtualPeople: string[];
+  selectedAthlete: Athlete;
 
   ngOnDestroy(): void {
     if (this._subscription) {
@@ -29,6 +32,11 @@ export class SelectionComponent implements OnInit {
         fa.forEach(athleteEntry => {
           this.people.push(athleteEntry);
         });
+      }
+    );
+    this._subscriptionSelectedAthlete = this.filteredDataService.selectedAthleteSubject.subscribe(
+      fa => {
+        this.selectedAthlete = fa;
       }
     );
     this.virtualPeople = Array.from({length: 100});

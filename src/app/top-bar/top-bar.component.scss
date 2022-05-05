@@ -1,3 +1,7 @@
 .navbar {
     min-height: 100px;
 }
+
+:host ::ng-deep .olympic-autocomplete {
+    display: inline !important;
+}

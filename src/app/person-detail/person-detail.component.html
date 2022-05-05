@@ -1,16 +1,22 @@
 <div *ngIf="selectedAthlete == null; then emptyBlock else athleteBlock"></div>
 <ng-template #emptyBlock>No athlete selected.</ng-template>
 <ng-template #athleteBlock>
-    <h2>{{ selectedAthlete.name }}</h2>
-    <p>Sex: {{ selectedAthlete.sex }}</p>
-    <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">Year of birth: {{ selectedAthlete.birthYear }}</p>
-    <p *ngIf="selectedAthlete.weight.toString() != 'NaN'">Weight: {{ selectedAthlete.weight }}</p>
-    <p *ngIf="selectedAthlete.height.toString() != 'NaN'">Height: {{ selectedAthlete.height }}</p>
-
-    <ng-template ngFor let-athleteEntry [ngForOf]="athleteEntries" let-i="index">
-        <h3 *ngIf="i === 0 || athleteEntry.year !== athleteEntries[i-1].year">{{ athleteEntry.year }} - {{ athleteEntry.city }}</h3>
-        <p>{{ athleteEntry.sport }}: {{ athleteEntry.event }} <span class="medal-icon" [ngClass]="{'bronze': athleteEntry.medal === 'Bronze', 'silver': athleteEntry.medal === 'Silver', 'gold': athleteEntry.medal === 'Gold' }"></span></p>
-      </ng-template>
+    <div class="row">
+        <div class="col-4">
+            <h2>{{ selectedAthlete.name }}</h2>
+            <img src="https://www.kindpng.com/picc/m/163-1639541_transparent-running-clipart-png-cartoon-athlete-png-png.png" width="200" height="300">
+            <p>Sex: {{ selectedAthlete.sex }}</p>
+            <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">Year of birth: {{ selectedAthlete.birthYear }}</p>
+            <p *ngIf="selectedAthlete.weight.toString() != 'NaN'">Weight: {{ selectedAthlete.weight }}</p>
+            <p *ngIf="selectedAthlete.height.toString() != 'NaN'">Height: {{ selectedAthlete.height }}</p>
+        </div>
+        <div class="medal-chart col-md-8">
+            <ng-template ngFor let-athleteEntry [ngForOf]="athleteEntries" let-i="index">
+                <h3 *ngIf="i === 0 || athleteEntry.year !== athleteEntries[i-1].year">{{ athleteEntry.year }} - {{ athleteEntry.city }}</h3>
+                <p>{{ athleteEntry.sport }}: {{ athleteEntry.event }} <span class="medal-icon" [ngClass]="{'bronze': athleteEntry.medal === 'Bronze', 'silver': athleteEntry.medal === 'Silver', 'gold': athleteEntry.medal === 'Gold' }"></span></p>
+            </ng-template>
+        </div>
+    </div>
 </ng-template>
 
 
