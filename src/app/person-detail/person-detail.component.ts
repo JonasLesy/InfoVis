@@ -37,4 +37,18 @@ export class PersonDetailComponent implements OnInit {
     );
   }
 
+  calculateEntryTotal(year) {
+    let total = 0;
+
+    if (this.athleteEntries) {
+        for (let athleteEntry of this.athleteEntries) {
+            if (athleteEntry.year === year) {
+                total++;
+            }
+        }
+    }
+
+    return total;
+}
+
 }

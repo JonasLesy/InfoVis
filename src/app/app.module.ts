@@ -13,6 +13,7 @@ import { SliderModule } from 'primeng/slider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
+import {TableModule} from 'primeng/table';
 
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { SelectionComponent } from './selection/selection.component';
@@ -36,6 +37,7 @@ import { PersonDetailComponent } from './person-detail/person-detail.component';
     SliderModule,
     SelectButtonModule,
     VirtualScrollerModule,
+    TableModule,
     AutoCompleteModule
   ],
   providers: [],
