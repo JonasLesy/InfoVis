@@ -20,6 +20,8 @@ export class PersonDetailComponent implements OnInit {
   ngOnDestroy(): void {
     if (this._subscription) {
       this._subscription.unsubscribe();
+    }
+    if (this._subscriptionEntries) {
       this._subscriptionEntries.unsubscribe();
     }
   }

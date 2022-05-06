@@ -205,6 +205,24 @@ export class FilterService {
     this.filteredDataService.publishFilteredAthletes(athleteEntries);
   }
 
+  calculateMedalsForCountryForYearRange(country: string, startYear: number, endYear: number): [Map<number, number>, Map<number, number>, Map<number, number>] {
+    let bronzeList: Map<number, number> = new Map<number, number>();
+    let silverList: Map<number, number> = new Map<number, number>();
+    let goldList: Map<number, number> = new Map<number, number>();
+    let countryAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.noc === country && athleteEntry.year >= startYear && athleteEntry.year <= endYear);
+    countryAtheteEntries.map(countryAtheteEntry => {
+      let entryYear = countryAtheteEntry.year;
+      if (countryAtheteEntry.medal === "Bronze") {
+        bronzeList.set(entryYear, ((bronzeList.has(entryYear)) ? bronzeList.get(entryYear) + 1 : 1));
+      } else if (countryAtheteEntry.medal === "Silver") {
+        silverList.set(entryYear, ((bronzeList.has(entryYear)) ? silverList.get(entryYear) + 1 : 1));
+      } else if (countryAtheteEntry.medal === "Gold") {
+        goldList.set(entryYear, ((bronzeList.has(entryYear)) ? goldList.get(entryYear) + 1 : 1));
+      }
+    })
+    return [bronzeList, silverList, goldList];
+  }
+
   private buildFilteredItems() {
     let countrySet = new Set<string>();
     let personSet = new Set<string>();

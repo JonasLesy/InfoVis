@@ -18,6 +18,8 @@ import {TableModule} from 'primeng/table';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { SelectionComponent } from './selection/selection.component';
 import { PersonDetailComponent } from './person-detail/person-detail.component';
+import { RelatedGraphCountryMedalsComponent } from './related-graph-country-medals/related-graph-country-medals.component';
+import { RelatedGraphsComponent } from './related-graphs/related-graphs.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { PersonDetailComponent } from './person-detail/person-detail.component';
     MedalChartComponent,
     TopBarComponent,
     SelectionComponent,
-    PersonDetailComponent
+    PersonDetailComponent,
+    RelatedGraphCountryMedalsComponent,
+    RelatedGraphsComponent
   ],
   imports: [
     BrowserModule,
