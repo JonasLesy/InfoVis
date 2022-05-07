@@ -39,7 +39,7 @@ export class SelectionComponent implements OnInit {
         this.selectedAthlete = fa;
       }
     );
-    this.virtualPeople = Array.from({length: 100});
+    this.virtualPeople = Array.from({length: 10});
   }
 
   loadPersonsLazy(event: LazyLoadEvent) {

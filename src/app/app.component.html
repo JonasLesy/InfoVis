@@ -1,16 +1,35 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<app-top-bar></app-top-bar>
-<div class="row">
-  <div class="col-md-4">
-    <app-selection></app-selection>
-  </div>
-  <div class="col-md-8">
-    <app-person-detail></app-person-detail>
-    <div class="medal-chart">
-      <app-medal-chart [medalData]="medalData"></app-medal-chart>
+<!--div class="container-fluid">
+  <app-top-bar class="h-20"></app-top-bar>
+  <div class="row h-60">
+    <div class="col-md-4">
+      <app-selection></app-selection>
     </div>
-    <app-related-graphs></app-related-graphs>
+    <div class="col-md-8">
+      <div class="row">
+        <app-person-detail class="h-20"></app-person-detail>
+        <div class="medal-chart h-10">
+          <app-medal-chart [medalData]="medalData"></app-medal-chart>
+        </div>
+        <app-related-graphs class="h-70"></app-related-graphs>
+      </div>
+    </div>
+  </div>
+  <router-outlet>
+  </router-outlet>
+</div-->
+<div class="wrapper">
+  <app-top-bar class="vh-15"></app-top-bar>
+  <div class="row vh-85">
+    <div class="col-md-4 selection">
+      <app-selection class="h-inherit"></app-selection>
+    </div>
+    <div class="col-md-8 graphs">
+      <app-person-detail class="row vh-30 pb-2"></app-person-detail>
+      <!--div class="medal-chart h-10">
+        <app-medal-chart [medalData]="medalData"></app-medal-chart>
+      </div-->
+      <app-related-graphs class="row mt-2"></app-related-graphs>
+    </div>
   </div>
 </div>
-<router-outlet>
-</router-outlet>

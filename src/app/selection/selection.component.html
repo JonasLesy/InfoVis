@@ -1,5 +1,5 @@
-<div class="row">
-    <p-virtualScroller [value]="filteredDataService.filteredPersonsSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
+<div class="row hpix-400">
+    <p-virtualScroller [value]="filteredDataService.filteredPersonsSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="325px" [itemSize]="25" [rows]="10">
       <ng-template pTemplate="header">Athletes</ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
@@ -12,7 +12,7 @@
       </ng-template>
     </p-virtualScroller>
 </div>
-<div class="row">
+<div class="row hp-50">
     <p-virtualScroller [value]="filteredDataService.filteredCountriesSubject" scrollHeight="500px" [itemSize]="25">
       <ng-template pTemplate="header">Countries</ng-template>
       <ng-template pTemplate="item" let-country>

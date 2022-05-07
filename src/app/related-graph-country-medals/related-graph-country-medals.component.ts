@@ -76,17 +76,17 @@ export class RelatedGraphCountryMedalsComponent implements OnInit {
       datasets: [{
           type: 'bar',
           label: 'Bronze medals',
-          backgroundColor: '#D4AF37',
+          backgroundColor: '#CD7F32',
           data: medalLists[0]
       }, {
           type: 'bar',
           label: 'Silver medals',
-          backgroundColor: '#AAA9AD',
+          backgroundColor: '#C0C0C0',
           data: medalLists[1]
       }, {
           type: 'bar',
           label: 'Gold medals',
-          backgroundColor: '#B08D57',
+          backgroundColor: '#FFD700',
           data: medalLists[2]
       }]
     };

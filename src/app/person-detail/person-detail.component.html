@@ -1,33 +1,38 @@
 <div *ngIf="selectedAthlete == null; then emptyBlock else athleteBlock"></div>
 <ng-template #emptyBlock>No athlete selected.</ng-template>
 <ng-template #athleteBlock>
-    <div class="row">
-        <div class="col-4">
+    <div class="row h-inherit">
+        <div class="col-4 h-inherit">
             <h2>{{ selectedAthlete.name }}</h2>
-            <img src="https://www.kindpng.com/picc/m/163-1639541_transparent-running-clipart-png-cartoon-athlete-png-png.png" width="200" height="300">
-            <p>Sex: {{ selectedAthlete.sex }}</p>
-            <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">Year of birth: {{ selectedAthlete.birthYear }}</p>
-            <p *ngIf="selectedAthlete.weight.toString() != 'NaN'">Weight: {{ selectedAthlete.weight }}</p>
-            <p *ngIf="selectedAthlete.height.toString() != 'NaN'">Height: {{ selectedAthlete.height }}</p>
+            <div class="row h-inherit">
+                <div class="col-md-6 h-inherit">
+                    <img src="https://www.kindpng.com/picc/m/163-1639541_transparent-running-clipart-png-cartoon-athlete-png-png.png" width="auto" height="80%">
+                </div>
+                <div class="col-md-6 h-inherit">
+                    <p>Sex: {{ selectedAthlete.sex }}</p>
+                    <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">Year of birth: {{ selectedAthlete.birthYear }}</p>
+                    <p *ngIf="selectedAthlete.weight.toString() != 'NaN'">Weight: {{ selectedAthlete.weight }}</p>
+                    <p *ngIf="selectedAthlete.height.toString() != 'NaN'">Height: {{ selectedAthlete.height }}</p>
+                </div>
+            </div>
         </div>
-        <div class="card col-md-8">
+        <div class="card col-md-8 h-inherit overflow-scroll">
             <h5>Olympic entries</h5>
-            <p-table [value]="athleteEntries" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" responsiveLayout="scroll">
+            <p-table [value]="athleteEntries" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="false" rowGroupMode="subheader" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="year" style="min-width:20px">Year <p-sortIcon field="year"></p-sortIcon></th>
                         <th pSortableColumn="city" style="min-width:50px">City <p-sortIcon field="city"></p-sortIcon></th>
-                        <th pSortableColumn="sport" style="min-width:250px">Sport <p-sortIcon field="sport"></p-sortIcon></th>
+                        <th pSortableColumn="sport" style="min-width:150px">Sport <p-sortIcon field="sport"></p-sortIcon></th>
                         <th pSortableColumn="event" style="min-width:350px">Event <p-sortIcon field="event"></p-sortIcon></th>
                         <th style="min-width:25px">Medal</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="groupfooter" let-athleteEntry>
                     <tr class="p-rowgroup-footer">
-                        <td style="min-width: 80%">
-                            <div style="text-align: right; width: 100%">Total entries: </div>
+                        <td colspan="5">
+                            <div style="text-align: right; width: 100%">Total entries: {{athleteEntries.length}}</div>
                         </td>
-                        <td style="width: 20%">{{athleteEntries.length}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-athleteEntry let-rowIndex="rowIndex">
@@ -38,7 +43,7 @@
                         <td style="min-width:50px">
                             {{athleteEntry.city}}
                         </td>
-                        <td style="min-width:250px">
+                        <td style="min-width:150px">
                             {{athleteEntry.sport}}
                         </td>
                         <td style="min-width:350px">
