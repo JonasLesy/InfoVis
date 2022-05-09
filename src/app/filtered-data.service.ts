@@ -10,10 +10,19 @@ import { Athlete } from 'src/models/athlete';
 export class FilteredDataService {
 
   //Subscriptions waarop components zich kunnen subscriben om op de hoogte gebracht te worden van dataveranderingen.
+
+  // Dit zijn ALLE AthleteEntries die voldoen aan de gekozen filters (voor alle Athleten dus)
   private _filteredAthletesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
   public get filteredAthletesSubject(): ReplaySubject<AthleteEntry[]> {
     return this._filteredAthletesSubject;
   }
+  
+  //Dit zijn de AthleteEntries van de GESELECTEERDE athleet die voldoen aan de gekozen filters.
+  private _selectedFilteredAthletesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
+  public get selectedFilteredAthletesSubject(): ReplaySubject<AthleteEntry[]> {
+    return this._selectedFilteredAthletesSubject;
+  }
+  
 
   private _filteredCountriesSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
   public get filteredCountriesSubject(): ReplaySubject<string[]>  {
@@ -34,6 +43,10 @@ export class FilteredDataService {
   //Methodes om nieuwe DataWaarden te publishen zodat de components die op de subscriptions gesubscribed zijn geupdatet worden.
   public publishFilteredAthletes(athletes: AthleteEntry[]) {
     this._filteredAthletesSubject.next(athletes);
+  }
+
+  public publishSelectedFilteredAthletes(selectedFilteredAthletes: AthleteEntry[]) {
+    this._selectedFilteredAthletesSubject.next(selectedFilteredAthletes);
   }
 
   public publishFilteredCountries(countries: string[]) {

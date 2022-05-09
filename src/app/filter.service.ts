@@ -100,17 +100,6 @@ export class FilterService {
       ];
   }
 
-  //Gaat nog niet werken, want data in csvService kan misschien nog niet ingeladen zijn op moment dat gefilterd wordt.
-  search(searchText: string): void {
-    if (searchText !== "") {
-      this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries.filter(contact => {
-        return contact.name.toLowerCase().includes(searchText.toLowerCase());
-      }));
-    } else {
-      this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
-    }
-  }
-
   searchCountry(searchText: string): void {
     let nocsFiltered = this._originalCsvData.nocRegionEntries.filter(nocEntry => {
       return nocEntry.region.toLowerCase().includes(searchText.toLowerCase());
@@ -218,9 +207,14 @@ export class FilterService {
 
   searchAndSelectFirstAthleteEntryByName (athleteName: string): void {
     let selectedAthlete = this._originalCsvData.athletes.find(athlete => athlete.name === athleteName);
-    let athleteEntries = this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
-    this.filteredDataService.publishSelectedAthlete(selectedAthlete);
-    this.filteredDataService.publishFilteredAthletes(athleteEntries);
+    this.filteredDataService.filteredAthletesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
+      athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
+        let entries = athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
+        this.filteredDataService.publishSelectedAthlete(selectedAthlete);
+        this.filteredDataService.publishSelectedFilteredAthletes(entries);
+      }
+    );
+
   }
 
   calculateMedalsForCountryForYearRange(country: string, startYear: number, endYear: number): [Map<number, number>, Map<number, number>, Map<number, number>] {
