@@ -5,6 +5,8 @@ import { CsvData } from 'src/models/csv-data';
 import { Athlete } from 'src/models/athlete';
 import { ReplaySubject } from 'rxjs';
 import { AthleteEntry } from 'src/models/athlete-entry';
+import { take } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ import { AthleteEntry } from 'src/models/athlete-entry';
 export class FilterService {
   private _originalCsvData: CsvData;
   private _filteredAthletesSubsription$;
+  private _selectAthleteFromListSubscription$;
 
   //Dit zijn velden specifiek voor de filter. Hierop kunnen de properties in de view zich binden
   private _countrySuggestions: string[] = [];
@@ -97,17 +100,6 @@ export class FilterService {
       ];
   }
 
-  //Gaat nog niet werken, want data in csvService kan misschien nog niet ingeladen zijn op moment dat gefilterd wordt.
-  search(searchText: string): void {
-    if (searchText !== "") {
-      this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries.filter(contact => {
-        return contact.name.toLowerCase().includes(searchText.toLowerCase());
-      }));
-    } else {
-      this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
-    }
-  }
-
   searchCountry(searchText: string): void {
     let nocsFiltered = this._originalCsvData.nocRegionEntries.filter(nocEntry => {
       return nocEntry.region.toLowerCase().includes(searchText.toLowerCase());
@@ -169,7 +161,7 @@ export class FilterService {
   filterOnAllAttributes() {
     console.log('Filtering on attributes..');
     // Reset the selected athlete before filter
-    this.filteredDataService.publishSelectedAthlete(null);
+    // this.filteredDataService.publishSelectedAthlete(null);
     let athleteEntries = this._originalCsvData.athleteEntries.filter(athleteEntry => {
       // Only add the entry if the selected countries match the athlete
       if (this._countriesToFilterOn.length != 0 && !this.athleteBelongsToListOfCountries(athleteEntry, this._countriesToFilterOn)) {
@@ -193,16 +185,36 @@ export class FilterService {
     
     this.buildFilteredItems();
     if (athleteEntries.length > 0) {
-      let firstEntry: AthleteEntry = athleteEntries[0];
-      this.searchAndSelectFirstAthleteEntryByName(firstEntry.name);
+      this.selectAthleteFromList(athleteEntries);
     }
   }
 
-  searchAndSelectFirstAthleteEntryByName(athleteName: string): void {
+  private selectAthleteFromList(filteredAthletes: AthleteEntry[]): void {
+    if (this._selectAthleteFromListSubscription$) {
+      this._selectAthleteFromListSubscription$.unsubscribe();
+    }
+    this._selectAthleteFromListSubscription$ = this.filteredDataService.selectedAthleteSubject.pipe(take(1)).subscribe(a => { // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden. In searchAndSelectFirstAthleteEntryByName gaan we namelijk een nieuwe waarde publishen op de selectedAthleteSubject waardoor ook de subscribe methode opnieuw zou worden uitgevoerd (en opnieuw en opnieuw en opnieuw en opnieuw 0:22 https://www.youtube.com/watch?v=F6CIlxDryJY)
+      let selectedAthlete: Athlete = a;
+      let selectedAthleteInFilteredAthletes = filteredAthletes.find(a => a.id == selectedAthlete.id);
+      if (selectedAthleteInFilteredAthletes) {
+        this.searchAndSelectFirstAthleteEntryByName (selectedAthlete.name);
+      }
+      else {
+        this.searchAndSelectFirstAthleteEntryByName (filteredAthletes[0].name);
+      }
+    })
+  }
+
+  searchAndSelectFirstAthleteEntryByName (athleteName: string): void {
     let selectedAthlete = this._originalCsvData.athletes.find(athlete => athlete.name === athleteName);
-    let athleteEntries = this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
-    this.filteredDataService.publishSelectedAthlete(selectedAthlete);
-    this.filteredDataService.publishFilteredAthletes(athleteEntries);
+    this.filteredDataService.filteredAthletesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
+      athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
+        let entries = athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
+        this.filteredDataService.publishSelectedAthlete(selectedAthlete);
+        this.filteredDataService.publishSelectedFilteredAthletes(entries);
+      }
+    );
+
   }
 
   calculateMedalsForCountryForYearRange(country: string, startYear: number, endYear: number): [Map<number, number>, Map<number, number>, Map<number, number>] {

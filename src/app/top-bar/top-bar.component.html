@@ -29,7 +29,9 @@
             [multiple]="true"
             [forceSelection]="true"
             styleClass="olympic-autocomplete"
+            (keyup)="athleteInputChanged($event.target.value)"
           ></p-autoComplete>
+          <p class="athlete-input-warning" *ngIf="athleteInput.length === 1">Enter at least 2 characters</p>
         </div>
       </div>
       <div class="col-md-2">

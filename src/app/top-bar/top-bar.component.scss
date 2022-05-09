@@ -1,5 +1,12 @@
-.navbar {
-    min-height: 100px;
+.navbar-light {
+    min-height: 130px;
+}
+
+.athlete-input-warning {
+    color:red;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom:0px !important;
 }
 
 :host ::ng-deep .olympic-autocomplete {

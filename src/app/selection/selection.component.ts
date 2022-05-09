@@ -24,6 +24,9 @@ export class SelectionComponent implements OnInit {
     if (this._subscription) {
       this._subscription.unsubscribe();
     }
+    if (this._subscriptionSelectedAthlete) {
+      this._subscriptionSelectedAthlete.unsubscribe();
+    }
   }
 
   ngOnInit(): void {

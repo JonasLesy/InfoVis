@@ -14,6 +14,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {TableModule} from 'primeng/table';
+import { DropdownModule } from 'primeng/dropdown';
+import { TabViewModule } from 'primeng/tabview';
 
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { SelectionComponent } from './selection/selection.component';
@@ -42,7 +44,9 @@ import { RelatedGraphsComponent } from './related-graphs/related-graphs.componen
     SelectButtonModule,
     VirtualScrollerModule,
     TableModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    DropdownModule,
+    TabViewModule
   ],
   providers: [],
   bootstrap: [AppComponent]

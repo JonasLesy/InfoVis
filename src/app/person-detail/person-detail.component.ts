@@ -32,9 +32,10 @@ export class PersonDetailComponent implements OnInit {
         this.selectedAthlete = athlete;
       }
     );
-    this._subscriptionEntries = this.filteredDataService.filteredAthletesSubject.subscribe(
+    this._subscriptionEntries = this.filteredDataService.selectedFilteredAthletesSubject.subscribe(
       athleteEntries => {
         this.athleteEntries = athleteEntries;
+        // this.refreshTable();
       }
     );
   }
@@ -43,14 +44,14 @@ export class PersonDetailComponent implements OnInit {
     let total = 0;
 
     if (this.athleteEntries) {
-        for (let athleteEntry of this.athleteEntries) {
-            if (athleteEntry.year === year) {
-                total++;
-            }
+      for (let athleteEntry of this.athleteEntries) {
+        if (athleteEntry.year === year) {
+          total++;
         }
+      }
     }
 
     return total;
-}
+  }
 
 }

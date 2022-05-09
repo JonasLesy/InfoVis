@@ -3,8 +3,8 @@
       <ng-template pTemplate="header">Athletes</ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
-          <div class="person-entry" (click)="this.filterService.searchAndSelectFirstAthleteEntryByName(person)">
-            <span [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person}">{{person}}</span>
+          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person}" (click)="this.filterService.searchAndSelectFirstAthleteEntryByName(person)">
+            {{person}}
           </div>
       </ng-template>
       <ng-template let-person pTemplate="loadingItem">
