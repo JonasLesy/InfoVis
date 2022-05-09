@@ -6,6 +6,8 @@ import { AthleteEntry } from 'src/models/athlete-entry';
 import { Athlete } from 'src/models/athlete';
 import { CsvData } from 'src/models/csv-data';
 import { NOCRegionEntry } from 'src/models/noc-region-entry';
+import { Papa } from 'ngx-papaparse';
+
 
 
 @Injectable({
@@ -13,7 +15,7 @@ import { NOCRegionEntry } from 'src/models/noc-region-entry';
 })
 export class CsvService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private papa: Papa) { }
 
   public loadCsvData(): Observable<CsvData> {
     var result$ = 
@@ -30,10 +32,10 @@ export class CsvService {
       .pipe(map(
         data => {
           let nocRegionEntries: NOCRegionEntry[] = [];
-          let csvToRowArray = data.split("\r");
+          let papaResult = this.papa.parse(data as string).data;
           console.log('Parsing noc csv');
-          for (let index = 1; index < csvToRowArray.length - 1; index++) {
-            let row = csvToRowArray[index].split(",");
+          for (let index = 1; index < papaResult.length - 1; index++) {
+            let row = papaResult[index];
             nocRegionEntries.push(new NOCRegionEntry(row[0], row[1], row[2]));
           }
           return nocRegionEntries;
@@ -48,14 +50,16 @@ export class CsvService {
     return this.http.get('data/athlete_events.csv', { responseType: 'text' })
       .pipe(map(
         data => {
-          let csvToRowArray = data.split("\r");
+          let papaResult = this.papa.parse(data as string).data;
+
+          // let csvToRowArray = data.split("\r");
           console.log('Parsing athletes csv');
           let countrySet = new Set<string>();
           let personSet = new Set<string>();
           let athleteEntries: AthleteEntry[] = [];
           let athleteSet = new Set<Athlete>();
-          for (let index = 1; index < csvToRowArray.length - 1; index++) {
-            let row = csvToRowArray[index].split(",");
+          for (let index = 1; index < papaResult.length - 1; index++) {
+            let row = papaResult[index];
             let newEntry = new AthleteEntry(parseInt(row[0], 10), row[1], row[2], parseInt(row[3], 10), parseInt(row[4], 10), parseInt(row[5], 10), row[6], row[7], row[8], parseInt(row[9], 10), row[10], row[11], row[12], row[13], row[14]);
             // If age was 20 at games of 1990: he is now 2022 - 1990 + 20 years old
             let athleteBirthYear = newEntry.year - newEntry.age
