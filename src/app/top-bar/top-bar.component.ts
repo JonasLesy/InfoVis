@@ -1,5 +1,5 @@
 import { FilterService } from './../filter.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-top-bar',
@@ -8,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopBarComponent implements OnInit {
 
+  athleteInput: string = "";
+
   constructor(public filterService: FilterService) { }
 
   ngOnInit(): void {
+  }
+
+  athleteInputChanged(text: string) {
+    this.athleteInput = text;
   }
 
 }

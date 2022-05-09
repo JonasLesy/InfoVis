@@ -1,7 +1,15 @@
-.person-entry, .country-entry {
-    margin-left: 40px;
+.person-entry,
+.country-entry {
+  // margin-left: 40px;
+  padding: 0 10px;
+  margin: 0 30px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .selected-item {
-    background-color: lightgray;
+  background-color: lightgray;
+//   padding: 0 10px;
+  border-radius: 4px;
 }

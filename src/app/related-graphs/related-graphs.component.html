@@ -1,1 +1,8 @@
-<app-related-graph-country-medals></app-related-graph-country-medals>
+  <p-dropdown
+    class="chart-dropdown"
+    [options]="chartEntries"
+    [(ngModel)]="selectedChart"
+    optionLabel="name"
+    (onChange)="chartSelected()"
+  ></p-dropdown>
+  <app-related-graph-country-medals></app-related-graph-country-medals>

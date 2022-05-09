@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+interface ChartEntry {
+  name: string,
+  id: number
+}
 @Component({
   selector: 'app-related-graphs',
   templateUrl: './related-graphs.component.html',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RelatedGraphsComponent implements OnInit {
 
-  constructor() { }
+  chartEntries: ChartEntry[];
+  selectedChart: ChartEntry;
+
+  constructor() { 
+    this.chartEntries = [
+      { name: 'Country Medals', id: 1 },
+    ];
+  }
 
   ngOnInit(): void {
   }
+  
+  chartSelected(): void {
 
+  }
 }
