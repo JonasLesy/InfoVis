@@ -12,7 +12,7 @@
         </div>
         <div class="card col-md-8">
             <h5>Olympic entries</h5>
-            <p-table *ngIf="visible" [value]="athleteEntries" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" responsiveLayout="scroll">
+            <p-table [value]="athleteEntries" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="year" style="min-width:20px">Year <p-sortIcon field="year"></p-sortIcon></th>
