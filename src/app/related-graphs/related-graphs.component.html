@@ -1,5 +1,9 @@
 <p-tabView>
-  <p-tabPanel header="Country Medals" [selected]="true">
+  <p-tabPanel header="Olympic Entries" [selected]="true">
+    <app-olympic-entries></app-olympic-entries>
+  </p-tabPanel>
+
+  <p-tabPanel header="Country Medals">
     <app-related-graph-country-medals></app-related-graph-country-medals>
   </p-tabPanel>
   <p-tabPanel header="To Create">Just a placeholder...</p-tabPanel>

@@ -22,6 +22,7 @@ import { SelectionComponent } from './selection/selection.component';
 import { PersonDetailComponent } from './person-detail/person-detail.component';
 import { RelatedGraphCountryMedalsComponent } from './related-graph-country-medals/related-graph-country-medals.component';
 import { RelatedGraphsComponent } from './related-graphs/related-graphs.component';
+import { OlympicEntriesComponent } from './olympic-entries/olympic-entries.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { RelatedGraphsComponent } from './related-graphs/related-graphs.componen
     SelectionComponent,
     PersonDetailComponent,
     RelatedGraphCountryMedalsComponent,
-    RelatedGraphsComponent
+    RelatedGraphsComponent,
+    OlympicEntriesComponent
   ],
   imports: [
     BrowserModule,
