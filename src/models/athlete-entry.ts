@@ -1,3 +1,4 @@
+import { DisciplineEntry } from './discipline-entry';
 export class AthleteEntry {
     id: number;
     name: string;
@@ -11,9 +12,8 @@ export class AthleteEntry {
     year: number;
     season: string;
     city: string;
-    sport: string;
-    event: string;
     medal: string;
+    disciplineEntry: DisciplineEntry;
 
     constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string) {
         this.id = id;
@@ -28,8 +28,7 @@ export class AthleteEntry {
         this.year = year;
         this.season = season;
         this.city = city;
-        this.sport = sport;
-        this.event = event;
         this.medal = medal;
+        this.disciplineEntry = new DisciplineEntry(sport, event, sex);
     }
 }

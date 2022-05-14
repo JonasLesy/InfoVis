@@ -244,7 +244,7 @@ export class FilterService {
     this._filteredAthletesSubsription$ = this.filteredDataService.filteredAthletesSubject.subscribe(
       fa => {
         fa.forEach(athleteEntry => {
-          countrySet.add(this.getRegionForNoc(athleteEntry.noc));
+          // countrySet.add(this.getRegionForNoc(athleteEntry.noc));
           personSet.add(athleteEntry.name);
         });
         this.filteredDataService.publishFilteredCountries([...countrySet]);
