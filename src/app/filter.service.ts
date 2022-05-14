@@ -1,3 +1,4 @@
+import { DisciplineEntry } from './../models/discipline-entry';
 import { FilteredDataService } from './filtered-data.service';
 import { CsvService } from './csv.service';
 import { Injectable } from '@angular/core';
@@ -238,17 +239,27 @@ export class FilterService {
   private buildFilteredItems() {
     let countrySet = new Set<string>();
     let personSet = new Set<string>();
+    let disciplineSet: Set<string> = new Set<string>();
+    let disciplineEntries: DisciplineEntry[] = [];
+
     if (this._filteredAthletesSubsription$) {
       this._filteredAthletesSubsription$.unsubscribe();
     }
     this._filteredAthletesSubsription$ = this.filteredDataService.filteredAthletesSubject.subscribe(
       fa => {
         fa.forEach(athleteEntry => {
-          // countrySet.add(this.getRegionForNoc(athleteEntry.noc));
+          countrySet.add(this.getRegionForNoc(athleteEntry.noc));
           personSet.add(athleteEntry.name);
+
+          let disciplineString = `${athleteEntry.disciplineEntry.event}${athleteEntry.disciplineEntry.sport}${athleteEntry.disciplineEntry.sex}`;
+          if (!disciplineSet.has(disciplineString)) {
+            disciplineEntries.push(athleteEntry.disciplineEntry);
+            disciplineSet.add(disciplineString);
+          }
         });
-        this.filteredDataService.publishFilteredCountries([...countrySet]);
-        this.filteredDataService.publishFilteredPersons([...personSet]);
+        this.filteredDataService.publishfilteredCountries([...countrySet]);
+        this.filteredDataService.publishfilteredPersons([...personSet]);
+        this.filteredDataService.publishFilteredDisciplines([...disciplineEntries]);
       }
     )
   }

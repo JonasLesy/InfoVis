@@ -24,17 +24,16 @@ export class FilteredDataService {
   public get selectedFilteredAthletesSubject(): ReplaySubject<AthleteEntry[]> {
     return this._selectedFilteredAthletesSubject;
   }
-  
 
-  // private _filteredCountriesSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
-  // public get filteredCountriesSubject(): ReplaySubject<string[]>  {
-  //   return this._filteredCountriesSubject;
-  // }
+  private _filteredCountriesSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  public get filteredCountriesSubject(): ReplaySubject<string[]> {
+    return this._filteredCountriesSubject;
+  }
 
-  // private _filteredPersonsSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
-  // public get filteredPersonsSubject(): ReplaySubject<string[]> {
-  //   return this._filteredPersonsSubject;
-  // }
+  private _filteredPersonsSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
+  public get filteredPersonsSubject(): ReplaySubject<string[]> {
+    return this._filteredPersonsSubject;
+  }
 
   private _selectedAthleteSubject: ReplaySubject<Athlete> = new ReplaySubject<Athlete>(1);
   public get selectedAthleteSubject(): ReplaySubject<Athlete> {
@@ -65,14 +64,6 @@ export class FilteredDataService {
     this._selectedFilteredAthletesSubject.next(selectedFilteredAthletes);
   }
 
-  // public publishFilteredCountries(countries: string[]) {
-  //   this._filteredCountriesSubject.next(countries);
-  // }
-
-  // public publishFilteredPersons(persons: string[]) {
-  //   this._filteredPersonsSubject.next(persons);
-  // }
-
   public publishSelectedAthlete(selectedAthlete: Athlete) {
     this._selectedAthleteSubject.next(selectedAthlete);
   }
@@ -85,8 +76,12 @@ export class FilteredDataService {
     this._selectedDisciplinesSubject.next(discipline);
   }
 
-  public publishfilteredNOCRegions(nocRegions: NOCRegionEntry[]) {
-    this.filteredNOCRegions.next(nocRegions);
+  public publishfilteredCountries(countries: string[]) {
+    this._filteredCountriesSubject.next(countries);
+  }
+
+  public publishfilteredPersons(persons: string[]) {
+    this._filteredPersonsSubject.next(persons);
   }
 
   constructor() { }
