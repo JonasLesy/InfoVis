@@ -3,7 +3,7 @@
       <ng-template pTemplate="header">Athletes</ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
-          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person}" (click)="this.filterService.searchAndSelectFirstAthleteEntryByName(person)">
+          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person}" (click)="filterService.searchAndSelectFirstAthleteEntryByName(person)">
             {{person}}
           </div>
       </ng-template>
@@ -13,15 +13,25 @@
     </p-virtualScroller>
 </div>
 <div class="row">
-    <p-virtualScroller [value]="disciplines | keyvalue" scrollHeight="500px" [itemSize]="25">
-      <ng-template pTemplate="header">Disciplines</ng-template>
-      <ng-template pTemplate="item" let-discipline>
-        <div class="country-entry" style="font-weight: bold;">
-          {{discipline.key}}
-        </div>
-        <div *ngFor="let value of discipline.value">
-          {{value.event}}
-        </div>
-      </ng-template>
-    </p-virtualScroller>
+  <p-table [value]="filteredDataService.filteredDisciplinesSubject | async" sortField="sport" sortMode="single" [scrollable]="true" scrollHeight="500px" rowGroupMode="subheader" groupRowsBy="sport" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Disciplines</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="groupheader" let-discipline>
+            <tr pRowGroupHeader>
+                <td colspan="5" style="border: none; padding: 0;" class="person-entry">
+                    <span class="font-bold ml-2" style="font-weight: bold; margin-top: 15px; margin-bottom: 5px;">{{discipline.sport}}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-discipline let-rowIndex="rowIndex">
+            <tr (click)="filterService.searchAndSelectFirstDiscipline(discipline)">
+                <td style="min-width:200px; border: none; padding: 0" class="person-entry">
+                    {{discipline.event}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>

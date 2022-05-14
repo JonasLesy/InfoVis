@@ -1,10 +1,9 @@
-import { DisciplineEntry } from './../models/discipline-entry';
+import { DisciplineEntry } from 'src/models/discipline-entry';
 import { FilteredDataService } from './filtered-data.service';
 import { CsvService } from './csv.service';
 import { Injectable } from '@angular/core';
 import { CsvData } from 'src/models/csv-data';
 import { Athlete } from 'src/models/athlete';
-import { ReplaySubject } from 'rxjs';
 import { AthleteEntry } from 'src/models/athlete-entry';
 import { take } from 'rxjs/operators';
 import { disciplineSortFunction } from 'src/helpers/discipline-sort-function';
@@ -236,6 +235,10 @@ export class FilterService {
       }
     })
     return [bronzeList, silverList, goldList];
+  }
+
+  searchAndSelectFirstDiscipline(discipline: DisciplineEntry) {
+    console.log(discipline.event);
   }
 
   private buildFilteredItems() {
