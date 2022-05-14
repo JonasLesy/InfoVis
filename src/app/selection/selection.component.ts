@@ -1,3 +1,4 @@
+import { DisciplineEntry } from 'src/models/discipline-entry';
 import { FilteredDataService } from './../filtered-data.service';
 import { FilterService } from './../filter.service';
 import { Component, OnInit } from '@angular/core';
@@ -16,9 +17,11 @@ export class SelectionComponent implements OnInit {
   //private velden voor deze class
   private _subscription;
   private _subscriptionSelectedAthlete;
+  private _disciplinesSubscription;
   people: string[] = [];
   virtualPeople: string[];
   selectedAthlete: Athlete;
+  disciplines = {};
 
   ngOnDestroy(): void {
     if (this._subscription) {
@@ -42,6 +45,9 @@ export class SelectionComponent implements OnInit {
         this.selectedAthlete = fa;
       }
     );
+    this._disciplinesSubscription = this.filteredDataService.filteredDisciplinesSubject.subscribe(d => {
+      this.disciplines = this.groupDisciplines(d);
+    })
     this.virtualPeople = Array.from({length: 100});
   }
 
@@ -55,6 +61,15 @@ export class SelectionComponent implements OnInit {
       
       //trigger change detection
       this.virtualPeople = [...this.virtualPeople];
+  }
+
+  private groupDisciplines(disciplines: DisciplineEntry[]) {
+    return disciplines.reduce((groups, item) => {
+      const val = item.sport;
+      groups[val] = groups[val] || [];
+      groups[val].push(item);
+      return groups;
+    }, {});
   }
 
 }
