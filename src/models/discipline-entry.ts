@@ -9,3 +9,4 @@ export class DisciplineEntry {
         this.sex = sex;
     }
 }
+

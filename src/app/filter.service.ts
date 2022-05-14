@@ -7,6 +7,7 @@ import { Athlete } from 'src/models/athlete';
 import { ReplaySubject } from 'rxjs';
 import { AthleteEntry } from 'src/models/athlete-entry';
 import { take } from 'rxjs/operators';
+import { disciplineSortFunction } from 'src/helpers/discipline-sort-function';
 
 
 @Injectable({
@@ -86,6 +87,7 @@ export class FilterService {
       (csvData) => {
         this._originalCsvData = csvData;
         this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
+        this.filteredDataService.publishFilteredDisciplines(this._originalCsvData.disciplineEntries.sort(disciplineSortFunction));
         this.buildFilteredItems();
       });
 

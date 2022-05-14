@@ -13,11 +13,11 @@
     </p-virtualScroller>
 </div>
 <div class="row">
-    <p-virtualScroller [value]="filteredDataService.filteredCountriesSubject" scrollHeight="500px" [itemSize]="25">
-      <ng-template pTemplate="header">Countries</ng-template>
-      <ng-template pTemplate="item" let-country>
+    <p-virtualScroller [value]="filteredDataService.filteredDisciplinesSubject" scrollHeight="500px" [itemSize]="25">
+      <ng-template pTemplate="header">Disciplines</ng-template>
+      <ng-template pTemplate="item" let-discipline>
         <div class="country-entry">
-          {{country}}
+          {{discipline.event}}
         </div>
       </ng-template>
     </p-virtualScroller>
