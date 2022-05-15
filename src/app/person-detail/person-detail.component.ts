@@ -64,14 +64,19 @@ export class PersonDetailComponent implements OnInit {
 
   private setMedalsData() {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
-    this._medalsSubscription = this.filteredDataService.filteredAthletesSubject.subscribe(
+    this._medalsSubscription = this.filteredDataService.selectedFilteredAthletesSubject.subscribe(
       fa => {
-        let goldCount = countOccurrences(fa, "Gold");
-        //console.log('gold count is ' + goldCount);
-        let silverCount = countOccurrences(fa, "Silver");
-        //console.log('silver count is ' + silverCount);
-        let bronzeCount = countOccurrences(fa, "Bronze");
-        this.medalData = [goldCount, silverCount, bronzeCount];
+        if (fa) {
+          let goldCount = countOccurrences(fa, "Gold");
+          //console.log('gold count is ' + goldCount);
+          let silverCount = countOccurrences(fa, "Silver");
+          //console.log('silver count is ' + silverCount);
+          let bronzeCount = countOccurrences(fa, "Bronze");
+          this.medalData = [goldCount, silverCount, bronzeCount];
+        }
+        else {
+          this.medalData = [0,0,0];
+        } 
       }
     );
   }
