@@ -18,7 +18,6 @@ export class FilterService {
   private _selectedAthlete: Athlete;
   private _selectedDiscipline: DisciplineEntry;
 
-
   //Dit zijn velden specifiek voor de filter. Hierop kunnen de properties in de view zich binden
   private _countrySuggestions: string[] = [];
   public get countrySuggestions(): string[] {
@@ -90,7 +89,7 @@ export class FilterService {
         this.filteredDataService.publishFilteredAthleteEntries(this._originalCsvData.athleteEntries);
         this.filteredDataService.publishFilteredDisciplines(this._originalCsvData.disciplineEntries.sort(disciplineSortFunction));
         this.filterAthletesOnAllAttributes(this._originalCsvData.athleteEntries);
-        this.filterDisciplinesOnAllAttributes(this._originalCsvData.athleteEntries);
+        this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(this._originalCsvData.athleteEntries);
       });
 
     this._editionOptions = [
@@ -188,7 +187,7 @@ export class FilterService {
     });
     this.filteredDataService.publishFilteredAthleteEntries(athleteEntries);
     this.filterAthletesOnAllAttributes(athleteEntries);
-    this.filterDisciplinesOnAllAttributes(athleteEntries);
+    this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries);
     if (athleteEntries.length > 0) {
       this.selectAthleteFromList(athleteEntries);
     }
@@ -207,10 +206,17 @@ export class FilterService {
   }
 
 
-  filterDisciplinesOnAllAttributes(athleteEntries: AthleteEntry[]) {
+  filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries: AthleteEntry[]) {
     let disciplineSet: Set<string> = new Set<string>();
     athleteEntries.forEach((ae: AthleteEntry) => {
-      disciplineSet.add(JSON.stringify(ae.disciplineEntry));
+      if (this._selectedAthlete) {
+        if (ae.name == this._selectedAthlete.name) {
+          disciplineSet.add(JSON.stringify(ae.disciplineEntry));
+        }
+      }
+      else {
+        disciplineSet.add(JSON.stringify(ae.disciplineEntry));
+      }
     });
     this.filteredDataService.publishFilteredDisciplines(Array.from(disciplineSet).map(el => JSON.parse(el)));
   }
@@ -234,21 +240,37 @@ export class FilterService {
   }
 
   searchAndSelectFirstAthleteEntryByName(athleteName: string): void {
-    let selectedAthlete = this._originalCsvData.athletes.find(athlete => athlete.name === athleteName);
-    if (selectedAthlete.id === this._selectedAthlete?.id) {
-      this.filteredDataService.publishSelectedAthlete(null);
-      this.filteredDataService.publishSelectedFilteredAthletes(null);
+    if (this._selectedAthlete.name === athleteName) {
+      this._selectedAthlete = null;
+      this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
+        this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
+        this.filteredDataService.publishSelectedAthlete(null);
+        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => !this._selectedDiscipline || ae.disciplineEntry.equals(this._selectedDiscipline)));
+      });
     }
     else {
-      this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
-        athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
-          let entries = athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
-          this.filteredDataService.publishSelectedAthlete(selectedAthlete);
-          this.filteredDataService.publishSelectedFilteredAthletes(entries);
-          this._selectedAthlete = selectedAthlete;
-        }
-      );
+      let selectedAthlete = this._originalCsvData.athletes.find(athlete => athlete.name === athleteName);
+      this._selectedAthlete = selectedAthlete;
+      this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
+        this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
+        this.filteredDataService.publishSelectedAthlete(selectedAthlete);
+        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => ae.name === this._selectedAthlete.name && (!this._selectedDiscipline || ae.disciplineEntry.equals(this._selectedDiscipline))));
+      });
     }
+    // if (selectedAthlete.id === this._selectedAthlete?.id) {
+    //   this.filteredDataService.publishSelectedAthlete(null);
+    //   this.filteredDataService.publishSelectedFilteredAthletes(null);
+    // }
+    // else {
+    //   this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
+    //     athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
+    //       let entries = athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
+    //       this.filteredDataService.publishSelectedAthlete(selectedAthlete);
+    //       this.filteredDataService.publishSelectedFilteredAthletes(entries);
+    //       this._selectedAthlete = selectedAthlete;
+    //     }
+    //   );
+    // }
 
 
   }
@@ -286,7 +308,7 @@ export class FilterService {
           this.filteredDataService.publishFilteredAthleteEntries(entries);
           this._selectedAthlete = null;
           this.filterAthletesOnAllAttributes(athleteEntries);
-          this.filterDisciplinesOnAllAttributes(athleteEntries);
+          this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries);
           if (athleteEntries.length > 0) {
             this.selectAthleteFromList(athleteEntries);
           }
