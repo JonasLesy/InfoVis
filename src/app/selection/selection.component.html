@@ -1,5 +1,5 @@
 <div class="row">
-    <p-virtualScroller [value]="filteredDataService.filteredAthletes2Subject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
+    <p-virtualScroller [value]="filteredDataService.filteredAthletesSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
       <ng-template pTemplate="header">Athletes</ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>

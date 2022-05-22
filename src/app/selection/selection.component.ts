@@ -41,7 +41,7 @@ export class SelectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._subscription = this.filteredDataService.filteredAthletes2Subject.subscribe(
+    this._subscription = this.filteredDataService.filteredAthletesSubject.subscribe(
       fa => {
         fa.forEach((athlete: Athlete) => {
           this.people.push(athlete.name);

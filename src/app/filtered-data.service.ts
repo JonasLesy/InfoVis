@@ -14,14 +14,14 @@ export class FilteredDataService {
   //Subscriptions waarop components zich kunnen subscriben om op de hoogte gebracht te worden van dataveranderingen.
 
   // Dit zijn ALLE AthleteEntries die voldoen aan de gekozen filters (voor alle Athleten dus)
-  private _filteredAthletesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
-  public get filteredAthletesSubject(): ReplaySubject<AthleteEntry[]> {
-    return this._filteredAthletesSubject;
+  private _filteredAthleteEntriesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
+  public get filteredAthleteEntriesSubject(): ReplaySubject<AthleteEntry[]> {
+    return this._filteredAthleteEntriesSubject;
   }
 
-  private _filteredAthletes2Subject: ReplaySubject<Athlete[]> = new ReplaySubject<Athlete[]>(1);
-  public get filteredAthletes2Subject(): ReplaySubject<Athlete[]> {
-    return this._filteredAthletes2Subject;
+  private _filteredAthletesSubject: ReplaySubject<Athlete[]> = new ReplaySubject<Athlete[]>(1);
+  public get filteredAthletesSubject(): ReplaySubject<Athlete[]> {
+    return this._filteredAthletesSubject;
   }
   
   //Dit zijn de AthleteEntries van de GESELECTEERDE athleet die voldoen aan de gekozen filters.
@@ -56,12 +56,12 @@ export class FilteredDataService {
   }
 
   //Methodes om nieuwe DataWaarden te publishen zodat de components die op de subscriptions gesubscribed zijn geupdatet worden.
-  public publishFilteredAthletes(athletes: AthleteEntry[]) {
-    this._filteredAthletesSubject.next(athletes);
+  public publishFilteredAthleteEntries(athletes: AthleteEntry[]) {
+    this._filteredAthleteEntriesSubject.next(athletes);
   }
 
-  public publishFilteredAthletes2(athletes: Athlete[]) {
-    this._filteredAthletes2Subject.next(athletes);
+  public publishFilteredAthletes(athletes: Athlete[]) {
+    this._filteredAthletesSubject.next(athletes);
   }
 
   public publishSelectedFilteredAthletes(selectedFilteredAthletes: AthleteEntry[]) {

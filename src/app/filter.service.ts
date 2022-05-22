@@ -7,7 +7,6 @@ import { Athlete } from 'src/models/athlete';
 import { AthleteEntry } from 'src/models/athlete-entry';
 import { take } from 'rxjs/operators';
 import { disciplineSortFunction } from 'src/helpers/discipline-sort-function';
-import { JsonPipe } from '@angular/common';
 
 
 @Injectable({
@@ -15,7 +14,6 @@ import { JsonPipe } from '@angular/common';
 })
 export class FilterService {
   private _originalCsvData: CsvData;
-  private _filteredAthletesSubsription$;
   private _selectAthleteFromListSubscription$;
   private _selectedAthlete: Athlete;
   private _selectedDiscipline: DisciplineEntry;
@@ -89,9 +87,10 @@ export class FilterService {
     csvService.loadCsvData().subscribe(
       (csvData) => {
         this._originalCsvData = csvData;
-        this.filteredDataService.publishFilteredAthletes(this._originalCsvData.athleteEntries);
+        this.filteredDataService.publishFilteredAthleteEntries(this._originalCsvData.athleteEntries);
         this.filteredDataService.publishFilteredDisciplines(this._originalCsvData.disciplineEntries.sort(disciplineSortFunction));
-        this.buildFilteredItems();
+        this.filterAthletesOnAllAttributes(this._originalCsvData.athleteEntries);
+        this.filterDisciplinesOnAllAttributes(this._originalCsvData.athleteEntries);
       });
 
     this._editionOptions = [
@@ -187,12 +186,33 @@ export class FilterService {
       }
       return true;
     });
-    this.filteredDataService.publishFilteredAthletes(athleteEntries);
-
-    this.buildFilteredItems();
+    this.filteredDataService.publishFilteredAthleteEntries(athleteEntries);
+    this.filterAthletesOnAllAttributes(athleteEntries);
+    this.filterDisciplinesOnAllAttributes(athleteEntries);
     if (athleteEntries.length > 0) {
       this.selectAthleteFromList(athleteEntries);
     }
+  }
+
+  filterAthletesOnAllAttributes(athleteEntries: AthleteEntry[]) {
+    let athleteSet: Set<string> = new Set<string>();
+    let athletes: Athlete[] = [];
+    athleteEntries.forEach((athleteEntry: AthleteEntry) => {
+      if (!athleteSet.has(athleteEntry.name)) {
+        athleteSet.add(athleteEntry.name);
+        athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc));
+      }
+    });
+    this.filteredDataService.publishFilteredAthletes(athletes);
+  }
+
+
+  filterDisciplinesOnAllAttributes(athleteEntries: AthleteEntry[]) {
+    let disciplineSet: Set<string> = new Set<string>();
+    athleteEntries.forEach((ae: AthleteEntry) => {
+      disciplineSet.add(JSON.stringify(ae.disciplineEntry));
+    });
+    this.filteredDataService.publishFilteredDisciplines(Array.from(disciplineSet).map(el => JSON.parse(el)));
   }
 
   private selectAthleteFromList(filteredAthletes: AthleteEntry[]): void {
@@ -220,7 +240,7 @@ export class FilterService {
       this.filteredDataService.publishSelectedFilteredAthletes(null);
     }
     else {
-      this.filteredDataService.filteredAthletesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
+      this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
         athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
           let entries = athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
           this.filteredDataService.publishSelectedAthlete(selectedAthlete);
@@ -258,43 +278,21 @@ export class FilterService {
     }
     else {
       this.filteredDataService.publishSelectedDiscipline(discipline);
-      this.filteredDataService.filteredAthletesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
+      this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
         athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
           let entries = athleteEntries.filter((athleteEntry: AthleteEntry) => athleteEntry.disciplineEntry.equals(discipline));
           this.filteredDataService.publishSelectedAthlete(null);
           this.filteredDataService.publishSelectedFilteredAthletes(null);
-          this.filteredDataService.publishFilteredAthletes(entries);
+          this.filteredDataService.publishFilteredAthleteEntries(entries);
           this._selectedAthlete = null;
-          this.buildFilteredItems();
+          this.filterAthletesOnAllAttributes(athleteEntries);
+          this.filterDisciplinesOnAllAttributes(athleteEntries);
           if (athleteEntries.length > 0) {
             this.selectAthleteFromList(athleteEntries);
           }
         }
       );
     }
-  }
-
-  private buildFilteredItems() {
-    let athleteSet: Set<string> = new Set<string>();
-    let disciplineSet: Set<string> = new Set<string>();
-    let athletes: Athlete[] =[];
-
-    if (this._filteredAthletesSubsription$) {
-      this._filteredAthletesSubsription$.unsubscribe();
-    }
-    this._filteredAthletesSubsription$ = this.filteredDataService.filteredAthletesSubject.subscribe(
-      fa => {
-        fa.forEach((athleteEntry: AthleteEntry) => {
-          if (!athleteSet.has(athleteEntry.name)) {
-            athleteSet.add(athleteEntry.name);
-            athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc));
-          }
-          disciplineSet.add(JSON.stringify(athleteEntry.disciplineEntry));
-        });
-        this.filteredDataService.publishFilteredAthletes2(athletes); 
-        this.filteredDataService.publishFilteredDisciplines(Array.from(disciplineSet).map(el => JSON.parse(el))); // https://stackoverflow.com/questions/39950597/typescript-set-of-objects
-      }
-    )
   }
 
   private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {
