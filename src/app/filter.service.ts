@@ -7,6 +7,7 @@ import { Athlete } from 'src/models/athlete';
 import { AthleteEntry } from 'src/models/athlete-entry';
 import { take } from 'rxjs/operators';
 import { disciplineSortFunction } from 'src/helpers/discipline-sort-function';
+import { JsonPipe } from '@angular/common';
 
 
 @Injectable({
@@ -274,29 +275,24 @@ export class FilterService {
   }
 
   private buildFilteredItems() {
-    let countrySet = new Set<string>();
-    let personSet = new Set<string>();
+    let athleteSet: Set<string> = new Set<string>();
     let disciplineSet: Set<string> = new Set<string>();
-    let disciplineEntries: DisciplineEntry[] = [];
+    let athletes: Athlete[] =[];
 
     if (this._filteredAthletesSubsription$) {
       this._filteredAthletesSubsription$.unsubscribe();
     }
     this._filteredAthletesSubsription$ = this.filteredDataService.filteredAthletesSubject.subscribe(
       fa => {
-        fa.forEach(athleteEntry => {
-          countrySet.add(this.getRegionForNoc(athleteEntry.noc));
-          personSet.add(athleteEntry.name);
-
-          let disciplineString = `${athleteEntry.disciplineEntry.event}${athleteEntry.disciplineEntry.sport}${athleteEntry.disciplineEntry.sex}`;
-          if (!disciplineSet.has(disciplineString)) {
-            disciplineEntries.push(athleteEntry.disciplineEntry);
-            disciplineSet.add(disciplineString);
+        fa.forEach((athleteEntry: AthleteEntry) => {
+          if (!athleteSet.has(athleteEntry.name)) {
+            athleteSet.add(athleteEntry.name);
+            athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc));
           }
+          disciplineSet.add(JSON.stringify(athleteEntry.disciplineEntry));
         });
-        this.filteredDataService.publishfilteredCountries([...countrySet]);
-        this.filteredDataService.publishfilteredPersons([...personSet]);
-        this.filteredDataService.publishFilteredDisciplines([...disciplineEntries]);
+        this.filteredDataService.publishFilteredAthletes2(athletes); 
+        this.filteredDataService.publishFilteredDisciplines(Array.from(disciplineSet).map(el => JSON.parse(el))); // https://stackoverflow.com/questions/39950597/typescript-set-of-objects
       }
     )
   }

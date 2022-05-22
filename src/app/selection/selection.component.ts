@@ -18,9 +18,11 @@ export class SelectionComponent implements OnInit {
   private _subscription;
   private _subscriptionSelectedAthlete;
   private _disciplinesSubscription;
+  private _selectedDisciplineSubscription: any;
   people: string[] = [];
   virtualPeople: string[];
   selectedAthlete: Athlete;
+  selectedDiscipline: DisciplineEntry;
   disciplines = {};
 
   ngOnDestroy(): void {
@@ -30,13 +32,19 @@ export class SelectionComponent implements OnInit {
     if (this._subscriptionSelectedAthlete) {
       this._subscriptionSelectedAthlete.unsubscribe();
     }
+    if (this._disciplinesSubscription) {
+      this._disciplinesSubscription.unsubscribe();
+    }
+    if (this._selectedDisciplineSubscription) {
+      this._selectedDisciplineSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
-    this._subscription = this.filteredDataService.filteredPersonsSubject.subscribe(
+    this._subscription = this.filteredDataService.filteredAthletes2Subject.subscribe(
       fa => {
-        fa.forEach(athleteEntry => {
-          this.people.push(athleteEntry);
+        fa.forEach((athlete: Athlete) => {
+          this.people.push(athlete.name);
         });
       }
     );
@@ -47,6 +55,9 @@ export class SelectionComponent implements OnInit {
     );
     this._disciplinesSubscription = this.filteredDataService.filteredDisciplinesSubject.subscribe(d => {
       this.disciplines = this.groupDisciplines(d);
+    })
+    this._selectedDisciplineSubscription = this.filteredDataService.selectedDisciplinesSubject.subscribe(d => {
+      this.selectedDiscipline = d;
     })
     this.virtualPeople = Array.from({length: 100});
   }

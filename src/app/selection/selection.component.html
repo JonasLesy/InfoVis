@@ -1,10 +1,10 @@
 <div class="row">
-    <p-virtualScroller [value]="filteredDataService.filteredPersonsSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
+    <p-virtualScroller [value]="filteredDataService.filteredAthletes2Subject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
       <ng-template pTemplate="header">Athletes</ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
-          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person}" (click)="filterService.searchAndSelectFirstAthleteEntryByName(person)">
-            {{person}}
+          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person.name}" (click)="filterService.searchAndSelectFirstAthleteEntryByName(person.name)">
+            {{person.name}}
           </div>
       </ng-template>
       <ng-template let-person pTemplate="loadingItem">
@@ -27,7 +27,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-discipline let-rowIndex="rowIndex">
-            <tr (click)="filterService.searchAndSelectFirstDiscipline(discipline)">
+            <tr (click)="filterService.searchAndSelectFirstDiscipline(discipline)" [ngClass]="{'selected-item': selectedDiscipline && selectedDiscipline.equals(discipline)}">
                 <td style="min-width:200px; border: none; padding: 0" class="person-entry">
                     {{discipline.event}}
                 </td>
