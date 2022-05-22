@@ -25,9 +25,9 @@ export class FilteredDataService {
   }
   
   //Dit zijn de AthleteEntries van de GESELECTEERDE athleet die voldoen aan de gekozen filters.
-  private _selectedFilteredAthletesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
-  public get selectedFilteredAthletesSubject(): ReplaySubject<AthleteEntry[]> {
-    return this._selectedFilteredAthletesSubject;
+  private _selectedFilteredAthleteEntriesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
+  public get selectedFilteredAthleteEntriesSubject(): ReplaySubject<AthleteEntry[]> {
+    return this._selectedFilteredAthleteEntriesSubject;
   }
 
   private _filteredCountriesSubject: ReplaySubject<string[]> = new ReplaySubject<string[]>(1);
@@ -64,8 +64,8 @@ export class FilteredDataService {
     this._filteredAthletesSubject.next(athletes);
   }
 
-  public publishSelectedFilteredAthletes(selectedFilteredAthletes: AthleteEntry[]) {
-    this._selectedFilteredAthletesSubject.next(selectedFilteredAthletes);
+  public publishSelectedFilteredAthleteEntries(selectedFilteredAthletes: AthleteEntry[]) {
+    this._selectedFilteredAthleteEntriesSubject.next(selectedFilteredAthletes);
   }
 
   public publishSelectedAthlete(selectedAthlete: Athlete) {

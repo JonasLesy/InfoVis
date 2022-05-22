@@ -1,5 +1,5 @@
 <p-tabView>
-  <p-tabPanel header="Olympic Entries" [selected]="true">
+  <p-tabPanel *ngIf="selectedAthlete" header="Olympic Entries" >
     <app-olympic-entries></app-olympic-entries>
   </p-tabPanel>
 

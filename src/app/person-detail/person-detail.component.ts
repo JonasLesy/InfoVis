@@ -39,7 +39,7 @@ export class PersonDetailComponent implements OnInit {
         this.selectedAthlete = athlete;
       }
     );
-    this._subscriptionEntries = this.filteredDataService.selectedFilteredAthletesSubject.subscribe(
+    this._subscriptionEntries = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
       athleteEntries => {
         this.athleteEntries = athleteEntries;
         // this.refreshTable();
@@ -64,7 +64,7 @@ export class PersonDetailComponent implements OnInit {
 
   private setMedalsData() {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
-    this._medalsSubscription = this.filteredDataService.selectedFilteredAthletesSubject.subscribe(
+    this._medalsSubscription = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
       fa => {
         if (fa) {
           let goldCount = countOccurrences(fa, "Gold");

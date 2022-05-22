@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
   private setMedalsData() {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
-    this._subscription = this.filteredDataService.selectedFilteredAthletesSubject.subscribe(
+    this._subscription = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
       fa => {
         if (fa) {
           let goldCount = countOccurrences(fa, "Gold");

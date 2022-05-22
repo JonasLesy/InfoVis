@@ -188,9 +188,6 @@ export class FilterService {
     this.filteredDataService.publishFilteredAthleteEntries(athleteEntries);
     this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries);
     this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries);
-    // if (athleteEntries.length > 0) {
-    //   this.selectAthleteFromList(athleteEntries);
-    // }
   }
 
   filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries: AthleteEntry[]) {
@@ -258,8 +255,9 @@ export class FilterService {
       this._selectedAthlete = null;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
-        this.filteredDataService.publishSelectedAthlete(null);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedAthlete(this._selectedAthlete);
+        let selectedFilteredAthletes = a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline))));
+        this.filteredDataService.publishSelectedFilteredAthleteEntries(selectedFilteredAthletes);
       });
     }
     else {
@@ -267,8 +265,8 @@ export class FilterService {
       this._selectedAthlete = selectedAthlete;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
-        this.filteredDataService.publishSelectedAthlete(selectedAthlete);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedAthlete(this._selectedAthlete);
+        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
   }
@@ -278,16 +276,16 @@ export class FilterService {
       this._selectedDiscipline = null;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(a);
-        this.filteredDataService.publishSelectedDiscipline(discipline);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedDiscipline(this._selectedDiscipline);
+        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
     else {
       this._selectedDiscipline = discipline;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(a);
-        this.filteredDataService.publishSelectedDiscipline(discipline);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedDiscipline(this._selectedDiscipline);
+        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
   }

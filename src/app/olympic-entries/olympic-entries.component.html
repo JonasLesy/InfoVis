@@ -1,5 +1,5 @@
 <h5>Olympic entries</h5>
-            <p-table [value]="filteredDataService.selectedFilteredAthletesSubject | async" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" responsiveLayout="scroll">
+            <p-table [value]="selectedFilteredAthleteEntries" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="year" style="min-width:20px">Year <p-sortIcon field="year"></p-sortIcon></th>
@@ -14,7 +14,7 @@
                         <td style="min-width: 80%">
                             <div style="text-align: right; width: 100%">Total entries: </div>
                         </td>
-                        <td style="width: 20%">{{(filteredDataService.selectedFilteredAthletesSubject | async)?.length}}</td>
+                        <td style="width: 20%">{{(selectedFilteredAthleteEntries)?.length}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-athleteEntry let-rowIndex="rowIndex">
@@ -26,10 +26,10 @@
                             {{athleteEntry.city}}
                         </td>
                         <td style="min-width:250px">
-                            {{athleteEntry.sport}}
+                            {{athleteEntry.disciplineEntry.sport}}
                         </td>
                         <td style="min-width:350px">
-                            {{athleteEntry.event}}
+                            {{athleteEntry.disciplineEntry.event}}
                         </td>
                         <td style="min-width:25px">
                             <span class="medal-icon" [ngClass]="{'bronze': athleteEntry.medal === 'Bronze', 'silver': athleteEntry.medal === 'Silver', 'gold': athleteEntry.medal === 'Gold' }"></span>
