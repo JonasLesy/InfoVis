@@ -27,7 +27,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-discipline let-rowIndex="rowIndex">
-            <tr (click)="filterService.searchAndSelectFirstDiscipline(discipline)" [ngClass]="{'selected-item': selectedDiscipline && selectedDiscipline.equals(discipline)}">
+            <tr (click)="filterService.searchAndSelectFirstDiscipline(discipline)" [ngClass]="{'selected-item': selectedDiscipline && disciplineEntriesEqual(selectedDiscipline, discipline)}">
                 <td style="min-width:200px; border: none; padding: 0" class="person-entry">
                     {{discipline.event}}
                 </td>

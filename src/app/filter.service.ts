@@ -188,17 +188,17 @@ export class FilterService {
     this.filteredDataService.publishFilteredAthleteEntries(athleteEntries);
     this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries);
     this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries);
-    if (athleteEntries.length > 0) {
-      this.selectAthleteFromList(athleteEntries);
-    }
+    // if (athleteEntries.length > 0) {
+    //   this.selectAthleteFromList(athleteEntries);
+    // }
   }
 
   filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries: AthleteEntry[]) {
     let athleteSet: Set<string> = new Set<string>();
     let athletes: Athlete[] = [];
     athleteEntries.forEach((athleteEntry: AthleteEntry) => {
-      if (this._selectedDiscipline) {
-        if (this._selectedDiscipline.equals(athleteEntry.disciplineEntry)) {
+      if (this._selectedDiscipline && athleteEntry.disciplineEntry) {
+        if (this.disciplineEntriesEqual(this._selectedDiscipline, athleteEntry.disciplineEntry)) {
           if (!athleteSet.has(athleteEntry.name)) {
             athleteSet.add(athleteEntry.name);
             athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc));
@@ -215,6 +215,13 @@ export class FilterService {
     this.filteredDataService.publishFilteredAthletes(athletes);
   }
 
+  public disciplineEntriesEqual(disciplineEntry1: DisciplineEntry, disciplineEntry2: DisciplineEntry): boolean {
+    let result = disciplineEntry1.sport === disciplineEntry2.sport && disciplineEntry1.event === disciplineEntry2.event && disciplineEntry1.sex === disciplineEntry2.sex;
+    if (result) {
+      return true;
+    }
+    return false;
+  }
 
   filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries: AthleteEntry[]) {
     let disciplineSet: Set<string> = new Set<string>();
@@ -232,10 +239,7 @@ export class FilterService {
   }
 
   private selectAthleteFromList(filteredAthletes: AthleteEntry[]): void {
-    if (this._selectAthleteFromListSubscription$) {
-      this._selectAthleteFromListSubscription$.unsubscribe();
-    }
-    this._selectAthleteFromListSubscription$ = this.filteredDataService.selectedAthleteSubject.pipe(take(1)).subscribe(a => { // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden. In searchAndSelectFirstAthleteEntryByName gaan we namelijk een nieuwe waarde publishen op de selectedAthleteSubject waardoor ook de subscribe methode opnieuw zou worden uitgevoerd (en opnieuw en opnieuw en opnieuw en opnieuw 0:22 https://www.youtube.com/watch?v=F6CIlxDryJY)
+    this.filteredDataService.selectedAthleteSubject.pipe(take(1)).subscribe(a => { // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden. In searchAndSelectFirstAthleteEntryByName gaan we namelijk een nieuwe waarde publishen op de selectedAthleteSubject waardoor ook de subscribe methode opnieuw zou worden uitgevoerd (en opnieuw en opnieuw en opnieuw en opnieuw 0:22 https://www.youtube.com/watch?v=F6CIlxDryJY)
       if (a) {
         let selectedAthlete: Athlete = a;
         let selectedAthleteInFilteredAthletes = filteredAthletes.find(a => a.id == selectedAthlete.id);
@@ -250,12 +254,12 @@ export class FilterService {
   }
 
   searchAndSelectFirstAthleteEntryByName(athleteName: string): void {
-    if (this._selectedAthlete.name === athleteName) {
+    if (this._selectedAthlete && this._selectedAthlete.name === athleteName) {
       this._selectedAthlete = null;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
         this.filteredDataService.publishSelectedAthlete(null);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && ae.disciplineEntry.equals(this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
     else {
@@ -264,34 +268,18 @@ export class FilterService {
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
         this.filteredDataService.publishSelectedAthlete(selectedAthlete);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && ae.disciplineEntry.equals(this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
-    // if (selectedAthlete.id === this._selectedAthlete?.id) {
-    //   this.filteredDataService.publishSelectedAthlete(null);
-    //   this.filteredDataService.publishSelectedFilteredAthletes(null);
-    // }
-    // else {
-    //   this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
-    //     athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
-    //       let entries = athleteEntries.filter(athleteEntry => athleteEntry.id === selectedAthlete.id);
-    //       this.filteredDataService.publishSelectedAthlete(selectedAthlete);
-    //       this.filteredDataService.publishSelectedFilteredAthletes(entries);
-    //       this._selectedAthlete = selectedAthlete;
-    //     }
-    //   );
-    // }
-
-
   }
 
   searchAndSelectFirstDiscipline(discipline: DisciplineEntry) {
-    if (this._selectedDiscipline && this._selectedDiscipline.equals(discipline)) {
+    if (this._selectedDiscipline && this.disciplineEntriesEqual(this._selectedDiscipline, discipline)) {
       this._selectedDiscipline = null;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(a);
         this.filteredDataService.publishSelectedDiscipline(discipline);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && ae.disciplineEntry.equals(this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
     else {
@@ -299,30 +287,9 @@ export class FilterService {
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(a);
         this.filteredDataService.publishSelectedDiscipline(discipline);
-        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && ae.disciplineEntry.equals(this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedFilteredAthletes(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
-    // if (this._selectedDiscipline && this._selectedDiscipline.event === discipline.event && this._selectedDiscipline.sex === discipline.sex && this._selectedDiscipline.sport === discipline.sport) {
-    //   this.filteredDataService.publishSelectedDiscipline(null);
-    //   this.searchAndSelectFirstAthleteEntryByName(this._selectedAthlete.name);
-    // }
-    // else {
-    //   this.filteredDataService.publishSelectedDiscipline(discipline);
-    //   this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe( // take(1) is HEEL belangrijk hier. Anders komen we in een infinite loop terecht omdat de subscribe methode anders blijft uitgevoerd worden omdat we in deze subscribe methode zelf ook entries publishen op de subject. take(1) zorgt ervoor dat de subscribe maar max 1 keer gedaan wordt.
-    //     athleteEntries => { // We gebruiken hier de athleteEntries komende van de filteredAthletesSubject i.p.v. uit de csv. Anders voldoet de tabel met medaille-entries niet aan de filter.
-    //       let entries = athleteEntries.filter((athleteEntry: AthleteEntry) => athleteEntry.disciplineEntry.equals(discipline));
-    //       this.filteredDataService.publishSelectedAthlete(null);
-    //       this.filteredDataService.publishSelectedFilteredAthletes(null);
-    //       this.filteredDataService.publishFilteredAthleteEntries(entries);
-    //       this._selectedAthlete = null;
-    //       this.filterAthletesOnAllAttributes(athleteEntries);
-    //       this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries);
-    //       if (athleteEntries.length > 0) {
-    //         this.selectAthleteFromList(athleteEntries);
-    //       }
-    //     }
-    //   );
-    // }
   }
 
   calculateMedalsForCountryForYearRange(country: string, startYear: number, endYear: number): [Map<number, number>, Map<number, number>, Map<number, number>] {

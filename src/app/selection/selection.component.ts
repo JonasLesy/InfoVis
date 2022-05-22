@@ -83,4 +83,12 @@ export class SelectionComponent implements OnInit {
     }, {});
   }
 
+  public disciplineEntriesEqual(disciplineEntry1: DisciplineEntry, disciplineEntry2: DisciplineEntry): boolean {
+    let result = disciplineEntry1.sport === disciplineEntry2.sport && disciplineEntry1.event === disciplineEntry2.event && disciplineEntry1.sex === disciplineEntry2.sex;
+    if (result) {
+      return true;
+    }
+    return false;
+  }
+
 }
