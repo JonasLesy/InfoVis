@@ -10,7 +10,6 @@ import { Athlete } from 'src/models/athlete';
   providedIn: 'root'
 })
 export class FilteredDataService {
-
   //Subscriptions waarop components zich kunnen subscriben om op de hoogte gebracht te worden van dataveranderingen.
 
   // Dit zijn ALLE AthleteEntries die voldoen aan de gekozen filters (voor alle Athleten dus)
@@ -19,11 +18,21 @@ export class FilteredDataService {
     return this._filteredAthleteEntriesSubject;
   }
 
+  private _chosenEditionSubject: ReplaySubject<string> = new ReplaySubject<string>(1);
+  public get chosenEditionSubject(): ReplaySubject<string> {
+    return this._chosenEditionSubject;
+  }
+
+  private _chosenSexSubject: ReplaySubject<string> = new ReplaySubject<string>(1);
+  public get chosenSexSubject(): ReplaySubject<string> {
+    return this._chosenSexSubject;
+  }
+
   private _filteredAthletesSubject: ReplaySubject<Athlete[]> = new ReplaySubject<Athlete[]>(1);
   public get filteredAthletesSubject(): ReplaySubject<Athlete[]> {
     return this._filteredAthletesSubject;
   }
-  
+
   //Dit zijn de AthleteEntries van de GESELECTEERDE athleet die voldoen aan de gekozen filters.
   private _selectedFilteredAthleteEntriesSubject: ReplaySubject<AthleteEntry[]> = new ReplaySubject<AthleteEntry[]>(1);
   public get selectedFilteredAthleteEntriesSubject(): ReplaySubject<AthleteEntry[]> {
@@ -82,6 +91,14 @@ export class FilteredDataService {
 
   public publishfilteredCountries(countries: string[]) {
     this._filteredCountriesSubject.next(countries);
+  }
+
+  public publishChosenEdition(chosenEdition: string) {
+    this._chosenEditionSubject.next(chosenEdition)
+  }
+
+  public publishChosenSex(chosenSex: string) {
+    this._chosenSexSubject.next(chosenSex)
   }
 
   constructor() { }

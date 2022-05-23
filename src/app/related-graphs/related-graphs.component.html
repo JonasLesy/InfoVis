@@ -1,10 +1,9 @@
 <p-tabView>
-  <p-tabPanel *ngIf="selectedAthlete" header="Olympic Entries" >
+  <p-tabPanel *ngIf="selectedAthlete" header="Olympic Entries" [selected]="selectedAthlete" >
     <app-olympic-entries></app-olympic-entries>
   </p-tabPanel>
 
-  <p-tabPanel header="Country Medals">
+  <p-tabPanel header="Country Medals" [selected]="!selectedAthlete">
     <app-related-graph-country-medals></app-related-graph-country-medals>
   </p-tabPanel>
-  <p-tabPanel header="To Create">Just a placeholder...</p-tabPanel>
 </p-tabView>

@@ -15,10 +15,18 @@ import { disciplineSortFunction } from 'src/helpers/discipline-sort-function';
 export class FilterService {
   private _originalCsvData: CsvData;
   private _selectAthleteFromListSubscription$;
-  private _selectedAthlete: Athlete;
-  private _selectedDiscipline: DisciplineEntry;
 
   //Dit zijn velden specifiek voor de filter. Hierop kunnen de properties in de view zich binden
+  private _selectedAthlete: Athlete;
+  public get selectedAthlete(): Athlete {
+    return this._selectedAthlete;
+  }
+
+  private _selectedDiscipline: DisciplineEntry;
+  public get selectedDiscipline(): DisciplineEntry {
+    return this._selectedDiscipline;
+  }
+
   private _countrySuggestions: string[] = [];
   public get countrySuggestions(): string[] {
     return this._countrySuggestions;
@@ -185,6 +193,8 @@ export class FilterService {
       }
       return true;
     });
+    this.filteredDataService.publishChosenEdition(this._chosenEdition);
+    this.filteredDataService.publishChosenSex(this.chosenSex);
     this.filteredDataService.publishFilteredAthleteEntries(athleteEntries);
     this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries);
     this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries);
@@ -290,11 +300,11 @@ export class FilterService {
     }
   }
 
-  calculateMedalsForCountryForYearRange(country: string, startYear: number, endYear: number): [Map<number, number>, Map<number, number>, Map<number, number>] {
+  calculateMedalsForCountryForYearRange(country: string, startYear: number, endYear: number, selectedDiscipline: DisciplineEntry, season: string, chosenSex: string): [Map<number, number>, Map<number, number>, Map<number, number>] {
     let bronzeList: Map<number, number> = new Map<number, number>();
     let silverList: Map<number, number> = new Map<number, number>();
     let goldList: Map<number, number> = new Map<number, number>();
-    let countryAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.noc === country && athleteEntry.year >= startYear && athleteEntry.year <= endYear);
+    let countryAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (!season || season === 'all' || athleteEntry.season === season) && athleteEntry.noc === country && athleteEntry.year >= startYear && athleteEntry.year <= endYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline)));
     countryAtheteEntries.map(countryAtheteEntry => {
       let entryYear = countryAtheteEntry.year;
       if (countryAtheteEntry.medal === "Bronze") {

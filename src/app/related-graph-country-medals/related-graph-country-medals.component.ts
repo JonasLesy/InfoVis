@@ -1,3 +1,4 @@
+import { DisciplineEntry } from 'src/models/discipline-entry';
 import { Component, OnInit } from '@angular/core';
 import { Athlete } from 'src/models/athlete';
 import { FilterService } from '../filter.service';
@@ -10,26 +11,45 @@ import { FilteredDataService } from '../filtered-data.service';
 })
 export class RelatedGraphCountryMedalsComponent implements OnInit {
 
-  private _subscription;
+  private subscriptions = [];
   public selectedAthlete: Athlete;
+  public selectedDiscipline: DisciplineEntry;
+  public chosenEdition: string;
   stackedMedalData: any;
   stackedMedalOptions: any;
+  chosenSex: any;
 
   constructor(public filteredDataService: FilteredDataService, public filterService: FilterService) { }
 
   ngOnDestroy(): void {
-    if (this._subscription) {
-      this._subscription.unsubscribe();
-    }
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   ngOnInit(): void {
-    this._subscription = this.filteredDataService.selectedAthleteSubject.subscribe(
+    this.subscriptions.push(this.filteredDataService.selectedAthleteSubject.subscribe(
       athlete => {
         this.selectedAthlete = athlete;
         this.buildCountryMedals();
       }
-    );
+    ));
+    this.subscriptions.push(this.filteredDataService.selectedDisciplinesSubject.subscribe(
+      discipline => {
+        this.selectedDiscipline = discipline;
+        this.buildCountryMedals();
+      }
+    ));
+    this.subscriptions.push(this.filteredDataService.chosenEditionSubject.subscribe(
+      edition => {
+        this.chosenEdition = edition;
+        this.buildCountryMedals();
+      }
+    ));
+    this.subscriptions.push(this.filteredDataService.chosenSexSubject.subscribe(
+      sex => {
+        this.chosenSex = sex;
+        this.buildCountryMedals();
+      }
+    ));
     this.buildCountryMedals();
   }
 
@@ -50,7 +70,7 @@ export class RelatedGraphCountryMedalsComponent implements OnInit {
     let goldList: number[] = [];
     if (this.selectedAthlete) {
       // this service method returns [bronzeDict, silverDict, goldDict]-dictionaries, they have an easy way to retrieve gold medals for year X: e.g. X = 2020, desired type is gold medals: goldDict.2020
-      let resultList = this.filterService.calculateMedalsForCountryForYearRange(this.selectedAthlete.noc, this.filterService.yearRange[0], this.filterService.yearRange[1]);
+      let resultList = this.filterService.calculateMedalsForCountryForYearRange(this.selectedAthlete.noc, this.filterService.yearRange[0], this.filterService.yearRange[1], this.selectedDiscipline, this.chosenEdition, this.chosenSex);
       console.log(resultList);
       let bronzeEntries: Map<number, number> = resultList[0];
       let silverEntries: Map<number, number> = resultList[1];
