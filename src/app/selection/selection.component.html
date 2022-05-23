@@ -13,7 +13,7 @@
     </p-virtualScroller>
 </div>
 <div class="row">
-  <p-table [value]="filteredDataService.filteredDisciplinesSubject | async" sortField="sport" sortMode="single" [scrollable]="true" scrollHeight="500px" rowGroupMode="subheader" groupRowsBy="sport" responsiveLayout="scroll">
+  <p-table [value]="filteredDataService.filteredDisciplinesSubject | async" [customSort]="true" (sortFunction)="customSort($event)" sortMode="single" [scrollable]="true" scrollHeight="500px" rowGroupMode="subheader" groupRowsBy="sport" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
             <th>Disciplines</th>

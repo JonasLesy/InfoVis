@@ -2,7 +2,7 @@ import { DisciplineEntry } from 'src/models/discipline-entry';
 import { FilteredDataService } from './../filtered-data.service';
 import { FilterService } from './../filter.service';
 import { Component, OnInit } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api'; 
+import { LazyLoadEvent, SortEvent } from 'primeng/api'; 
 import { Athlete } from 'src/models/athlete';
 
 @Component({
@@ -89,6 +89,28 @@ export class SelectionComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  customSort(event: SortEvent) {
+    event.data.sort((data1: DisciplineEntry, data2: DisciplineEntry) => {
+      let sport1 = data1.sport;
+      let sport2 = data2.sport;
+
+      if (sport1 === sport2) {
+        if (data1.event >= data2.event) {
+          return 1;
+        }
+        else if (data1.event < data2.event) {
+          return -1
+        }
+        else {
+          return 0;
+        }
+      }
+      else {
+        return (sport1 > sport2)? 1 : -1;
+      }
+    });
   }
 
 }
