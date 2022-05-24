@@ -5,6 +5,7 @@
   </p-tabPanel>
 
   <p-tabPanel header="Country Medals">
-    <app-related-graph-country-medals></app-related-graph-country-medals>
+    <app-related-graph-country-medals *ngIf="selectedAthlete"></app-related-graph-country-medals>
+    <p *ngIf="!selectedAthlete">Please select an athlete first.</p>
   </p-tabPanel>
 </p-tabView>
