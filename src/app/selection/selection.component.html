@@ -1,10 +1,10 @@
 <div class="row">
-    <p-virtualScroller [value]="filteredDataService.filteredPersonsSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
+    <p-virtualScroller [value]="filteredDataService.filteredAthletesSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
       <ng-template pTemplate="header">Athletes</ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
-          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person}" (click)="this.filterService.searchAndSelectFirstAthleteEntryByName(person)">
-            {{person}}
+          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person.name}" (click)="filterService.searchAndSelectFirstAthleteEntryByName(person.name)">
+            {{person.name}}
           </div>
       </ng-template>
       <ng-template let-person pTemplate="loadingItem">
@@ -13,12 +13,25 @@
     </p-virtualScroller>
 </div>
 <div class="row">
-    <p-virtualScroller [value]="filteredDataService.filteredCountriesSubject" scrollHeight="500px" [itemSize]="25">
-      <ng-template pTemplate="header">Countries</ng-template>
-      <ng-template pTemplate="item" let-country>
-        <div class="country-entry">
-          {{country}}
-        </div>
-      </ng-template>
-    </p-virtualScroller>
+  <p-table [value]="filteredDataService.filteredDisciplinesSubject | async" [customSort]="true" (sortFunction)="customSort($event)" sortMode="single" [scrollable]="true" scrollHeight="500px" rowGroupMode="subheader" groupRowsBy="sport" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Disciplines</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="groupheader" let-discipline>
+            <tr pRowGroupHeader>
+                <td colspan="5" style="border: none; padding: 0;" class="person-entry">
+                    <span class="font-bold ml-2" style="font-weight: bold; margin-top: 15px; margin-bottom: 5px;">{{discipline.sport}}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-discipline let-rowIndex="rowIndex">
+            <tr (click)="filterService.searchAndSelectFirstDiscipline(discipline)">
+                <td style="min-width:200px; border: none; padding: 0; padding-left: 10px;" class="person-entry" [ngClass]="{'selected-item': selectedDiscipline && disciplineEntriesEqual(selectedDiscipline, discipline)}">
+                    {{discipline.event}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
