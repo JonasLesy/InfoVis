@@ -304,7 +304,7 @@ export class FilterService {
     let bronzeList: Map<number, number> = new Map<number, number>();
     let silverList: Map<number, number> = new Map<number, number>();
     let goldList: Map<number, number> = new Map<number, number>();
-    let countryAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (((!season || season === 'all') || (athleteEntry.season === season)) && athleteEntry.noc === country && athleteEntry.year >= startYear && athleteEntry.year <= endYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline))));
+    let countryAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (((!season || season === 'all') || (athleteEntry.season === season)) && athleteEntry.noc === country && ((!chosenSex || chosenSex === 'all') || (athleteEntry.sex === chosenSex)) && athleteEntry.year >= startYear && athleteEntry.year <= endYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline))));
     countryAtheteEntries.map(countryAtheteEntry => {
       let entryYear = countryAtheteEntry.year;
       if (countryAtheteEntry.medal === "Bronze") {
@@ -316,6 +316,63 @@ export class FilterService {
       }
     })
     return [bronzeList, silverList, goldList];
+  }
+
+  calculateAverageAgesForYearRange(startYear: number, endYear: number, selectedDiscipline: DisciplineEntry, season: string, chosenSex: string): [Map<number, number>, Map<number, number>, Map<number, number>] {
+    let maleList: Map<number, number> = new Map<number, number>();
+    let femaleList: Map<number, number> = new Map<number, number>();
+    let totalList: Map<number, number> = new Map<number, number>();
+    let currentYear = startYear;
+    while (currentYear <= endYear) {
+      // First get athleteEntries in current year
+      let yearRangeAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (((!season || season === 'all') || (athleteEntry.season === season)) && athleteEntry.year === currentYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline))));
+      // Get all unique IDs, we don't want to use the same athlete twice!
+      let uniqueEntries = yearRangeAtheteEntries.filter((e, i) => {
+        return yearRangeAtheteEntries.findIndex((x) => {
+        return x.id == e.id && x.name == e.name;}) == i;
+
+    });
+      //const uniqueEntries = new Set(yearRangeAtheteEntries.map(athleteEntry => (athleteEntry.id, athleteEntry.name)));
+      let maleAges: number[] = [];
+      let femaleAges: number[] = [];
+      uniqueEntries.map(athleteEntry => {
+        //console.log("Got id: " + id);
+        //let athleteEntry = yearRangeAtheteEntries.find(athleteEntry => id = athleteEntry.id && athleteEntry.name === name);
+        if (athleteEntry && athleteEntry.age && athleteEntry.age !== undefined) {
+          if (athleteEntry.sex === 'M') {
+            maleAges.push(athleteEntry.age);
+            //console.log('Found male');
+          } else {
+            femaleAges.push(athleteEntry.age);
+            //console.log('Found female');
+          }
+        }
+      });
+
+      const sumMales = maleAges.reduce((accumulator, current) => {
+        return accumulator + current;
+      }, 0);
+
+      const sumFemales = femaleAges.reduce((accumulator, current) => {
+        return accumulator + current;
+      }, 0);
+      //console.log("Got date for " + currentYear + " sumMales: " + sumMales + " sumFemales: " + sumFemales);
+      if (maleAges.length != 0) {
+        maleList.set(currentYear, sumMales / maleAges.length);
+      }
+      if (femaleAges.length != 0) {
+        femaleList.set(currentYear, sumFemales / femaleAges.length);
+      }
+      let totalSize = maleAges.length + femaleAges.length;
+      if (totalSize != 0) {
+        totalList.set(currentYear, (sumMales + sumFemales) / totalSize);
+      }
+
+      currentYear += 2;
+    }
+
+
+    return [maleList, femaleList, totalList];
   }
 
   private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {

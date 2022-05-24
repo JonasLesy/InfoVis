@@ -19,6 +19,7 @@
       <div class="col-md-2">
         <h5 class="text-center">Search person:</h5>
         <div class="row">
+          <span class="p-fluid">
           <p-autoComplete
             [(ngModel)]="filterService.peopleToFilterOn"
             [suggestions]="filterService.peopleSuggestions"
@@ -30,8 +31,9 @@
             [forceSelection]="true"
             styleClass="olympic-autocomplete"
             (keyup)="athleteInputChanged($event.target.value)"
-          ></p-autoComplete>
+          ></p-autoComplete></span>
           <p class="athlete-input-warning" *ngIf="athleteInput.length === 1">Enter at least 2 characters</p>
+        
         </div>
       </div>
       <div class="col-md-2">

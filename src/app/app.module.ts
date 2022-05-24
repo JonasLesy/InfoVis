@@ -23,6 +23,7 @@ import { PersonDetailComponent } from './person-detail/person-detail.component';
 import { RelatedGraphCountryMedalsComponent } from './related-graph-country-medals/related-graph-country-medals.component';
 import { RelatedGraphsComponent } from './related-graphs/related-graphs.component';
 import { OlympicEntriesComponent } from './olympic-entries/olympic-entries.component';
+import { RelatedGraphAverageAgeComponent } from './related-graph-average-age/related-graph-average-age.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { OlympicEntriesComponent } from './olympic-entries/olympic-entries.compo
     PersonDetailComponent,
     RelatedGraphCountryMedalsComponent,
     RelatedGraphsComponent,
-    OlympicEntriesComponent
+    OlympicEntriesComponent,
+    RelatedGraphAverageAgeComponent
   ],
   imports: [
     BrowserModule,

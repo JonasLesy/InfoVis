@@ -3,9 +3,11 @@
     <app-olympic-entries *ngIf="selectedAthlete"></app-olympic-entries>
     <p *ngIf="!selectedAthlete">Please select an athlete first.</p>
   </p-tabPanel>
-
   <p-tabPanel header="Country Medals">
     <app-related-graph-country-medals *ngIf="selectedAthlete"></app-related-graph-country-medals>
     <p *ngIf="!selectedAthlete">Please select an athlete first.</p>
+  </p-tabPanel>
+  <p-tabPanel header="Average ages">
+    <app-related-graph-average-age></app-related-graph-average-age>
   </p-tabPanel>
 </p-tabView>
