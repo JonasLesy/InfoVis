@@ -11,7 +11,7 @@ export class MedalChartComponent implements OnInit, OnChanges {
   @Input() medalData: number[];
   @Input() medalConfig: any; //Array [3, 2, 4] means: 3 gold medals, 2 silver medals and 4 bronze medals
   colorScheme = {
-    domain: ['#D4AF37', '#AAA9AD', '#B08D57']
+    domain: ['#FDD130', '#B8B8B8', '#C47435']
   };
 
   private _subscription;
@@ -44,7 +44,7 @@ export class MedalChartComponent implements OnInit, OnChanges {
         {
           data: this.medalData,
           backgroundColor: [
-            '#D4AF37', '#AAA9AD', '#B08D57'
+            '#FDD130', '#B8B8B8', '#C47435'
           ]
         }
       ]

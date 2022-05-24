@@ -1,5 +1,5 @@
 <h5>Olympic entries</h5>
-            <p-table [value]="selectedFilteredAthleteEntries" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" responsiveLayout="scroll">
+            <p-table [value]="selectedFilteredAthleteEntries" sortField="year" [sortOrder]="-1" sortMode="single" [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader" responsiveLayout="scroll" [exportHeader]="'customExportHeader'">
                 <ng-template pTemplate="header">
                     <tr>
                         <th pSortableColumn="year" style="min-width:20px">Year <p-sortIcon field="year"></p-sortIcon></th>
@@ -15,6 +15,7 @@
                             <div style="text-align: right; width: 100%">Total entries: </div>
                         </td>
                         <td style="width: 20%">{{(selectedFilteredAthleteEntries)?.length}}</td>
+                        <td><button type="button" pButton pRipple (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"><i class="pi pi-download" style="font-size: 2rem"></i></button></td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-athleteEntry let-rowIndex="rowIndex">
