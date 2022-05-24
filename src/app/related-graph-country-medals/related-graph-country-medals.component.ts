@@ -74,15 +74,13 @@ export class RelatedGraphCountryMedalsComponent implements OnInit {
       console.log(resultList);
       let bronzeEntries: Map<number, number> = resultList[0];
       let silverEntries: Map<number, number> = resultList[1];
-      let golEntries: Map<number, number> = resultList[2];
-
-      let largestMedalCount = 0;
+      let goldEntries: Map<number, number> = resultList[2];
 
       for (let i = 0; i <= yearList.length; i ++) {
         let currentYear = yearList[i];
-        bronzeList.push((bronzeEntries.has(currentYear)) ? bronzeList.push(bronzeEntries.get(currentYear)) : 0);
-        silverList.push((silverEntries.has(currentYear)) ? silverList.push(silverEntries.get(currentYear)) : 0);
-        goldList.push((golEntries.has(currentYear)) ? goldList.push(golEntries.get(currentYear)) : 0);
+        bronzeList.push((bronzeEntries.has(currentYear)) ? bronzeEntries.get(currentYear) : 0);
+        silverList.push((silverEntries.has(currentYear)) ? silverEntries.get(currentYear) : 0);
+        goldList.push((goldEntries.has(currentYear)) ? goldEntries.get(currentYear) : 0);
       }
     }
     return [bronzeList, silverList, goldList];
@@ -96,17 +94,17 @@ export class RelatedGraphCountryMedalsComponent implements OnInit {
       datasets: [{
           type: 'bar',
           label: 'Bronze medals',
-          backgroundColor: '#D4AF37',
+          backgroundColor: '#C47435',
           data: medalLists[0]
       }, {
           type: 'bar',
           label: 'Silver medals',
-          backgroundColor: '#AAA9AD',
+          backgroundColor: '#B8B8B8',
           data: medalLists[1]
       }, {
           type: 'bar',
           label: 'Gold medals',
-          backgroundColor: '#B08D57',
+          backgroundColor: '#FDD130',
           data: medalLists[2]
       }]
     };

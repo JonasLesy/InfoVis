@@ -304,15 +304,15 @@ export class FilterService {
     let bronzeList: Map<number, number> = new Map<number, number>();
     let silverList: Map<number, number> = new Map<number, number>();
     let goldList: Map<number, number> = new Map<number, number>();
-    let countryAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (!season || season === 'all' || athleteEntry.season === season) && athleteEntry.noc === country && athleteEntry.year >= startYear && athleteEntry.year <= endYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline)));
+    let countryAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (((!season || season === 'all') || (athleteEntry.season === season)) && athleteEntry.noc === country && athleteEntry.year >= startYear && athleteEntry.year <= endYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline))));
     countryAtheteEntries.map(countryAtheteEntry => {
       let entryYear = countryAtheteEntry.year;
       if (countryAtheteEntry.medal === "Bronze") {
         bronzeList.set(entryYear, ((bronzeList.has(entryYear)) ? bronzeList.get(entryYear) + 1 : 1));
       } else if (countryAtheteEntry.medal === "Silver") {
-        silverList.set(entryYear, ((bronzeList.has(entryYear)) ? silverList.get(entryYear) + 1 : 1));
+        silverList.set(entryYear, ((silverList.has(entryYear)) ? silverList.get(entryYear) + 1 : 1));
       } else if (countryAtheteEntry.medal === "Gold") {
-        goldList.set(entryYear, ((bronzeList.has(entryYear)) ? goldList.get(entryYear) + 1 : 1));
+        goldList.set(entryYear, ((goldList.has(entryYear)) ? goldList.get(entryYear) + 1 : 1));
       }
     })
     return [bronzeList, silverList, goldList];
