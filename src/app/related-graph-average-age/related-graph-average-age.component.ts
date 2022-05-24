@@ -18,6 +18,7 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
   averageAgesData: any;
   averageAgesOptions: any;
   chosenSex: any;
+  chosenCountries: string[] =  [];
 
   ngOnInit(): void {
     this.subscriptions.push(this.filteredDataService.selectedAthleteSubject.subscribe(
@@ -40,6 +41,12 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
     this.subscriptions.push(this.filteredDataService.chosenSexSubject.subscribe(
       sex => {
         this.chosenSex = sex;
+        this.buildAverageAges();
+      }
+    ));
+    this.subscriptions.push(this.filteredDataService.filteredCountriesSubject.subscribe(
+      chosenCountries => {
+        this.chosenCountries = chosenCountries;
         this.buildAverageAges();
       }
     ));
@@ -67,7 +74,7 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
     let totalList: number[] = [];
 
     // this service method returns [maleDict, femaleDict, totalDict]-dictionaries, they have an easy way to retrieve average age for year X: e.g. X = 2020, desired type is male: maleDict.2020
-    let resultList = this.filterService.calculateAverageAgesForYearRange(this.filterService.yearRange[0], this.filterService.yearRange[1], this.selectedDiscipline, this.chosenEdition, this.chosenSex);
+    let resultList = this.filterService.calculateAverageAgesForYearRange(this.filterService.yearRange[0], this.filterService.yearRange[1], this.selectedDiscipline, this.chosenEdition, this.chosenSex, this.chosenCountries);
     console.log(resultList);
     let maleEntries: Map<number, number> = resultList[0];
     let femaleEntries: Map<number, number> = resultList[1];

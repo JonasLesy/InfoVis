@@ -318,14 +318,19 @@ export class FilterService {
     return [bronzeList, silverList, goldList];
   }
 
-  calculateAverageAgesForYearRange(startYear: number, endYear: number, selectedDiscipline: DisciplineEntry, season: string, chosenSex: string): [Map<number, number>, Map<number, number>, Map<number, number>] {
+  calculateAverageAgesForYearRange(startYear: number, endYear: number, selectedDiscipline: DisciplineEntry, season: string, chosenSex: string, chosenCountries: string[]): [Map<number, number>, Map<number, number>, Map<number, number>] {
     let maleList: Map<number, number> = new Map<number, number>();
     let femaleList: Map<number, number> = new Map<number, number>();
     let totalList: Map<number, number> = new Map<number, number>();
+    let matchesFiltersAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (((!season || season === 'all') || (athleteEntry.season === season)) && (chosenCountries.length == 0 || chosenCountries.includes(athleteEntry.noc)) && ((!chosenSex || chosenSex === 'all') || (athleteEntry.sex === chosenSex)) && athleteEntry.year >= startYear && athleteEntry.year <= endYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline))));
+    //console.log('Got total entries:');
+    //console.log(matchesFiltersAtheteEntries);
     let currentYear = startYear;
     while (currentYear <= endYear) {
       // First get athleteEntries in current year
-      let yearRangeAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => (((!season || season === 'all') || (athleteEntry.season === season)) && athleteEntry.year === currentYear && (!selectedDiscipline || athleteEntry.disciplineEntry.equals(selectedDiscipline))));
+      let yearRangeAtheteEntries: AthleteEntry[] = matchesFiltersAtheteEntries.filter(athleteEntry => athleteEntry.year === currentYear);
+      //console.log('Got entries:');
+      //console.log(yearRangeAtheteEntries);
       // Get all unique IDs, we don't want to use the same athlete twice!
       let uniqueEntries = yearRangeAtheteEntries.filter((e, i) => {
         return yearRangeAtheteEntries.findIndex((x) => {
