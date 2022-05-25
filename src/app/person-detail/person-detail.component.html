@@ -1,6 +1,4 @@
-<div *ngIf="selectedAthlete == null; then emptyBlock; else athleteBlock"></div>
-<ng-template #emptyBlock>No athlete selected.</ng-template>
-<ng-template #athleteBlock>
+<div *ngIf="selectedAthlete != null">
   <h2>{{ selectedAthlete.name }}</h2>
 
   <div class="row">
@@ -33,4 +31,5 @@
             </ng-template>
         </div-->
   </div>
-</ng-template>
+
+</div>
