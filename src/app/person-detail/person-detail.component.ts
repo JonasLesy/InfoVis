@@ -2,6 +2,8 @@ import { FilteredDataService } from './../filtered-data.service';
 import { Component, OnInit } from '@angular/core';
 import { Athlete } from 'src/models/athlete';
 import { AthleteEntry } from 'src/models/athlete-entry';
+import { faBaby, faMars, faVenus, faWeightScale, faRulerVertical } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-person-detail',
@@ -18,6 +20,12 @@ export class PersonDetailComponent implements OnInit {
   public selectedAthlete: Athlete;
   public athleteEntries: AthleteEntry[];
   public medalData: number[] = [];
+  faMars = faMars;
+  faVenus = faVenus;
+  faBaby = faBaby;
+  faWeightScale = faWeightScale;
+  faRulerVertical = faRulerVertical;
+  sex: string = null;
 
 
   ngOnDestroy(): void {
@@ -37,6 +45,7 @@ export class PersonDetailComponent implements OnInit {
     this._subscription = this.filteredDataService.selectedAthleteSubject.subscribe(
       athlete => {
         this.selectedAthlete = athlete;
+        this.sex = this.selectedAthlete.sex;
       }
     );
     this._subscriptionEntries = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(

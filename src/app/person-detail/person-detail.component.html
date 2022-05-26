@@ -4,23 +4,50 @@
   <div class="row">
     <div class="col-3">
       <img
-        src="{{selectedAthlete.photoUrl !== 'None' ? selectedAthlete.photoUrl : 'https://www.kindpng.com/picc/m/163-1639541_transparent-running-clipart-png-cartoon-athlete-png-png.png'}}"
+        src="{{
+          selectedAthlete.photoUrl !== 'None'
+            ? selectedAthlete.photoUrl
+            : 'https://www.kindpng.com/picc/m/163-1639541_transparent-running-clipart-png-cartoon-athlete-png-png.png'
+        }}"
         width="200"
         height="300"
       />
     </div>
-    <div class="col-4">
-      <p>Sex: {{ selectedAthlete.sex }}</p>
+    <div class="col-4 person-details">
+      <table class="person-details-table">
+        <tr class="icon-column">
+          <td class="icon-column"><fa-icon [icon]="sex === 'M' ? faMars : faVenus"></fa-icon></td>
+        </tr>
+         <tr *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">  
+          <td class="icon-column"><fa-icon [icon]="faBaby"></fa-icon></td>
+          <td>{{ selectedAthlete.birthYear }}</td>
+        </tr> 
+        <tr *ngIf="selectedAthlete.weight.toString() != 'NaN'">
+          <td class="icon-column"><fa-icon [icon]="faWeightScale"></fa-icon></td>
+          <td>{{ selectedAthlete.weight }} cm</td>
+        </tr>
+        <tr *ngIf="selectedAthlete.height.toString() != 'NaN'">
+          <td class="icon-column"><fa-icon [icon]="faRulerVertical"></fa-icon></td>
+          <td>{{ selectedAthlete.height }} Kg</td>
+        </tr>
+      </table>
+
+      <!-- <div>
+        <fa-icon [icon]="sex === 'M' ? faMars : faVenus"></fa-icon>
+      </div>
       <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">
-        Year of birth: {{ selectedAthlete.birthYear }}
+        <fa-icon [icon]="faBaby"></fa-icon>:
+        <span>{{ selectedAthlete.birthYear }}</span>
       </p>
       <p *ngIf="selectedAthlete.weight.toString() != 'NaN'">
-        Weight: {{ selectedAthlete.weight }}
+        <fa-icon [icon]="faWeightScale"></fa-icon>:
+        <span>{{ selectedAthlete.weight }}</span>
       </p>
       <p *ngIf="selectedAthlete.height.toString() != 'NaN'">
-        Height: {{ selectedAthlete.height }}
+        <fa-icon [icon]="faRulerVertical"></fa-icon>:
+        <span>{{ selectedAthlete.height }}</span>
       </p>
-    </div>
+    </div> -->
 
     <!-- <div class="card col-md-8">
     </div> -->
@@ -31,5 +58,4 @@
             </ng-template>
         </div-->
   </div>
-
 </div>
