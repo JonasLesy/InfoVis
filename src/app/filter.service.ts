@@ -408,5 +408,9 @@ export class FilterService {
     return nocEntry !== undefined ? nocEntry.region : "";
   }
 
+  private getAthleteById(idToLookFor): Athlete {
+    return this._originalCsvData.athletes.find(item => item.id === idToLookFor);
+  }
+
 
 }
