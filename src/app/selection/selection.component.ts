@@ -1,7 +1,8 @@
+import { DisciplineEntry } from 'src/models/discipline-entry';
 import { FilteredDataService } from './../filtered-data.service';
 import { FilterService } from './../filter.service';
 import { Component, OnInit } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api'; 
+import { LazyLoadEvent, SortEvent } from 'primeng/api'; 
 import { Athlete } from 'src/models/athlete';
 
 @Component({
@@ -16,9 +17,13 @@ export class SelectionComponent implements OnInit {
   //private velden voor deze class
   private _subscription;
   private _subscriptionSelectedAthlete;
+  private _disciplinesSubscription;
+  private _selectedDisciplineSubscription: any;
   people: string[] = [];
   virtualPeople: string[];
   selectedAthlete: Athlete;
+  selectedDiscipline: DisciplineEntry;
+  disciplines = {};
 
   ngOnDestroy(): void {
     if (this._subscription) {
@@ -27,13 +32,19 @@ export class SelectionComponent implements OnInit {
     if (this._subscriptionSelectedAthlete) {
       this._subscriptionSelectedAthlete.unsubscribe();
     }
+    if (this._disciplinesSubscription) {
+      this._disciplinesSubscription.unsubscribe();
+    }
+    if (this._selectedDisciplineSubscription) {
+      this._selectedDisciplineSubscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
-    this._subscription = this.filteredDataService.filteredPersonsSubject.subscribe(
+    this._subscription = this.filteredDataService.filteredAthletesSubject.subscribe(
       fa => {
-        fa.forEach(athleteEntry => {
-          this.people.push(athleteEntry);
+        fa.forEach((athlete: Athlete) => {
+          this.people.push(athlete.name);
         });
       }
     );
@@ -42,6 +53,12 @@ export class SelectionComponent implements OnInit {
         this.selectedAthlete = fa;
       }
     );
+    this._disciplinesSubscription = this.filteredDataService.filteredDisciplinesSubject.subscribe(d => {
+      this.disciplines = this.groupDisciplines(d);
+    })
+    this._selectedDisciplineSubscription = this.filteredDataService.selectedDisciplinesSubject.subscribe(d => {
+      this.selectedDiscipline = d;
+    })
     this.virtualPeople = Array.from({length: 100});
   }
 
@@ -55,6 +72,45 @@ export class SelectionComponent implements OnInit {
       
       //trigger change detection
       this.virtualPeople = [...this.virtualPeople];
+  }
+
+  private groupDisciplines(disciplines: DisciplineEntry[]) {
+    return disciplines.reduce((groups, item) => {
+      const val = item.sport;
+      groups[val] = groups[val] || [];
+      groups[val].push(item);
+      return groups;
+    }, {});
+  }
+
+  public disciplineEntriesEqual(disciplineEntry1: DisciplineEntry, disciplineEntry2: DisciplineEntry): boolean {
+    let result = disciplineEntry1.sport === disciplineEntry2.sport && disciplineEntry1.event === disciplineEntry2.event && disciplineEntry1.sex === disciplineEntry2.sex;
+    if (result) {
+      return true;
+    }
+    return false;
+  }
+
+  customSort(event: SortEvent) {
+    event.data.sort((data1: DisciplineEntry, data2: DisciplineEntry) => {
+      let sport1 = data1.sport;
+      let sport2 = data2.sport;
+
+      if (sport1 === sport2) {
+        if (data1.event >= data2.event) {
+          return 1;
+        }
+        else if (data1.event < data2.event) {
+          return -1
+        }
+        else {
+          return 0;
+        }
+      }
+      else {
+        return (sport1 > sport2)? 1 : -1;
+      }
+    });
   }
 
 }

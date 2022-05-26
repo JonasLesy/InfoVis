@@ -1,3 +1,4 @@
+import { DisciplineEntry } from './discipline-entry';
 export class AthleteEntry {
     id: number;
     name: string;
@@ -11,11 +12,11 @@ export class AthleteEntry {
     year: number;
     season: string;
     city: string;
-    sport: string;
-    event: string;
     medal: string;
+    disciplineEntry: DisciplineEntry;
+    photoUrl: string;
 
-    constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string) {
+    constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string, photoUrl: string) {
         this.id = id;
         this.name = name;
         this.sex = sex;
@@ -28,8 +29,8 @@ export class AthleteEntry {
         this.year = year;
         this.season = season;
         this.city = city;
-        this.sport = sport;
-        this.event = event;
         this.medal = medal;
+        this.disciplineEntry = new DisciplineEntry(sport, event, sex);
+        this.photoUrl = photoUrl;
     }
 }

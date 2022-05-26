@@ -31,6 +31,8 @@
     "csv-parser": "^3.0.0",
     "d3": "^7.4.1",
     "fs-web": "^1.0.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.23",
     "ngx-papaparse": "^5.1.0",
     "primeicons": "^5.0.0",
     "primeng": "^13.3.2",

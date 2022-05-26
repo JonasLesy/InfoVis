@@ -9,6 +9,7 @@ import { AthleteEntry } from 'src/models/athlete-entry';
   styleUrls: ['./person-detail.component.scss']
 })
 export class PersonDetailComponent implements OnInit {
+  private _medalsSubscription: any;
 
   constructor(public filteredDataService: FilteredDataService) { }
 
@@ -16,6 +17,8 @@ export class PersonDetailComponent implements OnInit {
   private _subscriptionEntries;
   public selectedAthlete: Athlete;
   public athleteEntries: AthleteEntry[];
+  public medalData: number[] = [];
+
 
   ngOnDestroy(): void {
     if (this._subscription) {
@@ -24,15 +27,19 @@ export class PersonDetailComponent implements OnInit {
     if (this._subscriptionEntries) {
       this._subscriptionEntries.unsubscribe();
     }
+    if (this._medalsSubscription) {
+      this._subscription.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
+    this.setMedalsData();
     this._subscription = this.filteredDataService.selectedAthleteSubject.subscribe(
       athlete => {
         this.selectedAthlete = athlete;
       }
     );
-    this._subscriptionEntries = this.filteredDataService.selectedFilteredAthletesSubject.subscribe(
+    this._subscriptionEntries = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
       athleteEntries => {
         this.athleteEntries = athleteEntries;
         // this.refreshTable();
@@ -52,6 +59,26 @@ export class PersonDetailComponent implements OnInit {
     }
 
     return total;
+  }
+
+
+  private setMedalsData() {
+    const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
+    this._medalsSubscription = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
+      fa => {
+        if (fa) {
+          let goldCount = countOccurrences(fa, "Gold");
+          //console.log('gold count is ' + goldCount);
+          let silverCount = countOccurrences(fa, "Silver");
+          //console.log('silver count is ' + silverCount);
+          let bronzeCount = countOccurrences(fa, "Bronze");
+          this.medalData = [goldCount, silverCount, bronzeCount];
+        }
+        else {
+          this.medalData = [0,0,0];
+        } 
+      }
+    );
   }
 
 }
