@@ -318,6 +318,64 @@ export class FilterService {
     return [bronzeList, silverList, goldList];
   }
 
+  calculateAverageAgesForYearRange(startYear: number, endYear: number, filteredAthleteEntries: AthleteEntry[]): [Map<number, number>, Map<number, number>, Map<number, number>] {
+    let maleList: Map<number, number> = new Map<number, number>();
+    let femaleList: Map<number, number> = new Map<number, number>();
+    let totalList: Map<number, number> = new Map<number, number>();
+    let currentYear = startYear;
+
+    while (currentYear <= endYear) {
+      // First get athleteEntries in current year
+      let yearRangeAtheteEntries: AthleteEntry[] = filteredAthleteEntries.filter(athleteEntry => athleteEntry.year === currentYear);
+      // Get all unique IDs, we don't want to use the same athlete twice!
+      let uniqueEntries = yearRangeAtheteEntries.filter((e, i) => {
+        return yearRangeAtheteEntries.findIndex((x) => {
+        return x.id == e.id && x.name == e.name;}) == i;
+    
+    });
+      //const uniqueEntries = new Set(yearRangeAtheteEntries.map(athleteEntry => (athleteEntry.id, athleteEntry.name)));
+      let maleAges: number[] = [];
+      let femaleAges: number[] = [];
+      uniqueEntries.map(athleteEntry => {
+        //console.log("Got id: " + id);
+        //let athleteEntry = yearRangeAtheteEntries.find(athleteEntry => id = athleteEntry.id && athleteEntry.name === name);
+        if (athleteEntry && athleteEntry.age && athleteEntry.age !== undefined) {
+          if (athleteEntry.sex === 'M') {
+            maleAges.push(athleteEntry.age);
+            //console.log('Found male');
+          } else {
+            femaleAges.push(athleteEntry.age);
+            //console.log('Found female');
+          }
+        }
+      });
+
+      const sumMales = maleAges.reduce((accumulator, current) => {
+        return accumulator + current;
+      }, 0);
+  
+      const sumFemales = femaleAges.reduce((accumulator, current) => {
+        return accumulator + current;
+      }, 0);
+      //console.log("Got date for " + currentYear + " sumMales: " + sumMales + " sumFemales: " + sumFemales);
+      if (maleAges.length != 0) {
+        maleList.set(currentYear, sumMales / maleAges.length);
+      }
+      if (femaleAges.length != 0) {
+        femaleList.set(currentYear, sumFemales / femaleAges.length);
+      }
+      let totalSize = maleAges.length + femaleAges.length;
+      if (totalSize != 0) {
+        totalList.set(currentYear, (sumMales + sumFemales) / totalSize);
+      }
+
+      currentYear += 2;
+    }
+
+
+    return [maleList, femaleList, totalList];
+  }
+
   private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {
     return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
   }
