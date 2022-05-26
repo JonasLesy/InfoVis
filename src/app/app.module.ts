@@ -12,8 +12,8 @@ import { ChartModule } from 'primeng/chart';
 import { SliderModule } from 'primeng/slider';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import {VirtualScrollerModule} from 'primeng/virtualscroller';
-import {TableModule} from 'primeng/table';
+import { VirtualScrollerModule } from 'primeng/virtualscroller';
+import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { TabViewModule } from 'primeng/tabview';
 
@@ -24,6 +24,8 @@ import { RelatedGraphCountryMedalsComponent } from './related-graph-country-meda
 import { RelatedGraphsComponent } from './related-graphs/related-graphs.component';
 import { RelatedGraphAverageAgeComponent } from './related-graph-average-age/related-graph-average-age.component';
 import { OlympicEntriesComponent } from './olympic-entries/olympic-entries.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 @NgModule({
   declarations: [
@@ -50,9 +52,13 @@ import { OlympicEntriesComponent } from './olympic-entries/olympic-entries.compo
     TableModule,
     AutoCompleteModule,
     DropdownModule,
-    TabViewModule
+    TabViewModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+  }
+}
