@@ -1,0 +1,4 @@
+<div class="card">
+    <h5 class="graph-title">Average age between {{ filterService.yearRange[0] }} and {{ filterService.yearRange[1] }}<span *ngIf="filterService.countriesToFilterOn.length != 0">, for countries: {{filterService.countriesToFilterOn.join(', ')}}</span><span *ngIf="filterService.selectedDiscipline">, for discipline: {{filterService.selectedDiscipline.event}}</span></h5>
+    <p-chart type="line" [data]="averageAgesData" [options]="averageAgesOptions"></p-chart>
+</div>
