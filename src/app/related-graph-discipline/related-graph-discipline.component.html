@@ -1,1 +1,6 @@
 <h5>{{selectedDiscipline.sport}} - {{selectedDiscipline.event}}</h5>
+<div class="row" *ngIf="this.disciplineEntries">
+    <span>First edition was in {{ firstEdition }}, in {{ firstLocation }}.</span>
+    <span *ngIf="this.mostMedalsEntry">Most medals: <strong>{{ filterService.getRegionForNoc(mostMedalsEntry.noc) }}</strong> with {{ mostMedalsEntry.total }} medals.</span>
+    <span *ngIf="this.mostGoldMedalsEntry"> Most gold medals: <strong>{{ filterService.getRegionForNoc(mostGoldMedalsEntry.noc) }}</strong> with {{ mostGoldMedalsEntry.gold }} gold medals.</span>
+</div>
