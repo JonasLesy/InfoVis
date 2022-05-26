@@ -7,6 +7,7 @@ import { Athlete } from 'src/models/athlete';
 import { AthleteEntry } from 'src/models/athlete-entry';
 import { take } from 'rxjs/operators';
 import { disciplineSortFunction } from 'src/helpers/discipline-sort-function';
+import { CompositeMap } from 'composite-map';
 
 
 @Injectable({
@@ -318,61 +319,77 @@ export class FilterService {
     return [bronzeList, silverList, goldList];
   }
 
-  calculateAverageAgesForYearRange(startYear: number, endYear: number, filteredAthleteEntries: AthleteEntry[]): [Map<number, number>, Map<number, number>, Map<number, number>] {
+  calculateAverageAgesForYearRange(filteredAthleteEntries: AthleteEntry[]): [Map<number, number>, Map<number, number>, Map<number, number>] {
+    class AgeTotal {
+      count = 0;
+      total = 0;
+
+      constructor(count, total) {
+        this.count = count;
+        this.total = total;
+      }
+    }
+
     let maleList: Map<number, number> = new Map<number, number>();
     let femaleList: Map<number, number> = new Map<number, number>();
     let totalList: Map<number, number> = new Map<number, number>();
-    let currentYear = startYear;
 
-    while (currentYear <= endYear) {
-      // First get athleteEntries in current year
-      let yearRangeAtheteEntries: AthleteEntry[] = filteredAthleteEntries.filter(athleteEntry => athleteEntry.year === currentYear);
-      // Get all unique IDs, we don't want to use the same athlete twice!
-      let uniqueEntries = yearRangeAtheteEntries.filter((e, i) => {
-        return yearRangeAtheteEntries.findIndex((x) => {
-        return x.id == e.id && x.name == e.name;}) == i;
-    
-    });
-      //const uniqueEntries = new Set(yearRangeAtheteEntries.map(athleteEntry => (athleteEntry.id, athleteEntry.name)));
-      let maleAges: number[] = [];
-      let femaleAges: number[] = [];
-      uniqueEntries.map(athleteEntry => {
-        //console.log("Got id: " + id);
-        //let athleteEntry = yearRangeAtheteEntries.find(athleteEntry => id = athleteEntry.id && athleteEntry.name === name);
-        if (athleteEntry && athleteEntry.age && athleteEntry.age !== undefined) {
-          if (athleteEntry.sex === 'M') {
-            maleAges.push(athleteEntry.age);
-            //console.log('Found male');
-          } else {
-            femaleAges.push(athleteEntry.age);
-            //console.log('Found female');
-          }
+
+    let maleTotals: Map<number, AgeTotal> = new Map<number, AgeTotal>();
+    let femaleTotals: Map<number, AgeTotal> = new Map<number, AgeTotal>();
+    let generalTotals: Map<number, AgeTotal> = new Map<number, AgeTotal>();
+
+    let map = new CompositeMap();
+
+    filteredAthleteEntries.forEach((athleteEntry: AthleteEntry) => {
+      if (!map.has([athleteEntry.name, athleteEntry.year]))
+        map.set([athleteEntry.name, athleteEntry.year], athleteEntry);
+    })
+
+    for (let a of map.entries()) {
+      let athleteEntry: AthleteEntry = a[1] as AthleteEntry;
+      if (athleteEntry.sex === 'M') {
+        let existingAgeTotal = maleTotals.get(athleteEntry.year);
+        if (existingAgeTotal) {
+          if (athleteEntry.age)
+            maleTotals.set(athleteEntry.year, new AgeTotal((existingAgeTotal.count + 1), (existingAgeTotal.total + athleteEntry.age)));
         }
-      });
-
-      const sumMales = maleAges.reduce((accumulator, current) => {
-        return accumulator + current;
-      }, 0);
-  
-      const sumFemales = femaleAges.reduce((accumulator, current) => {
-        return accumulator + current;
-      }, 0);
-      //console.log("Got date for " + currentYear + " sumMales: " + sumMales + " sumFemales: " + sumFemales);
-      if (maleAges.length != 0) {
-        maleList.set(currentYear, sumMales / maleAges.length);
+        else {
+          if (athleteEntry.age)
+            maleTotals.set(athleteEntry.year, new AgeTotal(1, athleteEntry.age));
+        }
       }
-      if (femaleAges.length != 0) {
-        femaleList.set(currentYear, sumFemales / femaleAges.length);
+      else if (athleteEntry.sex === 'F') {
+        let existingAgeTotal = femaleTotals.get(athleteEntry.year);
+        if (existingAgeTotal) {
+          if (athleteEntry.age)
+            femaleTotals.set(athleteEntry.year, new AgeTotal((existingAgeTotal.count + 1), (existingAgeTotal.total + athleteEntry.age)));
+        }
+        else {
+          if (athleteEntry.age)
+            femaleTotals.set(athleteEntry.year, new AgeTotal(1, athleteEntry.age));
+        }
       }
-      let totalSize = maleAges.length + femaleAges.length;
-      if (totalSize != 0) {
-        totalList.set(currentYear, (sumMales + sumFemales) / totalSize);
+      let existingAgeTotal = generalTotals.get(athleteEntry.year);
+      if (existingAgeTotal) {
+        if (athleteEntry.age)
+          generalTotals.set(athleteEntry.year, new AgeTotal((existingAgeTotal.count + 1), (existingAgeTotal.total + athleteEntry.age)));
       }
-
-      currentYear += 2;
+      else {
+        if (athleteEntry.age)
+          generalTotals.set(athleteEntry.year, new AgeTotal(1, athleteEntry.age));
+      }
     }
 
-
+    maleTotals.forEach((at, n, m) => {
+      maleList.set(n, at.total / at.count);
+    });
+    femaleTotals.forEach((at, n, m) => {
+      femaleList.set(n, at.total / at.count);
+    });
+    generalTotals.forEach((at, n, m) => {
+      totalList.set(n, at.total / at.count);
+    });
     return [maleList, femaleList, totalList];
   }
 
