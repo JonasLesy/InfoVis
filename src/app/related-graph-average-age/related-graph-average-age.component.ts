@@ -63,9 +63,9 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
 
     for (let i = 0; i <= yearList.length; i ++) {
       let currentYear = yearList[i];
-      maleList.push((maleEntries.has(currentYear)) ? maleEntries.get(currentYear) : 0);
-      femaleList.push((femaleEntries.has(currentYear)) ? femaleEntries.get(currentYear) : 0);
-      totalList.push((totalEntries.has(currentYear)) ? totalEntries.get(currentYear) : 0);
+      maleList.push((maleEntries.has(currentYear)) ? maleEntries.get(currentYear) : null);
+      femaleList.push((femaleEntries.has(currentYear)) ? femaleEntries.get(currentYear) : null);
+      totalList.push((totalEntries.has(currentYear)) ? totalEntries.get(currentYear) : null);
     }
 
     return [maleList, femaleList, totalList];
@@ -83,6 +83,7 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
           borderColor: '#52A2D9',
           tension: 0.4,
           fill: false,
+          spanGaps: true,
           data: averageAges[0]
       },
       {
@@ -90,12 +91,14 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
         borderColor: '#F26923',
         tension: 0.4,
         fill: false,
+        spanGaps: true,
         data: averageAges[1]
       },{
         label: 'Total athlete age',
         borderColor: '#000000',
         tension: 0.4,
         fill: false,
+        spanGaps: true,
         data: averageAges[2]
       }]
     };
