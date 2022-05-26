@@ -1,5 +1,4 @@
 <div *ngIf="selectedAthlete != null">
-  <h2>{{ selectedAthlete.name }}</h2>
 
   <div class="row">
     <div class="col-3">
@@ -10,6 +9,7 @@
       />
     </div>
     <div class="col-4">
+      <h2>{{ selectedAthlete.name }}</h2>
       <p>Sex: {{ selectedAthlete.sex }}</p>
       <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">
         Year of birth: {{ selectedAthlete.birthYear }}
