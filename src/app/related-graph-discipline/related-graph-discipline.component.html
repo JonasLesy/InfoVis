@@ -1,6 +1,10 @@
 <h5>{{selectedDiscipline.sport}} - {{selectedDiscipline.event}}</h5>
 <div class="row" *ngIf="this.disciplineEntries">
     <span>First edition was in {{ firstEdition }}, in {{ firstLocation }}.</span>
-    <span *ngIf="this.mostMedalsEntry">Most medals: <strong>{{ filterService.getRegionForNoc(mostMedalsEntry.noc) }}</strong> with {{ mostMedalsEntry.total }} medals.</span>
-    <span *ngIf="this.mostGoldMedalsEntry"> Most gold medals: <strong>{{ filterService.getRegionForNoc(mostGoldMedalsEntry.noc) }}</strong> with {{ mostGoldMedalsEntry.gold }} gold medals.</span>
+    <span *ngIf="this.mostMedalsEntry">Country with most medals: <strong>{{ filterService.getRegionForNoc(mostMedalsEntry.noc) }}</strong> with {{ mostMedalsEntry.total }} medals.</span>
+    <span *ngIf="this.mostGoldMedalsEntry">Country with most gold medals: <strong>{{ filterService.getRegionForNoc(mostGoldMedalsEntry.noc) }}</strong> with {{ mostGoldMedalsEntry.gold }} gold medals.</span>
+    <span *ngIf="this.mostMedalsPersonEntry">Person with most medals: <strong>{{ filterService.getAthleteById(mostMedalsPersonEntry.id).name }}</strong> with {{ mostMedalsPersonEntry.total }} medals.</span>
+    <span *ngIf="this.mostGoldMedalsPersonEntry"> Person with most gold medals: <strong>{{ filterService.getAthleteById(mostGoldMedalsPersonEntry.id).name }}</strong> with {{ mostGoldMedalsPersonEntry.gold }} gold medals.</span>
+
+    getAthleteById
 </div>
