@@ -1,8 +1,7 @@
-import { AthleteEntry } from 'src/models/athlete-entry';
 import { FilteredDataService } from './../filtered-data.service';
-import { FilterService } from './../filter.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Athlete } from 'src/models/athlete';
+import { DisciplineEntry } from 'src/models/discipline-entry';
 
 @Component({
   selector: 'app-related-graphs',
@@ -12,11 +11,16 @@ import { Athlete } from 'src/models/athlete';
 export class RelatedGraphsComponent implements OnInit, OnDestroy {
 
   selectedAthlete: Athlete;
+  selectedDiscipline: DisciplineEntry;
   subscription = null;
+  subscriptionDiscipline = null;
 
   constructor(private filteredDataService: FilteredDataService) { 
     this.subscription = this.filteredDataService.selectedAthleteSubject.subscribe(sa => {
       this.selectedAthlete = sa;
+    });
+    this.subscriptionDiscipline = this.filteredDataService.selectedDisciplinesSubject.subscribe(sa => {
+      this.selectedDiscipline = sa;
     });
   }
 
@@ -26,6 +30,9 @@ export class RelatedGraphsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubsribe();
+    }
+    if (this.subscriptionDiscipline) {
+      this.subscriptionDiscipline.unsubsribe();
     }
   }
 }

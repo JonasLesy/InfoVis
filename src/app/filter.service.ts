@@ -393,6 +393,12 @@ export class FilterService {
     return [maleList, femaleList, totalList];
   }
 
+  getAthleteEntriesForDiscipline(disciplineEntry: DisciplineEntry) {
+    return this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.disciplineEntry.sport === disciplineEntry.sport 
+      && athleteEntry.disciplineEntry.event === disciplineEntry.event 
+      && athleteEntry.disciplineEntry.sex === disciplineEntry.sex);
+  }
+
   private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {
     return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
   }
