@@ -1,0 +1,13 @@
+:host ::ng-deep .chart {
+    div {
+        canvas {
+            height: 40vh;
+            background-color: pink;
+        }
+    }
+}
+
+.mycard {
+    max-height: 100px;
+    height: 100px;
+}

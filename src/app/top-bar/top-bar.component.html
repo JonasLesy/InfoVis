@@ -6,11 +6,11 @@
       </div>
       <div class="col-md-2 mr-0" style="text-align: center">
         <h5>Choose edition</h5>
-        <p-selectButton [options]="filterService.editionOptions" [(ngModel)]="filterService.chosenEdition" optionLabel="label" optionValue="value" (onChange)="filterService.filterOnAllAttributes()"></p-selectButton>
+        <p-selectButton styleClass="selection-button" [options]="filterService.editionOptions" [(ngModel)]="filterService.chosenEdition" optionLabel="label" optionValue="value" (onChange)="filterService.filterOnAllAttributes()"></p-selectButton>
       </div>
       <div class="col-md-2 mr-0 text-center" style="text-align: center">
         <h5>Choose sex</h5>
-        <p-selectButton [options]="filterService.sexOptions" [(ngModel)]="filterService.chosenSex" optionLabel="label" optionValue="value" (onChange)="filterService.filterOnAllAttributes()"></p-selectButton>
+        <p-selectButton styleClass="selection-button" [options]="filterService.sexOptions" [(ngModel)]="filterService.chosenSex" optionLabel="label" optionValue="value" (onChange)="filterService.filterOnAllAttributes()"></p-selectButton>
       </div>
       <div class="col-md-2 mr-0 pt-4" style="text-align: center">
         <h5>Range: {{filterService.yearRange[0] + ' - ' + filterService.yearRange[1]}}</h5>
