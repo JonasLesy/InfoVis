@@ -4,6 +4,8 @@ import { FilteredDataService } from '../filtered-data.service';
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import { FilterService } from '../filter.service';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-olympic-entries',
@@ -15,6 +17,7 @@ export class OlympicEntriesComponent implements OnInit, OnDestroy {
   subscription = null;
   cols: any[];
   exportColumns: any[];
+  faDownload = faDownload;
 
   constructor(public filteredDataService: FilteredDataService, public filterService: FilterService) { }
 

@@ -15,7 +15,7 @@
                             <div style="text-align: right; width: 100%">Total entries: </div>
                         </td>
                         <td style="width: 20%">{{(selectedFilteredAthleteEntries)?.length}}</td>
-                        <td><button type="button" pButton pRipple (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"><i class="pi pi-download" style="font-size: 2rem"></i></button></td>
+                        <td><fa-icon class="downloadbutton" (click)="exportPdf()" [icon]="faDownload" style="size: 2rem;" title="Download as PDF"></fa-icon></td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-athleteEntry let-rowIndex="rowIndex">

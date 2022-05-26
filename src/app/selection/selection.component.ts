@@ -108,7 +108,7 @@ export class SelectionComponent implements OnInit {
         }
       }
       else {
-        return (sport1 > sport2)? 1 : -1;
+        return (sport1 > sport2) ? 1 : -1;
       }
     });
   }
