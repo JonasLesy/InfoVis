@@ -318,14 +318,15 @@ export class FilterService {
     return [bronzeList, silverList, goldList];
   }
 
-  calculateAverageAgesForYearRange(startYear: number, endYear: number): [Map<number, number>, Map<number, number>, Map<number, number>] {
+  calculateAverageAgesForYearRange(startYear: number, endYear: number, filteredAthleteEntries: AthleteEntry[]): [Map<number, number>, Map<number, number>, Map<number, number>] {
     let maleList: Map<number, number> = new Map<number, number>();
     let femaleList: Map<number, number> = new Map<number, number>();
     let totalList: Map<number, number> = new Map<number, number>();
     let currentYear = startYear;
+
     while (currentYear <= endYear) {
       // First get athleteEntries in current year
-      let yearRangeAtheteEntries: AthleteEntry[] = this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.year === currentYear);
+      let yearRangeAtheteEntries: AthleteEntry[] = filteredAthleteEntries.filter(athleteEntry => athleteEntry.year === currentYear);
       // Get all unique IDs, we don't want to use the same athlete twice!
       let uniqueEntries = yearRangeAtheteEntries.filter((e, i) => {
         return yearRangeAtheteEntries.findIndex((x) => {

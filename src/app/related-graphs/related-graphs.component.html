@@ -8,8 +8,7 @@
     <app-related-graph-country-medals *ngIf="selectedAthlete"></app-related-graph-country-medals>
     <p *ngIf="!selectedAthlete">Please select an athlete first.</p>
   </p-tabPanel>
-  <p-tabPanel header="Average ages" [selected]="false">
+  <p-tabPanel header="Average ages">
     <app-related-graph-average-age></app-related-graph-average-age>
   </p-tabPanel>
-  <p-tabPanel header="To Create">Just a placeholder...</p-tabPanel>
 </p-tabView>

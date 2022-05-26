@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AthleteEntry } from 'src/models/athlete-entry';
 import { FilterService } from '../filter.service';
 import { FilteredDataService } from '../filtered-data.service';
 
@@ -11,21 +12,29 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
 
   constructor(public filteredDataService: FilteredDataService, public filterService: FilterService) { }
   private _subscription;
+  private _subscriptionSelectedDiscipline;
   averageAgesData: any;
   averageAgesOptions: any;
 
   ngOnInit(): void {
-    this._subscription = this.filteredDataService.selectedAthleteSubject.subscribe(
-      () => {
-        this.buildAverageAges();
+    this._subscription = this.filteredDataService.filteredAthleteEntriesSubject.subscribe(
+      filteredAthleteEntries => {
+        this.buildAverageAges(filteredAthleteEntries);
       }
     );
-    this.buildAverageAges();
+    this._subscriptionSelectedDiscipline = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
+      filteredAthleteEntries => {
+        this.buildAverageAges(filteredAthleteEntries);
+      }
+    );
   }
 
   ngOnDestroy(): void {
     if (this._subscription) {
       this._subscription.unsubscribe();
+    }
+    if (this._subscriptionSelectedDiscipline) {
+      this._subscriptionSelectedDiscipline.unsubscribe();
     }
   }
 
@@ -40,13 +49,13 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
     return yearList;
   }
 
-  getAverageAgesForYears(yearList: number[]) {
+  getAverageAgesForYears(yearList: number[], filteredAthleteEntries: AthleteEntry[]) {
     let maleList: number[] = [];
     let femaleList: number[] = [];
     let totalList: number[] = [];
 
     // this service method returns [maleDict, femaleDict, totalDict]-dictionaries, they have an easy way to retrieve average age for year X: e.g. X = 2020, desired type is male: maleDict.2020
-    let resultList = this.filterService.calculateAverageAgesForYearRange(this.filterService.yearRange[0], this.filterService.yearRange[1]);
+    let resultList = this.filterService.calculateAverageAgesForYearRange(this.filterService.yearRange[0], this.filterService.yearRange[1], filteredAthleteEntries);
     console.log(resultList);
     let maleEntries: Map<number, number> = resultList[0];
     let femaleEntries: Map<number, number> = resultList[1];
@@ -62,30 +71,29 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
     return [maleList, femaleList, totalList];
   }
 
-  buildAverageAges() {
+  buildAverageAges(filteredAthleteEntries: AthleteEntry[]) {
     let yearList: number[] = this.getYearsFromSelector();
-    //let medalLists = this.getMedalsForCountryForYears(yearList);
-    let averageAges = this.getAverageAgesForYears(yearList);
+    let averageAges = this.getAverageAgesForYears(yearList, filteredAthleteEntries);
     console.log("Got averageAges:");
     console.log(averageAges);
     this.averageAgesData = {
       labels: yearList,
       datasets: [{
           label: 'Male athlete age',
-          borderColor: '#33D5FF',
+          borderColor: '#52A2D9',
           tension: 0.4,
           fill: false,
           data: averageAges[0]
       },
       {
         label: 'Female athlete age',
-        borderColor: '#FF33E6',
+        borderColor: '#F26923',
         tension: 0.4,
         fill: false,
         data: averageAges[1]
       },{
         label: 'Total athlete age',
-        borderColor: '#50FF33',
+        borderColor: '#000000',
         tension: 0.4,
         fill: false,
         data: averageAges[2]
