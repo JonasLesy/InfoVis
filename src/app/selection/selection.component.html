@@ -1,5 +1,5 @@
 <div class="row">
-    <p-virtualScroller [value]="filteredDataService.filteredAthletesSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="500px" [itemSize]="25" [rows]="10">
+    <p-virtualScroller [value]="filteredDataService.filteredAthletesSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="40vh" [itemSize]="25" [rows]="10">
       <ng-template pTemplate="header">Athletes</ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
@@ -13,7 +13,7 @@
     </p-virtualScroller>
 </div>
 <div class="row">
-   <p-table [value]="filteredDataService.filteredDisciplinesSubject | async" [customSort]="true" (sortFunction)="customSort($event)" sortMode="single" [scrollable]="true" scrollHeight="500px" rowGroupMode="subheader" groupRowsBy="sport" responsiveLayout="scroll">
+   <p-table [value]="filteredDataService.filteredDisciplinesSubject | async" [customSort]="true" (sortFunction)="customSort($event)" sortMode="single" [scrollable]="true" scrollHeight="40vh" rowGroupMode="subheader" groupRowsBy="sport" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
             <th>Disciplines</th>

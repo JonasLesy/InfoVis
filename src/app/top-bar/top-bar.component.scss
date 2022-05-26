@@ -12,3 +12,9 @@
 :host ::ng-deep .olympic-autocomplete {
     display: inline !important;
 }
+
+:host ::ng-deep .selection-button {
+    .p-button {
+        padding: 6px 10px;
+    }
+}
