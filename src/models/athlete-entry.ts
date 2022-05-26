@@ -14,8 +14,9 @@ export class AthleteEntry {
     city: string;
     medal: string;
     disciplineEntry: DisciplineEntry;
+    photoUrl: string;
 
-    constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string) {
+    constructor(id: number, name: string, sex: string, age: number, height: number, weight: number, team: string, noc: string, games: string, year: number, season: string, city: string, sport: string, event: string, medal: string, photoUrl: string) {
         this.id = id;
         this.name = name;
         this.sex = sex;
@@ -30,5 +31,6 @@ export class AthleteEntry {
         this.city = city;
         this.medal = medal;
         this.disciplineEntry = new DisciplineEntry(sport, event, sex);
+        this.photoUrl = photoUrl;
     }
 }

@@ -208,14 +208,14 @@ export class FilterService {
         if (this.disciplineEntriesEqual(this._selectedDiscipline, athleteEntry.disciplineEntry)) {
           if (!athleteSet.has(athleteEntry.name)) {
             athleteSet.add(athleteEntry.name);
-            athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc));
+            athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl));
           }
         }
       }
       else {
         if (!athleteSet.has(athleteEntry.name)) {
           athleteSet.add(athleteEntry.name);
-          athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc));
+          athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl));
         }
       }
     });
