@@ -157,7 +157,7 @@ export class FilterService {
           searchPartsLoop:
           while (j < searchParts.length) {
             if (j == searchParts.length - 1) {
-              return nameParts[i].startsWith(searchParts[j]);
+              return nameParts[i] && nameParts[i].startsWith(searchParts[j]);
             } else if (nameParts[i] !== searchParts[j]) {
               break searchPartsLoop; // break out of current loop and move to next namePart
             } else {
@@ -237,14 +237,14 @@ export class FilterService {
         if (this.disciplineEntriesEqual(this._selectedDiscipline, athleteEntry.disciplineEntry)) {
           if (!athleteSet.has(athleteEntry.name)) {
             athleteSet.add(athleteEntry.name);
-            athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl));
+            athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl, athleteEntry.team));
           }
         }
       }
       else {
         if (!athleteSet.has(athleteEntry.name)) {
           athleteSet.add(athleteEntry.name);
-          athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl));
+          athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl, athleteEntry.team));
         }
       }
     });

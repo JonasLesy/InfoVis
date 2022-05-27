@@ -10,7 +10,12 @@
     </div>
     <div class="col-4">
       <h2>{{ selectedAthlete.name }}</h2>
-      <p>Sex: {{ selectedAthlete.sex }}</p>
+      <p *ngIf="selectedAthlete.country.toString() != 'NaN'">
+        Country: {{ selectedAthlete.country }}
+      </p>
+      <p *ngIf="selectedAthlete.sex.toString() != 'NaN'">
+        Sex: {{ selectedAthlete.sex }}
+      </p>
       <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">
         Year of birth: {{ selectedAthlete.birthYear }}
       </p>
