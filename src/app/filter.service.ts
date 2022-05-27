@@ -199,6 +199,34 @@ export class FilterService {
     this.filteredDataService.publishFilteredAthleteEntries(athleteEntries);
     this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries);
     this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(athleteEntries);
+
+    let selectedDisciplineExistsInFilteredAthleteEntries: boolean = !this.selectedDiscipline;
+    let selectedAthleteExistsInFilteredAthleteEntries: boolean = !this.selectedAthlete;
+
+    if (this.selectedDiscipline || this.selectedAthlete) {
+      for (let i = 0; i !== athleteEntries.length; i++) {
+        let athleteEntry = athleteEntries[i];
+        if (this.selectedAthlete && athleteEntry.name === this.selectedAthlete.name) {
+          selectedAthleteExistsInFilteredAthleteEntries = true;
+        }
+        if (this.selectedDiscipline && athleteEntry.disciplineEntry.equals(this.selectedDiscipline)) {
+          selectedDisciplineExistsInFilteredAthleteEntries = true;
+        }
+        if (selectedAthleteExistsInFilteredAthleteEntries && selectedDisciplineExistsInFilteredAthleteEntries) {
+          break;
+        }
+      }
+      if (!selectedDisciplineExistsInFilteredAthleteEntries) {
+        this._selectedDiscipline = null;
+        this.filteredDataService.publishSelectedDiscipline(null);
+        this.filterOnAllAttributes();
+      }
+      if (!selectedAthleteExistsInFilteredAthleteEntries) {
+        this._selectedAthlete = null;
+        this.filteredDataService.publishSelectedAthlete(null);
+        this.filterOnAllAttributes();
+      }
+    }
   }
 
   filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries: AthleteEntry[]) {
@@ -243,7 +271,8 @@ export class FilterService {
         disciplineSet.add(JSON.stringify(ae.disciplineEntry));
       }
     });
-    this.filteredDataService.publishFilteredDisciplines(Array.from(disciplineSet).map(el => JSON.parse(el)));
+    let filteredDisciplines = Array.from(disciplineSet).map(el => JSON.parse(el))
+    this.filteredDataService.publishFilteredDisciplines(filteredDisciplines);
   }
 
   private selectAthleteFromList(filteredAthletes: AthleteEntry[]): void {
@@ -394,8 +423,8 @@ export class FilterService {
   }
 
   getAthleteEntriesForDiscipline(disciplineEntry: DisciplineEntry) {
-    return this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.disciplineEntry.sport === disciplineEntry.sport 
-      && athleteEntry.disciplineEntry.event === disciplineEntry.event 
+    return this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.disciplineEntry.sport === disciplineEntry.sport
+      && athleteEntry.disciplineEntry.event === disciplineEntry.event
       && athleteEntry.disciplineEntry.sex === disciplineEntry.sex);
   }
 

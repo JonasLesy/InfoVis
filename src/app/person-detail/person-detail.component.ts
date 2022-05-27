@@ -45,7 +45,7 @@ export class PersonDetailComponent implements OnInit {
     this._subscription = this.filteredDataService.selectedAthleteSubject.subscribe(
       athlete => {
         this.selectedAthlete = athlete;
-        this.sex = this.selectedAthlete.sex;
+        this.sex = athlete? this.selectedAthlete.sex : "";
       }
     );
     this._subscriptionEntries = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
