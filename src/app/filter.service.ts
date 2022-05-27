@@ -226,6 +226,9 @@ export class FilterService {
         this.filteredDataService.publishSelectedAthlete(null);
         this.filterOnAllAttributes();
       }
+
+      let selectedFilteredAthletes = athleteEntries.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline))));
+      this.filteredDataService.publishSelectedFilteredAthleteEntries(selectedFilteredAthletes);
     }
   }
 
