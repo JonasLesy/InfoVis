@@ -63,8 +63,8 @@ export class SelectionComponent implements OnInit {
   }
 
   loadPersonsLazy(event: LazyLoadEvent) {
-      console.log(event);
-      console.log("Adding more items");
+      // console.log(event);
+      // console.log("Adding more items");
       //load data of required page
       let loadedPeople = this.people.slice(event.first, (event.first + event.rows));
 

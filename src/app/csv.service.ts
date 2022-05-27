@@ -33,7 +33,7 @@ export class CsvService {
         data => {
           let nocRegionEntries: NOCRegionEntry[] = [];
           let papaResult = this.papa.parse(data as string).data;
-          console.log('Parsing noc csv');
+          // console.log('Parsing noc csv');
           for (let index = 1; index < papaResult.length - 1; index++) {
             let row = papaResult[index];
             nocRegionEntries.push(new NOCRegionEntry(row[0], row[1], row[2]));
@@ -53,7 +53,7 @@ export class CsvService {
           let papaResult = this.papa.parse(data as string).data;
 
           // let csvToRowArray = data.split("\r");
-          console.log('Parsing athletes csv');
+          // console.log('Parsing athletes csv');
           let countrySet = new Set<string>();
           let personSet = new Set<string>();
           let athleteEntries: AthleteEntry[] = [];
@@ -76,7 +76,7 @@ export class CsvService {
           let countries = [...countrySet];
           let persons = [...personSet];
           let athletes = [...athleteSet];
-          console.log('done');
+          // console.log('done');
           return new CsvData(nocRegionEntries, athleteEntries, countries, persons, athletes);
         },
         error => {

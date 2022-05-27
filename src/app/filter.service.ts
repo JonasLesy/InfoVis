@@ -172,7 +172,7 @@ export class FilterService {
   }
 
   filterOnAllAttributes() {
-    console.log('Filtering on attributes..');
+    // console.log('Filtering on attributes..');
     // Reset the selected athlete before filter
     // this.filteredDataService.publishSelectedAthlete(null);
     let athleteEntries = this._originalCsvData.athleteEntries.filter(athleteEntry => {

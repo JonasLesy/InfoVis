@@ -43,7 +43,7 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
     let yearRange: number[] = this.filterService.yearRange;
     for (let i = yearRange[0]; i <= yearRange[1]; i += 2) {
       yearList.push(i);
-      console.log("Year " + i + " will be added");
+      // console.log("Year " + i + " will be added");
     }
 
     return yearList;
@@ -56,7 +56,7 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
 
     // this service method returns [maleDict, femaleDict, totalDict]-dictionaries, they have an easy way to retrieve average age for year X: e.g. X = 2020, desired type is male: maleDict.2020
     let resultList = this.filterService.calculateAverageAgesForYearRange(filteredAthleteEntries);
-    console.log(resultList);
+    // console.log(resultList);
     let maleEntries: Map<number, number> = resultList[0];
     let femaleEntries: Map<number, number> = resultList[1];
     let totalEntries: Map<number, number> = resultList[2];
@@ -74,8 +74,8 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
   buildAverageAges(filteredAthleteEntries: AthleteEntry[]) {
     let yearList: number[] = this.getYearsFromSelector();
     let averageAges = this.getAverageAgesForYears(yearList, filteredAthleteEntries);
-    console.log("Got averageAges:");
-    console.log(averageAges);
+    // console.log("Got averageAges:");
+    // console.log(averageAges);
     this.averageAgesData = {
       labels: yearList,
       datasets: [{

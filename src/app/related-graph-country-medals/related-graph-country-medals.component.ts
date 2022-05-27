@@ -58,7 +58,7 @@ export class RelatedGraphCountryMedalsComponent implements OnInit {
     let yearRange: number[] = this.filterService.yearRange;
     for (let i = yearRange[0]; i <= yearRange[1]; i += 2) {
       yearList.push(i);
-      console.log("Year " + i + " will be added");
+      // console.log("Year " + i + " will be added");
     }
 
     return yearList;
@@ -71,7 +71,7 @@ export class RelatedGraphCountryMedalsComponent implements OnInit {
     if (this.selectedAthlete) {
       // this service method returns [bronzeDict, silverDict, goldDict]-dictionaries, they have an easy way to retrieve gold medals for year X: e.g. X = 2020, desired type is gold medals: goldDict.2020
       let resultList = this.filterService.calculateMedalsForCountryForYearRange(this.selectedAthlete.noc, this.filterService.yearRange[0], this.filterService.yearRange[1], this.selectedDiscipline, this.chosenEdition, this.chosenSex);
-      console.log(resultList);
+      // console.log(resultList);
       let bronzeEntries: Map<number, number> = resultList[0];
       let silverEntries: Map<number, number> = resultList[1];
       let goldEntries: Map<number, number> = resultList[2];

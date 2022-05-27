@@ -30,7 +30,7 @@ export class MedalChartComponent implements OnInit, OnChanges {
     const countOccurrences = (arr, val) => arr.reduce((a, v) => (v.medal === val ? a + 1 : a), 0);
     this._subscription = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(
       fa => {
-        console.log("Counting medals..");
+        // console.log("Counting medals..");
         let goldCount = countOccurrences(fa, "Gold");
         let silverCount = countOccurrences(fa, "Silver");
         let bronzeCount = countOccurrences(fa, "Bronze");

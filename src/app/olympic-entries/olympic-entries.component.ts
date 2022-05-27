@@ -40,7 +40,7 @@ export class OlympicEntriesComponent implements OnInit, OnDestroy {
       head: this.cols,
       body: exportData,
       didDrawCell: (data) => {
-        console.log(data.column.index)
+        // console.log(data.column.index)
       },
     })
 

@@ -28,9 +28,9 @@ export class RelatedGraphDisciplineComponent implements OnInit {
         this.selectedDiscipline = sa.sort(function(a,b) {
           return a.disciplineEntry.event.localeCompare(b.disciplineEntry.event);
         })[0].disciplineEntry;
-        console.log("Discipline entry is:");
-        console.log(this.selectedDiscipline);
-        console.log("Selected discipline is " + this.selectedDiscipline.event);
+        // console.log("Discipline entry is:");
+        // console.log(this.selectedDiscipline);
+        // console.log("Selected discipline is " + this.selectedDiscipline.event);
 
         // Use the following logic: if no person is selected => the selectedFilteredAthleteEntriesSubject contains only entries for the selected discipline
         // Otherwise: go retrieve the list from the full dataset:
@@ -39,8 +39,8 @@ export class RelatedGraphDisciplineComponent implements OnInit {
         } else {
           this.disciplineEntries = this.filterService.getAthleteEntriesForDiscipline(this.selectedDiscipline);
         }
-        console.log("Got disciplineEntries:");
-        console.log(this.disciplineEntries);
+        // console.log("Got disciplineEntries:");
+        // console.log(this.disciplineEntries);
         // TODO: 
         // topathleet
         // top landen
@@ -71,8 +71,8 @@ export class RelatedGraphDisciplineComponent implements OnInit {
           }
           return res;
         }, {});
-        console.log("Medals per country:")
-        console.log(medalsPerCountry);
+        // console.log("Medals per country:")
+        // console.log(medalsPerCountry);
         let mostMedals = Math.max(...medalsPerCountry.map(o => o.total));
         this.mostMedalsEntry = medalsPerCountry.find(o => o.total == mostMedals);
         let mostGoldMedals = Math.max(...medalsPerCountry.map(o => o.gold));
@@ -103,8 +103,8 @@ export class RelatedGraphDisciplineComponent implements OnInit {
           return res;
         }, {});
         
-        console.log("Medals per person:")
-        console.log(medalsPerPerson);
+        // console.log("Medals per person:")
+        // console.log(medalsPerPerson);
         let mostMedalsPerson = Math.max(...medalsPerPerson.map(o => o.total));
         this.mostMedalsPersonEntry = medalsPerPerson.find(o => o.total == mostMedalsPerson);
         let mostGoldMedalsPerson = Math.max(...medalsPerPerson.map(o => o.gold));
