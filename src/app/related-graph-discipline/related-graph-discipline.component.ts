@@ -22,10 +22,12 @@ export class RelatedGraphDisciplineComponent implements OnInit {
   mostMedalsPersonEntry: any;
 
   constructor(public filteredDataService: FilteredDataService, public filterService: FilterService) { 
-    this.subscriptionDiscipline = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe(sa => {
+    this.subscriptionDiscipline = this.filteredDataService.selectedFilteredAthleteEntriesSubject.subscribe((sa: AthleteEntry[]) => {
       // Don't do anything if neither athlete nor discipline is selected
       if (this.filterService.selectedAthlete || this.filterService.selectedDiscipline) {
-        this.selectedDiscipline = sa[0].disciplineEntry;
+        this.selectedDiscipline = sa.sort(function(a,b) {
+          return a.disciplineEntry.event.localeCompare(b.disciplineEntry.event);
+        })[0].disciplineEntry;
         console.log("Discipline entry is:");
         console.log(this.selectedDiscipline);
         console.log("Selected discipline is " + this.selectedDiscipline.event);
