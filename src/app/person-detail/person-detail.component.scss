@@ -1,38 +1,52 @@
 .medal-icon {
-    height: 25px;
-    width: 25px;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 50%;
-    display: inline-block;
-  }
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  display: inline-block;
+}
 
-  .bronze {
-      background-color: #C47435;
-  }
+.bronze {
+  background-color: #c47435;
+}
 
-  .silver {
-      background-color: #B8B8B8;
-  }
+.silver {
+  background-color: #b8b8b8;
+}
 
-  .gold {
-      background-color: #FDD130;
-  }
+.gold {
+  background-color: #fdd130;
+}
 
-  h2 {
-      margin: 1.2rem 0;
-  }
+h2 {
+  margin: 1.2rem 0;
+}
 
-  .person-details {
-      font-size: 1.2rem;
-  }
+.person-details {
+  font-size: 1.2rem;
+}
 
-  .icon-column {
-      width: 50px;
-      margin-bottom: 15px;
-  }
+.icon-column {
+  width: 50px;
+  margin-bottom: 15px;
+}
 
-  .person-details-table {
-      margin-top: 15%;
-      margin-left: 20px;
-  }
+.person-details-table {
+  margin-top: 15%;
+  margin-left: 20px;
+}
+
+.athlete-details {
+  line-height: 1em;
+}
+
+.with-bg-size { //https://stackoverflow.com/a/9149164
+  margin-top: 15px;
+  //   background-image: url("https://i.stack.imgur.com/wPh0S.jpg");
+  width: 200px;
+  height: 240px;
+  background-position: center;
+  /* Make the background image cover the area of the <div>, and clip the excess */
+  background-size: cover;
+}

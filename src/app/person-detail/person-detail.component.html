@@ -2,28 +2,30 @@
 
   <div class="row">
     <div class="col-3">
-      <img
-        src="{{selectedAthlete.photoUrl !== 'None' ? selectedAthlete.photoUrl : 'https://www.kindpng.com/picc/m/163-1639541_transparent-running-clipart-png-cartoon-athlete-png-png.png'}}"
-        width="200"
-        height="300"
-      />
+      <div *ngIf="selectedAthlete.photoUrl && selectedAthlete.photoUrl !== 'None'; else noPhoto" class="with-bg-size" [style.background-image]="'url(' + selectedAthlete.photoUrl + ')'"> <!--https://stackoverflow.com/a/9149164-->
+      </div>  
+      <ng-template #noPhoto>
+        <div class="with-bg-size" [style.background-image]="'url(https://www.kindpng.com/picc/m/163-1639541_transparent-running-clipart-png-cartoon-athlete-png-png.png)'"> <!--https://stackoverflow.com/a/9149164-->
+        </div> 
+      </ng-template>
+
     </div>
-    <div class="col-4">
+    <div class="col-4 athlete-details">
       <h2>{{ selectedAthlete.name }}</h2>
       <p *ngIf="selectedAthlete.country.toString() != 'NaN'">
         Country: {{ selectedAthlete.country }}
       </p>
       <p *ngIf="selectedAthlete.sex.toString() != 'NaN'">
-        Sex: {{ selectedAthlete.sex }}
+        Sex: {{ selectedAthlete.sex === 'M' ? 'Man' : 'Woman' }}
       </p>
       <p *ngIf="selectedAthlete.birthYear.toString() != 'NaN'">
         Year of birth: {{ selectedAthlete.birthYear }}
       </p>
       <p *ngIf="selectedAthlete.weight.toString() != 'NaN'">
-        Weight: {{ selectedAthlete.weight }}
+        Weight: {{ selectedAthlete.weight }} Kg
       </p>
       <p *ngIf="selectedAthlete.height.toString() != 'NaN'">
-        Height: {{ selectedAthlete.height }}
+        Height: {{ selectedAthlete.height }} cm
       </p>
     </div>
 
