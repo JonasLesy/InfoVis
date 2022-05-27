@@ -70,7 +70,10 @@ export class FilteredDataService {
   }
 
   public publishFilteredAthletes(athletes: Athlete[]) {
-    this._filteredAthletesSubject.next(athletes);
+    let sortedAthletes = athletes.sort(function(a: Athlete, b: Athlete) {
+      return (a.name).localeCompare(b.name);
+    })
+    this._filteredAthletesSubject.next(sortedAthletes);
   }
 
   public publishSelectedFilteredAthleteEntries(selectedFilteredAthletes: AthleteEntry[]) {
