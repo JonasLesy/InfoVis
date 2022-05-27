@@ -393,6 +393,12 @@ export class FilterService {
     return [maleList, femaleList, totalList];
   }
 
+  getAthleteEntriesForDiscipline(disciplineEntry: DisciplineEntry) {
+    return this._originalCsvData.athleteEntries.filter(athleteEntry => athleteEntry.disciplineEntry.sport === disciplineEntry.sport 
+      && athleteEntry.disciplineEntry.event === disciplineEntry.event 
+      && athleteEntry.disciplineEntry.sex === disciplineEntry.sex);
+  }
+
   private athleteBelongsToListOfCountries(athleteEntry, countriesToFilterOn): boolean {
     return countriesToFilterOn.includes(this.getRegionForNoc(athleteEntry.noc));
   }
@@ -400,6 +406,10 @@ export class FilterService {
   private getRegionForNoc(nocToLookFor): string {
     let nocEntry = this._originalCsvData.nocRegionEntries.find(item => item.noc === nocToLookFor);
     return nocEntry !== undefined ? nocEntry.region : "";
+  }
+
+  private getAthleteById(idToLookFor): Athlete {
+    return this._originalCsvData.athletes.find(item => item.id === idToLookFor);
   }
 
 

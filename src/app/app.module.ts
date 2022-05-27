@@ -25,6 +25,7 @@ import { RelatedGraphsComponent } from './related-graphs/related-graphs.componen
 import { RelatedGraphAverageAgeComponent } from './related-graph-average-age/related-graph-average-age.component';
 import { OlympicEntriesComponent } from './olympic-entries/olympic-entries.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RelatedGraphDisciplineComponent } from './related-graph-discipline/related-graph-discipline.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     RelatedGraphCountryMedalsComponent,
     RelatedGraphsComponent,
     RelatedGraphAverageAgeComponent,
-    OlympicEntriesComponent
+    OlympicEntriesComponent,
+    RelatedGraphDisciplineComponent
   ],
   imports: [
     BrowserModule,

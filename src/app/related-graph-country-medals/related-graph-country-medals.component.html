@@ -1,4 +1,4 @@
 <div class="card">
-    <h5 class="graph-title" *ngIf="selectedAthlete">Medals for {{ filterService.getRegionForNoc(selectedAthlete.noc) }} between {{ filterService.yearRange[0] }} and {{ filterService.yearRange[1] }}</h5>
+    <h5 class="graph-title" *ngIf="selectedAthlete">Medals for {{ filterService.getRegionForNoc(selectedAthlete.noc) }} between {{ filterService.yearRange[0] }} and {{ filterService.yearRange[1] }}<span *ngIf="filterService.selectedDiscipline">, for discipline: {{filterService.selectedDiscipline.event}}</span></h5>
     <p-chart type="bar" [data]="stackedMedalData" [options]="stackedMedalOptions"></p-chart>
 </div>

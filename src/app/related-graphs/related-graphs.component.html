@@ -17,4 +17,10 @@
       <app-related-graph-average-age></app-related-graph-average-age>
     </div>
   </p-tabPanel>
+  <p-tabPanel header="Discipline info">
+    <div>
+      <app-related-graph-discipline *ngIf="selectedAthlete || selectedDiscipline"></app-related-graph-discipline>
+      <p *ngIf="!selectedAthlete && !selectedDiscipline">Please select an athlete or discipline first.</p>
+    </div>
+  </p-tabPanel>
 </p-tabView>

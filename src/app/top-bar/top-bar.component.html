@@ -1,9 +1,6 @@
 <nav class="navbar-light" style="background-color: beige">
   <div class="container-fluid">
     <div class="row pt-2">
-      <div class="col-md-2 mr-0 text-center" style="text-align: center">
-        <img src="/assets/Olympics-Logo.png" alt="Logo" width="200" height="100">
-      </div>
       <div class="col-md-2 mr-0" style="text-align: center">
         <h5>Choose edition</h5>
         <p-selectButton styleClass="selection-button" [options]="filterService.editionOptions" [(ngModel)]="filterService.chosenEdition" optionLabel="label" optionValue="value" (onChange)="filterService.filterOnAllAttributes()"></p-selectButton>
@@ -46,6 +43,9 @@
           [forceSelection]="true"
           styleClass="olympic-autocomplete"
         ></p-autoComplete>
+      </div>
+      <div class="col-md-2 mr-0 text-center" style="text-align: center">
+        <img src="/assets/Olympics-Logo.png" alt="Logo" width="200" height="100">
       </div>
     </div>
   </div>
