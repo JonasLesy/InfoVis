@@ -1,15 +1,19 @@
 <p-tabView>
-  <p-tabPanel header="Olympic Entries" [selected]="true" >
+  <p-tabPanel header="Olympic Entries" [selected]="true">
     <app-olympic-entries *ngIf="selectedAthlete"></app-olympic-entries>
     <p *ngIf="!selectedAthlete">Please select an athlete first.</p>
   </p-tabPanel>
 
   <p-tabPanel header="Country Medals">
-    <app-related-graph-country-medals *ngIf="selectedAthlete"></app-related-graph-country-medals>
-    <p *ngIf="!selectedAthlete">Please select an athlete first.</p>
+    <div style="max-width: 42vw">
+      <app-related-graph-country-medals
+        *ngIf="selectedAthlete"
+      ></app-related-graph-country-medals>
+      <p *ngIf="!selectedAthlete">Please select an athlete first.</p>
+    </div>
   </p-tabPanel>
   <p-tabPanel header="Average ages">
-    <div style="max-width:60vw;">
+    <div style="max-width: 42vw">
       <app-related-graph-average-age></app-related-graph-average-age>
     </div>
   </p-tabPanel>
