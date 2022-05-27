@@ -333,6 +333,22 @@ export class FilterService {
     }
   }
 
+  deselectSelectedDiscipline() {
+    if (this.selectedDiscipline) {
+      this._selectedDiscipline = null;
+      this.filteredDataService.publishSelectedDiscipline(null);
+      this.filterOnAllAttributes();
+    }
+  }
+
+  deselectSelectedAthlete() {
+    if (this.selectedAthlete) {
+      this._selectedAthlete = null;
+      this.filteredDataService.publishSelectedAthlete(null);
+      this.filterOnAllAttributes();
+    }
+  }
+
   calculateMedalsForCountryForYearRange(country: string, startYear: number, endYear: number, selectedDiscipline: DisciplineEntry, season: string, chosenSex: string): [Map<number, number>, Map<number, number>, Map<number, number>] {
     let bronzeList: Map<number, number> = new Map<number, number>();
     let silverList: Map<number, number> = new Map<number, number>();

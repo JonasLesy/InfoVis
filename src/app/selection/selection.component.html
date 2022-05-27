@@ -1,6 +1,6 @@
 <div class="row">
     <p-virtualScroller [value]="filteredDataService.filteredAthletesSubject" [lazy]="true" (onLazyLoad)="loadPersonsLazy($event)" scrollHeight="40vh" [itemSize]="25" [rows]="10">
-      <ng-template pTemplate="header">Athletes</ng-template>
+      <ng-template pTemplate="header">Athletes<span *ngIf="selectedAthlete">:</span> <span style="font-weight: 400; display: inline-block; margin-left: 20px;">{{selectedAthlete?.name}}</span> <span (click)="filterService.deselectSelectedAthlete()" class="delete-button" style="font-weight: bold; display: inline-block; margin-left: 5px;" *ngIf="selectedAthlete">x</span></ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
           <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person.name}" (click)="filterService.searchAndSelectFirstAthleteEntryByName(person.name)">
@@ -16,7 +16,7 @@
    <p-table [value]="filteredDataService.filteredDisciplinesSubject | async" [customSort]="true" (sortFunction)="customSort($event)" sortMode="single" [scrollable]="true" scrollHeight="40vh" rowGroupMode="subheader" groupRowsBy="sport" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
-            <th>Disciplines</th>
+            <th>Disciplines <span *ngIf="selectedDiscipline">:</span> <span style="font-weight: 400; display: inline-block; margin-left: 20px;">{{selectedDiscipline?.event}}</span> <span (click)="filterService.deselectSelectedDiscipline()" class="delete-button" style="font-weight: bold; display: inline-block; margin-left: 5px;" *ngIf="selectedDiscipline">x</span></th>
           </tr>
         </ng-template>
         <ng-template pTemplate="groupheader" let-discipline>
