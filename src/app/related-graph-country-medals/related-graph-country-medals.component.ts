@@ -116,11 +116,19 @@ export class RelatedGraphCountryMedalsComponent implements OnInit {
         },
         scales: {
             xAxes: {
-                stacked: true
+                stacked: true,
+                title: {
+                  display: true,
+                  text: 'Year'
+                }
             },
             yAxes: {
                 stacked: true,
-                min: 0
+                min: 0,
+                title: {
+                  display: true,
+                  text: 'Medals'
+                }
             }
         }
     };

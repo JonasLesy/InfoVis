@@ -118,6 +118,10 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
             },
             grid: {
                 color: '#ebedef'
+            },
+            title: {
+              display: true,
+              text: 'Year'
             }
         },
         y: {
@@ -126,6 +130,10 @@ export class RelatedGraphAverageAgeComponent implements OnInit {
             },
             grid: {
                 color: '#ebedef'
+            },
+            title: {
+              display: true,
+              text: 'Average age'
             }
         }
     }
