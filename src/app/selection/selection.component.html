@@ -3,7 +3,7 @@
       <ng-template pTemplate="header">Athletes<span *ngIf="selectedAthlete">:</span> <span style="font-weight: 400; display: inline-block; margin-left: 20px;">{{selectedAthlete?.name}}</span> <span (click)="filterService.deselectSelectedAthlete()" class="delete-button" style="font-weight: bold; display: inline-block; margin-left: 5px;" *ngIf="selectedAthlete">x</span></ng-template>
       {{selectedAthlete}}
       <ng-template pTemplate="item" let-person>
-          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.name === person.name}" (click)="filterService.searchAndSelectFirstAthleteEntryByName(person.name)">
+          <div class="person-entry" [ngClass]="{'selected-item': selectedAthlete && selectedAthlete.id === person.id}" (click)="filterService.searchAndSelectFirstAthleteEntryByName(person.id)">
             {{person.name}}
           </div>
       </ng-template>

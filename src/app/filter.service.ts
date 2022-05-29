@@ -206,7 +206,7 @@ export class FilterService {
     if (this.selectedDiscipline || this.selectedAthlete) {
       for (let i = 0; i !== athleteEntries.length; i++) {
         let athleteEntry = athleteEntries[i];
-        if (this.selectedAthlete && athleteEntry.name === this.selectedAthlete.name) {
+        if (this.selectedAthlete && athleteEntry.id === this.selectedAthlete.id) {
           selectedAthleteExistsInFilteredAthleteEntries = true;
         }
         if (this.selectedDiscipline && athleteEntry.disciplineEntry.equals(this.selectedDiscipline)) {
@@ -227,7 +227,7 @@ export class FilterService {
         this.filterOnAllAttributes();
       }
 
-      let selectedFilteredAthletes = athleteEntries.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline))));
+      let selectedFilteredAthletes = athleteEntries.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.id === ae.id)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline))));
       this.filteredDataService.publishSelectedFilteredAthleteEntries(selectedFilteredAthletes);
     }
   }
@@ -284,32 +284,32 @@ export class FilterService {
         let selectedAthlete: Athlete = a;
         let selectedAthleteInFilteredAthletes = filteredAthletes.find(a => a.id == selectedAthlete.id);
         if (selectedAthleteInFilteredAthletes) {
-          this.searchAndSelectFirstAthleteEntryByName(selectedAthlete.name);
+          this.searchAndSelectFirstAthleteEntryByName(selectedAthlete.id);
         }
         else {
-          this.searchAndSelectFirstAthleteEntryByName(filteredAthletes[0].name);
+          this.searchAndSelectFirstAthleteEntryByName(filteredAthletes[0].id);
         }
       }
     });
   }
 
-  searchAndSelectFirstAthleteEntryByName(athleteName: string): void {
-    if (this._selectedAthlete && this._selectedAthlete.name === athleteName) {
+  searchAndSelectFirstAthleteEntryByName(athleteId: number): void {
+    if (this._selectedAthlete && this._selectedAthlete.id === athleteId) {
       this._selectedAthlete = null;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
         this.filteredDataService.publishSelectedAthlete(this._selectedAthlete);
-        let selectedFilteredAthletes = a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline))));
+        let selectedFilteredAthletes = a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.id === ae.id)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline))));
         this.filteredDataService.publishSelectedFilteredAthleteEntries(selectedFilteredAthletes);
       });
     }
     else {
-      let selectedAthlete = this._originalCsvData.athletes.find(athlete => athlete.name === athleteName);
+      let selectedAthlete = this._originalCsvData.athletes.find(athlete => athlete.id === athleteId);
       this._selectedAthlete = selectedAthlete;
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishDisciplinesOnAllAttributesAndSelectedAthlete(a);
         this.filteredDataService.publishSelectedAthlete(this._selectedAthlete);
-        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.id === ae.id)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
   }
@@ -320,7 +320,7 @@ export class FilterService {
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(a);
         this.filteredDataService.publishSelectedDiscipline(this._selectedDiscipline);
-        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.id === ae.id)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
     else {
@@ -328,7 +328,7 @@ export class FilterService {
       this.filteredDataService.filteredAthleteEntriesSubject.pipe(take(1)).subscribe((a: AthleteEntry[]) => {
         this.filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(a);
         this.filteredDataService.publishSelectedDiscipline(this._selectedDiscipline);
-        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.name === ae.name)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
+        this.filteredDataService.publishSelectedFilteredAthleteEntries(a.filter(ae => (!this._selectedAthlete || (this._selectedAthlete && this._selectedAthlete.id === ae.id)) && (!this._selectedDiscipline || (this._selectedDiscipline && this.disciplineEntriesEqual(ae.disciplineEntry, this._selectedDiscipline)))));
       });
     }
   }
