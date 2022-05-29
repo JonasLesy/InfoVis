@@ -233,20 +233,20 @@ export class FilterService {
   }
 
   filterAndPublishAthletesOnAllAttributesAndSelectedDiscipline(athleteEntries: AthleteEntry[]) {
-    let athleteSet: Set<string> = new Set<string>();
+    let athleteSet: Set<number> = new Set<number>();
     let athletes: Athlete[] = [];
     athleteEntries.forEach((athleteEntry: AthleteEntry) => {
       if (this._selectedDiscipline && athleteEntry.disciplineEntry) {
         if (this.disciplineEntriesEqual(this._selectedDiscipline, athleteEntry.disciplineEntry)) {
-          if (!athleteSet.has(athleteEntry.name)) {
-            athleteSet.add(athleteEntry.name);
+          if (!athleteSet.has(athleteEntry.id)) {
+            athleteSet.add(athleteEntry.id);
             athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl, athleteEntry.team));
           }
         }
       }
       else {
-        if (!athleteSet.has(athleteEntry.name)) {
-          athleteSet.add(athleteEntry.name);
+        if (!athleteSet.has(athleteEntry.id)) {
+          athleteSet.add(athleteEntry.id);
           athletes.push(new Athlete(athleteEntry.id, athleteEntry.name, athleteEntry.sex, athleteEntry.year - athleteEntry.age, athleteEntry.height, athleteEntry.weight, athleteEntry.noc, athleteEntry.photoUrl, athleteEntry.team));
         }
       }
@@ -266,7 +266,7 @@ export class FilterService {
     let disciplineSet: Set<string> = new Set<string>();
     athleteEntries.forEach((ae: AthleteEntry) => {
       if (this._selectedAthlete) {
-        if (ae.name == this._selectedAthlete.name) {
+        if (ae.id == this._selectedAthlete.id) {
           disciplineSet.add(JSON.stringify(ae.disciplineEntry));
         }
       }
@@ -390,8 +390,8 @@ export class FilterService {
     let map = new CompositeMap();
 
     filteredAthleteEntries.forEach((athleteEntry: AthleteEntry) => {
-      if (!map.has([athleteEntry.name, athleteEntry.year]))
-        map.set([athleteEntry.name, athleteEntry.year], athleteEntry);
+      if (!map.has([athleteEntry.id, athleteEntry.year]))
+        map.set([athleteEntry.id, athleteEntry.year], athleteEntry);
     })
 
     for (let a of map.entries()) {
